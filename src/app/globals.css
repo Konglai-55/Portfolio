@@ -1,0 +1,190 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+:root {
+  --brand-ink: #243642;
+  --brand-ink-deep: #172833;
+  --brand-paper: #f3f1eb;
+  --brand-paper-cool: #e8edef;
+  --brand-slate: #526c81;
+  --brand-accent: #c56f4d;
+  --brand-accent-soft: #e2b29d;
+  --brand-violet: #746b8d;
+  --brand-line: rgb(58 78 94 / 16%);
+  --background: var(--brand-paper);
+  --foreground: var(--brand-ink-deep);
+  --muted: #68747b;
+  --font-cjk: "MiSans", "HarmonyOS Sans SC", "Noto Sans SC",
+    "Source Han Sans SC", "PingFang SC", "Microsoft YaHei UI",
+    "Microsoft YaHei", sans-serif;
+  --font-cjk-display: "MiSans", "HarmonyOS Sans SC", "Noto Sans SC",
+    "Source Han Sans SC", "PingFang SC", "Microsoft YaHei UI",
+    "Microsoft YaHei", sans-serif;
+  --font-cjk-art: "Noto Serif SC Variable", "Source Han Serif SC",
+    "Songti SC", "STSong", serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --font-sans: var(--font-geist-sans), "PingFang SC", "Microsoft YaHei",
+    sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #11110f;
+    --foreground: #f2f2ee;
+    --muted: #a3a39c;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), "PingFang SC", "Microsoft YaHei",
+  sans-serif;
+}
+
+body::before {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--brand-accent);
+  content: "";
+  pointer-events: none;
+  transform: scaleX(var(--scroll-progress, 0));
+  transform-origin: left center;
+  will-change: transform;
+}
+
+html.has-reveal-js [data-reveal] {
+  --reveal-delay: 0ms;
+  opacity: 0;
+  clip-path: inset(0 0 14% 0);
+  transform: translate3d(0, 1.6rem, 0) scale(0.985);
+  transition:
+    opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    clip-path 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay);
+  will-change: opacity, clip-path, transform;
+}
+
+html.has-reveal-js [data-reveal="soft"] {
+  transform: translate3d(0, 0.9rem, 0) scale(0.99);
+}
+
+html.has-reveal-js [data-reveal="left"] {
+  transform: translate3d(-1.6rem, 0, 0) scale(0.985);
+}
+
+html.has-reveal-js [data-reveal="right"] {
+  transform: translate3d(1.6rem, 0, 0) scale(0.985);
+}
+
+html.has-reveal-js [data-reveal].is-revealed {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+html.has-reveal-js [data-reveal="title"] {
+  opacity: 1;
+  clip-path: inset(100% 0 0 0);
+  transform: translate3d(0, 1.25rem, 0);
+  transition:
+    clip-path 980ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 980ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: clip-path, transform;
+}
+
+html.has-reveal-js [data-reveal="title"].is-revealed {
+  clip-path: inset(0 0 0 0);
+  transform: translate3d(0, 0, 0);
+}
+
+html.has-reveal-js [data-reveal="card"] {
+  opacity: 0;
+  clip-path: none;
+  transform: translate3d(0, 1rem, 0) scale(0.985);
+  transition:
+    opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 850ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+html.has-reveal-js [data-reveal="card"].is-revealed {
+  opacity: 1;
+  clip-path: none;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+html.has-reveal-js [data-reveal="card"].is-revealed:hover {
+  transform: translate3d(0, -0.28rem, 0) scale(1);
+}
+
+html.has-reveal-js [data-reveal] {
+  transition: none !important;
+}
+
+html.has-reveal-js [data-reveal-delay="1"] {
+  --reveal-delay: 80ms;
+}
+
+html.has-reveal-js [data-reveal-delay="2"] {
+  --reveal-delay: 160ms;
+}
+
+html.has-reveal-js [data-reveal-delay="3"] {
+  --reveal-delay: 240ms;
+}
+
+html.has-reveal-js [data-reveal-delay="4"] {
+  --reveal-delay: 320ms;
+}
+
+html.has-reveal-js [data-reveal-delay="5"] {
+  --reveal-delay: 400ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.has-reveal-js [data-reveal],
+  html.has-reveal-js [data-reveal].is-revealed {
+    opacity: 1;
+    clip-path: none;
+    transform: none;
+    transition: none;
+  }
+
+  html.has-reveal-js [data-reveal="title"] {
+    opacity: 1;
+    clip-path: none;
+    transform: none;
+  }
+
+  html.has-reveal-js [data-reveal="card"].is-revealed:hover {
+    transform: none;
+  }
+}
+
+::selection {
+  background: var(--foreground);
+  color: var(--background);
+}

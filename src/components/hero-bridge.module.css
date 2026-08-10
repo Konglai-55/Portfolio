@@ -1,0 +1,274 @@
+.transition {
+  position: relative;
+  height: clamp(15rem, 25vw, 24rem);
+  margin-top: -1px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 72% 32%, rgb(111 135 157 / 22%), transparent 28rem),
+    linear-gradient(180deg, #10100f 0%, #17212a 68%, var(--brand-ink) 100%);
+}
+
+.revealTrigger {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.orbit {
+  position: absolute;
+  z-index: 0;
+  top: -11rem;
+  left: 12%;
+  width: 28rem;
+  height: 28rem;
+  border: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 999px;
+  pointer-events: none;
+  transform: translate3d(
+      var(--scroll-shift-x, 0px),
+      var(--scroll-shift-y, 0px),
+      0
+    )
+    scale(1.05);
+  will-change: transform;
+}
+
+.transition::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-image: linear-gradient(
+    90deg,
+    transparent calc(100% - 1px),
+    rgb(255 255 255 / 5%) 0
+  );
+  background-size: calc(100% / 12) 100%;
+  content: "";
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.bridgeMeta {
+  position: absolute;
+  z-index: 2;
+  top: 1.5rem;
+  right: clamp(1.25rem, 5vw, 5rem);
+  left: clamp(1.25rem, 5vw, 5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgb(232 239 243 / 45%);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.54rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.bridgeMeta strong {
+  color: rgb(232 239 243 / 72%);
+  font-family: var(--font-cjk);
+  font-size: 0.58rem;
+  font-weight: 560;
+  letter-spacing: 0.1em;
+}
+
+.marquee {
+  position: absolute;
+  z-index: 1;
+  top: 18%;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  animation: none;
+}
+
+html:not(.has-reveal-js) .marquee,
+html.has-reveal-js .revealTrigger.is-revealed ~ .marquee {
+  animation: bridgeMarqueeIn 1200ms cubic-bezier(0.22, 1, 0.36, 1) 160ms both;
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  animation: marquee 34s linear infinite;
+  will-change: transform;
+}
+
+.track span {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  padding-right: clamp(1.5rem, 3vw, 3rem);
+  color: transparent;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: clamp(3.7rem, 8.5vw, 8.8rem);
+  font-weight: 570;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  white-space: nowrap;
+  -webkit-text-stroke: 1px rgb(238 244 247 / 29%);
+}
+
+.track span:nth-child(4n + 2),
+.track span:nth-child(4n + 3) {
+  color: rgb(232 239 243 / 89%);
+  -webkit-text-stroke: 0;
+}
+
+.track i {
+  color: var(--brand-accent);
+  font-size: 0.2em;
+  font-style: normal;
+  -webkit-text-stroke: 0;
+}
+
+.sheet {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 39%;
+  border-radius: clamp(1.7rem, 4vw, 4.2rem) clamp(1.7rem, 4vw, 4.2rem) 0 0;
+  background: #e7ecef;
+  box-shadow: 0 -24px 70px rgb(5 12 18 / 18%);
+  animation: none;
+}
+
+html:not(.has-reveal-js) .sheet,
+html.has-reveal-js .revealTrigger.is-revealed ~ .sheet {
+  animation: sheetRise 1100ms cubic-bezier(0.16, 1, 0.3, 1) 420ms both;
+}
+
+.cue {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: flex;
+  min-height: 2.9rem;
+  align-items: center;
+  gap: 0.72rem;
+  padding: 0.4rem 1rem 0.4rem 0.42rem;
+  border: 1px solid rgb(63 85 103 / 16%);
+  border-radius: 999px;
+  background: #e7ecef;
+  color: #597084;
+  font-family: var(--font-geist-sans), sans-serif;
+  transform: translate(-50%, -50%);
+  animation: none;
+}
+
+html:not(.has-reveal-js) .cue,
+html.has-reveal-js .revealTrigger.is-revealed ~ .sheet .cue {
+  animation: cueIn 900ms cubic-bezier(0.16, 1, 0.3, 1) 760ms both;
+}
+
+.cueMark {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--brand-slate);
+  color: #fff;
+}
+
+.cueMark svg {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+.cue p {
+  margin: 0;
+  font-size: 0.58rem;
+  font-weight: 630;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes bridgeMarqueeIn {
+  from {
+    opacity: 0;
+    transform: translateY(1.2rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sheetRise {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cueIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 0.7rem)) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@media (max-width: 560px) {
+  .transition {
+    height: 15rem;
+  }
+
+  .marquee {
+    top: 23%;
+  }
+
+  .track span {
+    font-size: 4rem;
+  }
+
+  .sheet {
+    height: 37%;
+  }
+
+  .cue {
+    left: 36%;
+  }
+
+  .bridgeMeta span:last-child {
+    display: none;
+  }
+
+  .bridgeMeta strong {
+    margin-left: auto;
+    font-size: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .marquee,
+  .sheet,
+  .cue {
+    animation: none;
+  }
+}

@@ -1,0 +1,281 @@
+.overlay {
+  position: fixed;
+  z-index: 12000;
+  inset: 0;
+  overflow: hidden;
+  color: #f5f1e7;
+  isolation: isolate;
+  touch-action: none;
+}
+
+.curtain {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  width: 100%;
+  height: 120%;
+  contain: paint;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.navMorph {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  visibility: hidden;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.navMorphSurface {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  background: rgb(54 70 87 / 66%);
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.navMorphFill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #61778a 0%, #526a7d 54%, #42586b 100%);
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.content {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.greetings,
+.logoStage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.greetings {
+  display: grid;
+  width: min(90vw, 62rem);
+  height: clamp(8rem, 22vw, 16rem);
+  place-items: center;
+}
+
+.greeting {
+  position: absolute;
+  display: grid;
+  gap: 0.8rem;
+  place-items: center;
+  text-align: center;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.greeting strong {
+  display: block;
+  color: #f8f3e8;
+  font-size: clamp(4.2rem, 10vw, 9.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+  text-shadow: 0 16px 38px rgb(22 39 52 / 16%);
+}
+
+.greeting small {
+  color: rgb(244 240 229 / 54%);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.greeting[data-script="chinese"] strong {
+  font-family: "STKaiti", "KaiTi", "Kaiti SC", var(--font-cjk-art);
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+.greeting[data-script="latin"] strong {
+  font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+  font-size: clamp(4rem, 9vw, 8.6rem);
+  font-style: italic;
+}
+
+.greeting[data-script="japanese"] strong {
+  font-family: "Yuji Syuku", "Yu Mincho", "Hiragino Mincho ProN",
+    var(--font-cjk-art);
+  font-size: clamp(3.1rem, 7.5vw, 7rem);
+  font-style: italic;
+}
+
+.greeting[data-script="french"] strong {
+  font-family: "Segoe Script", "Snell Roundhand", "Brush Script MT", cursive;
+  font-size: clamp(3.8rem, 9vw, 8.2rem);
+}
+
+.greeting[data-script="spanish"] strong {
+  font-family: "Bradley Hand", "Segoe Print", "Comic Sans MS", cursive;
+  font-size: clamp(4.4rem, 10vw, 9rem);
+  font-style: italic;
+}
+
+.greeting[data-script="korean"] strong {
+  font-family: "Nanum Pen Script", "Apple SD Gothic Neo", "Malgun Gothic",
+    sans-serif;
+  font-size: clamp(3rem, 7.2vw, 6.6rem);
+  font-weight: 300;
+}
+
+.greeting[data-script="cyrillic"] strong {
+  font-family: "Segoe Script", "Monotype Corsiva", "Georgia", cursive;
+  font-size: clamp(3.8rem, 9vw, 8.2rem);
+  font-style: italic;
+}
+
+.greeting[data-script="arabic"] strong {
+  font-family: "Segoe UI", "Traditional Arabic", "Noto Naskh Arabic", serif;
+  font-size: clamp(4rem, 9vw, 8.4rem);
+  font-weight: 300;
+  letter-spacing: 0;
+  direction: rtl;
+}
+
+.logoStage {
+  display: grid;
+  width: min(78vw, 35rem);
+  grid-template-columns: clamp(3.8rem, 8vw, 6.5rem) minmax(0, 1fr);
+  gap: clamp(1.2rem, 3vw, 2.5rem);
+  align-items: center;
+  padding: 1.4rem 0;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.logoMark {
+  width: 100%;
+  aspect-ratio: 148.71 / 123.47;
+  color: #f7f2e8;
+}
+
+.logoWordmark {
+  width: 100%;
+  color: #f7f2e8;
+}
+
+.logoSignal {
+  position: absolute;
+  right: 0;
+  bottom: 0.35rem;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 74%) 16%,
+    rgb(255 255 255 / 74%) 84%,
+    transparent
+  );
+  box-shadow: 0 0 14px rgb(255 255 255 / 24%);
+}
+
+.logoSignal::after {
+  position: absolute;
+  right: 0;
+  top: -0.17rem;
+  width: 0.36rem;
+  height: 0.36rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 0.28rem rgb(255 255 255 / 12%);
+  content: "";
+}
+
+.chrome {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.meta {
+  position: absolute;
+  top: clamp(1.2rem, 3vw, 2.5rem);
+  right: clamp(1.2rem, 3vw, 3rem);
+  left: clamp(1.2rem, 3vw, 3rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgb(244 240 229 / 48%);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.12em;
+}
+
+.skip {
+  position: absolute;
+  right: clamp(1.2rem, 3vw, 3rem);
+  bottom: clamp(1.2rem, 3vw, 2.5rem);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0;
+  border: 0;
+  border-bottom: 1px solid rgb(244 240 229 / 28%);
+  background: transparent;
+  color: rgb(244 240 229 / 65%);
+  font-family: var(--font-cjk);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.skip:hover,
+.skip:focus-visible {
+  border-color: rgb(244 240 229 / 72%);
+  color: #fff;
+  outline: none;
+}
+
+@media (max-width: 600px) {
+  .greeting strong {
+    font-size: clamp(3.4rem, 21vw, 5.5rem);
+  }
+
+  .greeting[data-script="japanese"] strong,
+  .greeting[data-script="korean"] strong {
+    font-size: clamp(2.5rem, 14vw, 4rem);
+  }
+
+  .logoStage {
+    width: min(84vw, 25rem);
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .meta span:last-child {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .greeting,
+  .logoStage,
+  .logoSignal,
+  .curtain {
+    will-change: auto;
+  }
+}
