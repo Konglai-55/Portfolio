@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   ArrowUpRight,
   MessageCircle,
@@ -6,7 +5,6 @@ import {
   Phone,
 } from "lucide-react";
 import { BrandMark, BrandWordmark } from "./brand-mark";
-import { mediaUrl } from "@/lib/media";
 import styles from "./contact-section.module.css";
 
 const contactItems = [
@@ -77,19 +75,26 @@ export function ContactSection() {
         </div>
 
         <div className={styles.profilePanel} data-reveal="card">
-          <figure className={styles.portrait}>
-            <div className={styles.portraitImage}>
-              <Image
-                src={mediaUrl("images/portrait-liang-xikun.jpg")}
-                alt="梁熙坤个人肖像"
-                fill
-                sizes="(max-width: 700px) 92vw, (max-width: 1000px) 46vw, 31vw"
-                quality={90}
-              />
-              <figcaption>
-                <span>Liang Xikun</span>
-                <small>Designer · Developer</small>
-              </figcaption>
+          <figure
+            className={styles.signature}
+            aria-label="梁熙坤 Liang Xikun 艺术签名"
+          >
+            <div className={styles.signatureCanvas} aria-hidden="true">
+              <span className={styles.signatureOverline}>Liang / Xikun</span>
+              <div className={styles.signatureChinese}>
+                <span>梁</span>
+                <span>熙坤</span>
+              </div>
+              <span className={styles.signatureLatin}>liangxikun</span>
+              <svg
+                className={styles.signatureStroke}
+                viewBox="0 0 360 96"
+                preserveAspectRatio="none"
+              >
+                <path d="M8 66C71 88 130 76 171 46C210 17 226 13 224 32C222 54 186 75 150 82C211 72 272 66 350 72" />
+              </svg>
+              <span className={styles.signatureSeal}>熙坤</span>
+              <small>Designer · Developer</small>
             </div>
           </figure>
 

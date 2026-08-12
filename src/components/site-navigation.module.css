@@ -126,8 +126,17 @@
   align-items: center;
   justify-self: end;
   gap: 0.62rem;
+  color: inherit;
   font-family: var(--font-geist-sans), sans-serif;
+  text-decoration: none;
   text-transform: uppercase;
+  transition: opacity 180ms ease;
+}
+
+.availability:hover,
+.availability:focus-visible {
+  opacity: 0.76;
+  outline: none;
 }
 
 .statusDot {

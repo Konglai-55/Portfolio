@@ -112,13 +112,19 @@ export function SiteNavigation() {
         <span className={styles.languageControl}>中文</span>
       </div>
 
-      <div className={styles.availability} data-nav-reveal>
+      <a
+        href="#contact"
+        className={styles.availability}
+        data-nav-reveal
+        data-analytics="navigation:availability"
+        aria-label="当前可承接精选项目，前往联系区域"
+      >
         <span className={styles.statusDot} />
         <span className={styles.availabilityText}>
-          <strong>Available for projects</strong>
+          <strong>Available for selected projects</strong>
           <small>Design × Engineering</small>
         </span>
-      </div>
+      </a>
     </header>
   );
 }

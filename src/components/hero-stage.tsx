@@ -3,9 +3,9 @@
 import Image from "next/image";
 import gsap from "gsap";
 import {
-  type KeyboardEvent,
   type MouseEvent,
   type PointerEvent,
+  type Ref,
   useLayoutEffect,
   useRef,
   useState,
@@ -18,14 +18,12 @@ const slides = [
   {
     id: "designer",
     role: "设计师",
-    copy: "洞察需求，构建美感，让每一个想法拥有清晰表达。",
     image: mediaUrl("images/hero-designer.png"),
     alt: "阳光洒进画室，一位设计师正在窗边创作",
   },
   {
     id: "developer",
     role: "开发者",
-    copy: "拆解问题，实现创意，让每一个设计真正稳定运行。",
     image: mediaUrl("images/hero-developer.png"),
     alt: "夜晚的城市窗景前，一位开发者正在桌前工作",
   },
@@ -35,6 +33,93 @@ type Point = {
   x: number;
   y: number;
 };
+
+type HeroCopyProps = {
+  activeIndex: number;
+  role: (typeof slides)[number]["role"];
+  titleRef?: Ref<HTMLHeadingElement>;
+  interactive?: boolean;
+};
+
+function HeroCopy({
+  activeIndex,
+  role,
+  titleRef,
+  interactive = false,
+}: HeroCopyProps) {
+  function keepIdentity(event: MouseEvent<HTMLAnchorElement>) {
+    if (interactive) {
+      event.stopPropagation();
+    }
+  }
+
+  const actions = [
+    { label: "查看精选作品", href: "#work", analytics: "hero:view-work" },
+    { label: "聊聊你的项目", href: "#contact", analytics: "hero:contact" },
+  ] as const;
+
+  return (
+    <>
+      <p className={styles.eyebrow}>
+        <span />
+        独立设计师 × 全栈开发者
+        <small className={styles.identityCount}>
+          {role} · 0{activeIndex + 1} / 02
+        </small>
+      </p>
+
+      <h1 ref={titleRef}>
+        <span>设计表达，</span>
+        <span>由工程完整落地。</span>
+      </h1>
+
+      <p className={styles.serviceCopy}>
+        从品牌视觉、UI / UX 到前端与全栈开发，我独立负责从需求、设计、开发到部署上线的完整过程。
+      </p>
+
+      <div className={styles.actions}>
+        {actions.map((action, index) =>
+          interactive ? (
+            <a
+              key={action.href}
+              className={index === 0 ? styles.primaryAction : styles.secondaryAction}
+              href={action.href}
+              data-hero-action
+              data-analytics={action.analytics}
+              onClick={keepIdentity}
+            >
+              <span>{action.label}</span>
+              <i aria-hidden="true">↗</i>
+            </a>
+          ) : (
+            <span
+              key={action.href}
+              className={index === 0 ? styles.primaryAction : styles.secondaryAction}
+            >
+              <span>{action.label}</span>
+              <i aria-hidden="true">↗</i>
+            </span>
+          ),
+        )}
+      </div>
+
+      <dl className={styles.proofPoints}>
+        <div>
+          <dt>5+ Years</dt>
+          <dd>独立开发经验</dd>
+        </div>
+        <div>
+          <dt>Design × Code</dt>
+          <dd>设计与开发</dd>
+        </div>
+        <div>
+          <dt>End-to-end</dt>
+          <dd>完整项目交付</dd>
+        </div>
+      </dl>
+    </>
+  );
+}
 
 function nextPaint() {
   return new Promise<void>((resolve) => {
@@ -97,6 +182,11 @@ export function HeroStage() {
 
   function moveCursor(event: PointerEvent<HTMLElement>) {
     if (event.pointerType === "touch") return;
+
+    if ((event.target as Element).closest("a, button")) {
+      setIsCursorVisible(false);
+      return;
+    }
 
     const hero = heroRef.current;
     const cursor = cursorRef.current;
@@ -292,6 +382,8 @@ export function HeroStage() {
   }
 
   function handleClick(event: MouseEvent<HTMLElement>) {
+    if ((event.target as Element).closest("a, button")) return;
+
     const bounds = event.currentTarget.getBoundingClientRect();
     void transitionFrom({
       x: event.clientX - bounds.left,
@@ -299,10 +391,16 @@ export function HeroStage() {
     });
   }
 
-  function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
-    if (event.key !== "Enter" && event.key !== " ") return;
-    event.preventDefault();
-    void transitionFrom();
+  function handleIdentityButtonClick(event: MouseEvent<HTMLButtonElement>) {
+    event.stopPropagation();
+    const hero = heroRef.current;
+    if (!hero) return;
+
+    const bounds = hero.getBoundingClientRect();
+    void transitionFrom({
+      x: event.clientX - bounds.left,
+      y: event.clientY - bounds.top,
+    });
   }
 
   return (
@@ -311,13 +409,9 @@ export function HeroStage() {
       id="home"
       className={`${styles.hero} ${isTransitioning ? styles.transitioning : ""}`}
       data-identity={activeSlide.id}
-      role="button"
-      tabIndex={0}
-      aria-label={`当前身份为${activeSlide.role}，点击切换到${nextSlide.role}`}
       aria-busy={isTransitioning}
       data-analytics="hero:identity-toggle"
       onClick={handleClick}
-      onKeyDown={handleKeyDown}
       onPointerMove={moveCursor}
       onPointerEnter={(event) => {
         moveCursor(event);
@@ -355,7 +449,7 @@ export function HeroStage() {
             <small>Design expression · Engineered delivery</small>
           </span>
         </span>
-        <span>Shanghai · 2026</span>
+        <span>Tangshan · China · 2026</span>
       </div>
 
       <div
@@ -364,14 +458,12 @@ export function HeroStage() {
         className={`${styles.copyBlock} ${hasInteracted ? styles.interactedCopy : ""}`}
         style={hasInteracted ? { animation: "none" } : undefined}
       >
-        <p className={styles.eyebrow}>
-          <span />
-          身份 · {activeSlide.role}
-          <small className={styles.identityCount}>
-            0{activeIndex + 1} / 02
-          </small>
-        </p>
-        <h1 ref={baseTitleRef}>{activeSlide.copy}</h1>
+        <HeroCopy
+          activeIndex={activeIndex}
+          role={activeSlide.role}
+          titleRef={baseTitleRef}
+          interactive
+        />
       </div>
 
       <div
@@ -379,14 +471,7 @@ export function HeroStage() {
         className={`${styles.copyBlock} ${styles.transitionCopy}`}
         aria-hidden="true"
       >
-        <p className={styles.eyebrow}>
-          <span />
-          身份 · {activeSlide.role}
-          <small className={styles.identityCount}>
-            0{activeIndex + 1} / 02
-          </small>
-        </p>
-        <h1>{activeSlide.copy}</h1>
+        <HeroCopy activeIndex={activeIndex} role={activeSlide.role} />
       </div>
 
       <div
@@ -394,17 +479,20 @@ export function HeroStage() {
         className={`${styles.copyBlock} ${styles.incomingCopy} ${styles.interactedCopy}`}
         aria-hidden="true"
       >
-        <p className={styles.eyebrow}>
-          <span />
-          身份 · {transitionSlide.role}
-          <small className={styles.identityCount}>
-            0{transitionCopyIndex + 1} / 02
-          </small>
-        </p>
-        <h1>{transitionSlide.copy}</h1>
+        <HeroCopy
+          activeIndex={transitionCopyIndex}
+          role={transitionSlide.role}
+        />
       </div>
 
-      <div className={styles.hint} aria-hidden="true">
+      <button
+        type="button"
+        className={styles.hint}
+        data-hero-action
+        data-analytics="hero:identity-toggle"
+        aria-label={`当前为${activeSlide.role}视角，点击切换到${nextSlide.role}视角`}
+        onClick={handleIdentityButtonClick}
+      >
         <span className={styles.hintCircle}>
           <svg viewBox="0 0 20 20" fill="none">
             <path d="M5 10h10M11 6l4 4-4 4" />
@@ -412,9 +500,9 @@ export function HeroStage() {
         </span>
         <span className={styles.hintText}>
           <small>Form ↔ Build</small>
-          点击切换身份
+          {activeSlide.role}视角 · 点击切换
         </span>
-      </div>
+      </button>
 
       <p className={styles.srOnly} aria-live="polite">
         当前展示：身份 · {activeSlide.role}
