@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { mediaUrl } from "@/lib/media";
 import styles from "./about-section.module.css";
 
 export function CaseStudyDevice() {
@@ -53,13 +54,13 @@ export function CaseStudyDevice() {
           muted
           playsInline
           preload="none"
-          poster="/images/low-altitude-economy-poster.jpg"
+          poster={mediaUrl("images/low-altitude-economy-poster.jpg")}
           aria-label="低空经济企业官网案例动态演示"
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
         >
           <source
-            src="/videos/low-altitude-economy-case.mp4"
+            src={mediaUrl("videos/low-altitude-economy-case.mp4")}
             type="video/mp4"
           />
         </video>
@@ -71,7 +72,7 @@ export function CaseStudyDevice() {
       </div>
       <Image
         className={styles.deviceFrame}
-        src="/images/case-study-laptop.png"
+        src={mediaUrl("images/case-study-laptop.png")}
         alt=""
         fill
         sizes="(max-width: 680px) 100vw, (max-width: 1100px) 92vw, 1280px"

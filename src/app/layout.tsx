@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@fontsource-variable/noto-serif-sc/wght.css";
 import "./globals.css";
+import { mediaOrigin } from "@/lib/media";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,10 @@ export default function RootLayout({
       lang="zh-CN"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="dns-prefetch" href={mediaOrigin} />
+        <link rel="preconnect" href={mediaOrigin} crossOrigin="anonymous" />
+      </head>
       <body className="min-h-full">{children}</body>
     </html>
   );

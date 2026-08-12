@@ -5,6 +5,7 @@ import { useLayoutEffect, useRef, type CSSProperties } from "react";
 import { ArrowUpRight, MoveHorizontal } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { mediaUrl } from "@/lib/media";
 import {
   ProjectPreviewStack,
   type ProjectPreviewPage,
@@ -17,7 +18,7 @@ const hillPreviewPages = [
   {
     index: "01",
     label: "Home / About",
-    src: "/images/project-hill-page-1.png",
+    src: mediaUrl("images/project-hill-page-1.png"),
     width: 1440,
     height: 5032,
     alt: "HILL Nairobi 医院官网首页与品牌介绍完整长页",
@@ -25,7 +26,7 @@ const hillPreviewPages = [
   {
     index: "02",
     label: "Services",
-    src: "/images/project-hill-page-2.png",
+    src: mediaUrl("images/project-hill-page-2.png"),
     width: 1440,
     height: 6678,
     alt: "HILL Nairobi 医院官网服务项目完整长页",
@@ -33,7 +34,7 @@ const hillPreviewPages = [
   {
     index: "03",
     label: "FAQs",
-    src: "/images/project-hill-page-3.png",
+    src: mediaUrl("images/project-hill-page-3.png"),
     width: 1440,
     height: 2555,
     alt: "HILL Nairobi 医院官网常见问题完整长页",
@@ -44,7 +45,7 @@ const pixelCafePreviewPages = [
   {
     index: "01",
     label: "Full website",
-    src: "/images/project-pixel-cafe-full.png",
+    src: mediaUrl("images/project-pixel-cafe-full.png"),
     width: 1440,
     height: 4711,
     alt: "加拿大 Pixel Café 拼豆店官网完整长页",
@@ -52,7 +53,7 @@ const pixelCafePreviewPages = [
   {
     index: "02",
     label: "CMS / Upload",
-    src: "/images/project-pixel-cafe-admin.png",
+    src: mediaUrl("images/project-pixel-cafe-admin.png"),
     width: 2549,
     height: 1235,
     alt: "Pixel Café 拼豆图纸后台上传与内容管理界面",
@@ -71,7 +72,7 @@ const projects = [
     surface: "#dce7ec",
     surfaceAlt: "#fffaf6",
     ink: "#174a72",
-    image: "/images/project-hill-nairobi.png",
+    image: mediaUrl("images/project-hill-nairobi.png"),
     alt: "肯尼亚 HILL Nairobi 女性专科医院官网首页",
     description:
       "一家位于肯尼亚的医院官网。客户希望在体现医疗机构专业、严谨感的同时，保留面向女性客户所需要的温馨与安全感。",
@@ -93,7 +94,7 @@ const projects = [
     surface: "#f2eadc",
     surfaceAlt: "#fff8ec",
     ink: "#3a3029",
-    image: "/images/project-pixel-cafe-home.png",
+    image: mediaUrl("images/project-pixel-cafe-home.png"),
     alt: "加拿大 Pixel Café 拼豆创意店官网首页",
     description:
       "一家位于加拿大的拼豆创意店。客户希望拥有清晰丰富的拼豆作品展示区、优秀的移动端体验，以及便于持续更新图纸与内容的后台上传功能。",

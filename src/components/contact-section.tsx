@@ -6,6 +6,7 @@ import {
   Phone,
 } from "lucide-react";
 import { BrandMark, BrandWordmark } from "./brand-mark";
+import { mediaUrl } from "@/lib/media";
 import styles from "./contact-section.module.css";
 
 const contactItems = [
@@ -79,7 +80,7 @@ export function ContactSection() {
           <figure className={styles.portrait}>
             <div className={styles.portraitImage}>
               <Image
-                src="/images/portrait-liang-xikun.jpg"
+                src={mediaUrl("images/portrait-liang-xikun.jpg")}
                 alt="梁熙坤个人肖像"
                 fill
                 sizes="(max-width: 700px) 92vw, (max-width: 1000px) 46vw, 31vw"

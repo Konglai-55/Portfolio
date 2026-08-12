@@ -9,6 +9,9 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    remotePatterns: [
+      new URL('https://zuopinji.cn-nb1.rains3.com/portfolio-assets/v1/**'),
+    ],
   },
   allowedDevOrigins: ['111.227.121.112'],
 }

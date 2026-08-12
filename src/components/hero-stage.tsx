@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 import { BrandMark } from "./brand-mark";
+import { mediaUrl } from "@/lib/media";
 import styles from "./hero-stage.module.css";
 
 const slides = [
@@ -18,14 +19,14 @@ const slides = [
     id: "designer",
     role: "设计师",
     copy: "洞察需求，构建美感，让每一个想法拥有清晰表达。",
-    image: "/images/hero-designer.png",
+    image: mediaUrl("images/hero-designer.png"),
     alt: "阳光洒进画室，一位设计师正在窗边创作",
   },
   {
     id: "developer",
     role: "开发者",
     copy: "拆解问题，实现创意，让每一个设计真正稳定运行。",
-    image: "/images/hero-developer.png",
+    image: mediaUrl("images/hero-developer.png"),
     alt: "夜晚的城市窗景前，一位开发者正在桌前工作",
   },
 ] as const;
