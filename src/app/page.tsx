@@ -8,6 +8,7 @@ import { SiteNavigation } from "@/components/site-navigation";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { WorkSection } from "@/components/work-section";
 import { AnalyticsTracker } from "@/components/analytics-tracker";
+import { TrustSection } from "@/components/trust-section";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
       <HeroTransition />
       <AboutSection />
       <WorkSection />
+      <TrustSection />
       <ContactSection />
     </main>
   );

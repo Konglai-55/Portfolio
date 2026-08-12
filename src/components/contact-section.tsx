@@ -50,7 +50,7 @@ export function ContactSection() {
     <section id="contact" className={styles.section}>
       <div className={styles.container}>
         <header className={styles.sectionHeader} data-reveal="soft">
-          <span>03 / Contact &amp; Profile</span>
+          <span>04 / Contact &amp; Profile</span>
           <p>
             <i aria-hidden="true" />
             Available for selected projects
