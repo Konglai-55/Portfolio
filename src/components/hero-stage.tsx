@@ -18,12 +18,14 @@ const slides = [
   {
     id: "designer",
     role: "设计师",
+    copy: "洞察需求，构建美感，让每一个想法拥有清晰表达。",
     image: mediaUrl("images/hero-designer.png"),
     alt: "阳光洒进画室，一位设计师正在窗边创作",
   },
   {
     id: "developer",
     role: "开发者",
+    copy: "拆解问题，实现创意，让每一个设计真正稳定运行。",
     image: mediaUrl("images/hero-developer.png"),
     alt: "夜晚的城市窗景前，一位开发者正在桌前工作",
   },
@@ -37,6 +39,7 @@ type Point = {
 type HeroCopyProps = {
   activeIndex: number;
   role: (typeof slides)[number]["role"];
+  copy: (typeof slides)[number]["copy"];
   titleRef?: Ref<HTMLHeadingElement>;
   interactive?: boolean;
 };
@@ -44,6 +47,7 @@ type HeroCopyProps = {
 function HeroCopy({
   activeIndex,
   role,
+  copy,
   titleRef,
   interactive = false,
 }: HeroCopyProps) {
@@ -62,19 +66,17 @@ function HeroCopy({
     <>
       <p className={styles.eyebrow}>
         <span />
-        独立设计师 × 全栈开发者
+        身份 · {role}
         <small className={styles.identityCount}>
-          {role} · 0{activeIndex + 1} / 02
+          0{activeIndex + 1} / 02
         </small>
       </p>
 
-      <h1 ref={titleRef}>
-        <span>设计表达，</span>
-        <span>由工程完整落地。</span>
-      </h1>
+      <h1 ref={titleRef}>{copy}</h1>
 
       <p className={styles.serviceCopy}>
-        从品牌视觉、UI / UX 到前端与全栈开发，我独立负责从需求、设计、开发到部署上线的完整过程。
+        从视觉方向，到完整开发与上线。
+        <small>From visual direction to full-stack delivery.</small>
       </p>
 
       <div className={styles.actions}>
@@ -103,20 +105,6 @@ function HeroCopy({
         )}
       </div>
 
-      <dl className={styles.proofPoints}>
-        <div>
-          <dt>5+ Years</dt>
-          <dd>独立开发经验</dd>
-        </div>
-        <div>
-          <dt>Design × Code</dt>
-          <dd>设计与开发</dd>
-        </div>
-        <div>
-          <dt>End-to-end</dt>
-          <dd>完整项目交付</dd>
-        </div>
-      </dl>
     </>
   );
 }
@@ -449,7 +437,7 @@ export function HeroStage() {
             <small>Design expression · Engineered delivery</small>
           </span>
         </span>
-        <span>Tangshan · China · 2026</span>
+        <span>China · 2026</span>
       </div>
 
       <div
@@ -461,6 +449,7 @@ export function HeroStage() {
         <HeroCopy
           activeIndex={activeIndex}
           role={activeSlide.role}
+          copy={activeSlide.copy}
           titleRef={baseTitleRef}
           interactive
         />
@@ -471,7 +460,11 @@ export function HeroStage() {
         className={`${styles.copyBlock} ${styles.transitionCopy}`}
         aria-hidden="true"
       >
-        <HeroCopy activeIndex={activeIndex} role={activeSlide.role} />
+        <HeroCopy
+          activeIndex={activeIndex}
+          role={activeSlide.role}
+          copy={activeSlide.copy}
+        />
       </div>
 
       <div
@@ -482,6 +475,7 @@ export function HeroStage() {
         <HeroCopy
           activeIndex={transitionCopyIndex}
           role={transitionSlide.role}
+          copy={transitionSlide.copy}
         />
       </div>
 
