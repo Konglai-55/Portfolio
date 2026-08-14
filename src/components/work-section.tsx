@@ -60,6 +60,60 @@ const pixelCafePreviewPages = [
   },
 ] satisfies readonly ProjectPreviewPage[];
 
+const ruihePreviewPages = [
+  {
+    index: "01",
+    label: "Home",
+    src: "/images/project-ruihe-home.png",
+    width: 1440,
+    height: 7479,
+    alt: "衡水瑞和制造业企业官网首页完整长页",
+  },
+  {
+    index: "02",
+    label: "About",
+    src: "/images/project-ruihe-about.png",
+    width: 1440,
+    height: 4519,
+    alt: "衡水瑞和制造业企业官网关于企业完整长页",
+  },
+  {
+    index: "03",
+    label: "Products",
+    src: "/images/project-ruihe-products.png",
+    width: 1440,
+    height: 6888,
+    alt: "衡水瑞和制造业企业官网产品中心完整长页",
+  },
+  {
+    index: "04",
+    label: "Manufacturing",
+    src: "/images/project-ruihe-quality.png",
+    width: 1440,
+    height: 3699,
+    alt: "衡水瑞和制造业企业官网制造与质量完整长页",
+  },
+  {
+    index: "05",
+    label: "Contact",
+    src: "/images/project-ruihe-contact.png",
+    width: 1440,
+    height: 2661,
+    alt: "衡水瑞和制造业企业官网项目联系完整长页",
+  },
+] satisfies readonly ProjectPreviewPage[];
+
+const suxinPreviewPages = [
+  {
+    index: "01",
+    label: "Homepage",
+    src: "/images/project-suxin-furniture.png",
+    width: 1440,
+    height: 8086,
+    alt: "SUXIN 家具品牌外贸站首页完整长页",
+  },
+] satisfies readonly ProjectPreviewPage[];
+
 const projects = [
   {
     index: "01",
@@ -107,79 +161,75 @@ const projects = [
   },
   {
     index: "03",
-    title: "作品 03",
-    category: "Product experience",
-    status: "内容待补充",
-    visual: "product",
+    title: "Ruihe Engineering",
+    category: "Industrial website · China",
+    status: "完整案例",
+    visual: "cover",
     mark: "03",
-    accent: "#467b8f",
-    surface: "#d6e1e3",
-    surfaceAlt: "#f6f7f4",
-    ink: "#1c3440",
+    accent: "#c94719",
+    surface: "#d9e1e3",
+    surfaceAlt: "#f5f1e8",
+    ink: "#0b2940",
+    image: "/images/project-ruihe-home.png",
+    alt: "衡水瑞和制造业企业官网首页",
+    coverCrop: true,
+    description:
+      "一家服务铁路、电力配件及接触网专业设备领域的制造业企业官网。项目将专业制造、可靠交付与真实工程能力转化为清晰的信息架构，完整承载产品体系、制造资质、合作网络与项目咨询。",
+    result: "专业制造 × 可靠交付",
+    period: "Hebei · China",
+    pricing: {
+      delivery: "¥5,000",
+    },
   },
   {
     index: "04",
-    title: "作品 04",
-    category: "Creative development",
-    status: "内容待补充",
-    visual: "night",
-    mark: "DEPTH",
-    accent: "#bd8060",
-    surface: "#151b22",
-    surfaceAlt: "#262f39",
-    ink: "#edf1f2",
+    title: "SUXIN Furniture",
+    category: "Furniture export website · Global",
+    status: "正在制作中",
+    visual: "cover",
+    mark: "04",
+    accent: "#9c6a2f",
+    surface: "#d9d4ca",
+    surfaceAlt: "#eee8dd",
+    ink: "#201b18",
+    image: "/images/project-suxin-furniture.png",
+    alt: "SUXIN 高端家具品牌外贸站首页",
+    coverCrop: true,
+    description:
+      "一个面向海外市场的家具品牌外贸站。以深色空间影像与编辑式排版建立高端品牌气质，围绕产品系列、工艺能力、项目案例与合作咨询，构建兼顾品牌表达和海外询盘转化的完整体验。",
+    result: "品牌叙事 × 海外询盘",
+    period: "Global market",
+    pricing: {
+      delivery: "正在制作中",
+    },
+  },
+] as const;
+
+const moreWorkStats = [
+  {
+    overline: "Manufacturing",
+    value: "20",
+    label: "家制造业官网",
   },
   {
-    index: "05",
-    title: "作品 05",
-    category: "Commerce system",
-    status: "预留案例位",
-    visual: "commerce",
-    mark: "05",
-    accent: "#b66e53",
-    surface: "#e7ded9",
-    surfaceAlt: "#fbf7f3",
-    ink: "#382b28",
+    overline: "Global commerce",
+    value: "50",
+    label: "家外贸独立站",
   },
   {
-    index: "06",
-    title: "作品 06",
-    category: "Service platform",
-    status: "预留案例位",
-    visual: "service",
-    mark: "FLOW",
-    accent: "#50768b",
-    surface: "#cfdde2",
-    surfaceAlt: "#eff4f5",
-    ink: "#263b46",
+    overline: "Corporate",
+    value: "100",
+    label: "家企业官网",
   },
   {
-    index: "07",
-    title: "作品 07",
-    category: "Management product",
-    status: "预留案例位",
-    visual: "system",
-    mark: "SYS",
-    accent: "#7b7194",
-    surface: "#dcd9e2",
-    surfaceAlt: "#f5f3f6",
-    ink: "#302c3d",
-  },
-  {
-    index: "08",
-    title: "作品 08",
-    category: "Brand archive",
-    status: "预留案例位",
-    visual: "archive",
-    mark: "08",
-    accent: "#907451",
-    surface: "#ddd6c8",
-    surfaceAlt: "#f4efe6",
-    ink: "#302b24",
+    overline: "Bespoke needs",
+    value: "MORE",
+    label: "细分行业与定制需求",
   },
 ] as const;
 
 type Project = (typeof projects)[number];
+const projectCountLabel = String(projects.length).padStart(2, "0");
 
 function ProjectCard({ project }: { project: Project }) {
   const palette = {
@@ -199,33 +249,24 @@ function ProjectCard({ project }: { project: Project }) {
       <div className={styles.projectVisual}>
         <div className={styles.canvasHeader}>
           <span>Liangxikun / Selected archive</span>
-          <small>{project.index} / 08</small>
+          <small>
+            {project.index} / {projectCountLabel}
+          </small>
         </div>
 
-        {"image" in project ? (
-          <div className={styles.projectCoverFrame}>
-            <Image
-              className={styles.projectCover}
-              src={project.image}
-              alt={project.alt}
-              fill
-              sizes="(max-width: 700px) 100vw, (max-width: 900px) 48vw, 32rem"
-            />
-          </div>
-        ) : (
-          <div className={styles.composition} aria-hidden="true">
-            <span className={styles.shapeOne} />
-            <span className={styles.shapeTwo} />
-            <span className={styles.shapeThree} />
-            <strong>{project.mark}</strong>
-            <div className={styles.interface}>
-              <span />
-              <span />
-              <span />
-              <i />
-            </div>
-          </div>
-        )}
+        <div className={styles.projectCoverFrame}>
+          <Image
+            className={`${styles.projectCover} ${
+              "coverCrop" in project && project.coverCrop
+                ? styles.projectCoverCrop
+                : ""
+            }`}
+            src={project.image}
+            alt={project.alt}
+            fill
+            sizes="(max-width: 700px) 100vw, (max-width: 900px) 48vw, 32rem"
+          />
+        </div>
 
         <div className={styles.canvasFooter}>
           <span>{project.category}</span>
@@ -249,52 +290,53 @@ function ProjectCard({ project }: { project: Project }) {
         />
       ) : null}
 
-      <div
-        className={`${styles.cardCaption} ${
-          "description" in project ? styles.cardCaptionDetailed : ""
-        }`}
-      >
+      {project.index === "03" ? (
+        <ProjectPreviewStack
+          projectTitle="Ruihe Engineering"
+          pages={ruihePreviewPages}
+          triggerLabel="项目页面"
+        />
+      ) : null}
+
+      {project.index === "04" ? (
+        <ProjectPreviewStack
+          projectTitle="SUXIN Furniture"
+          pages={suxinPreviewPages}
+          triggerLabel="完整页面"
+        />
+      ) : null}
+
+      <div className={`${styles.cardCaption} ${styles.cardCaptionDetailed}`}>
         <div>
           <span className={styles.cardIndex}>{project.index}</span>
           <div>
-            {"description" in project ? (
-              <p className={styles.projectDescription}>
-                {project.description}
-              </p>
-            ) : (
-              <>
-                <h3>{project.title}</h3>
-                <p>{project.category}</p>
-              </>
-            )}
+            <p className={styles.projectDescription}>{project.description}</p>
           </div>
         </div>
 
-        {"result" in project ? (
-          <div className={styles.valueStrip}>
-            <span>Delivery proof</span>
-            <strong>{project.result}</strong>
-            <small>{project.period}</small>
-          </div>
-        ) : (
-          <span className={styles.cardStatus}>{project.status}</span>
-        )}
+        <div className={styles.valueStrip}>
+          <span>Delivery proof</span>
+          <strong>{project.result}</strong>
+          <small>{project.period}</small>
+        </div>
 
-        {"pricing" in project ? (
-          <div className={styles.projectPricing}>
-            <span className={styles.marketPrice}>
-              <small>市场价</small>
-              <del>{project.pricing.market}</del>
-            </span>
-            <span className={styles.priceArrow} aria-hidden="true">
-              →
-            </span>
-            <span className={styles.deliveryPrice}>
-              <small>落地价</small>
-              <strong>{project.pricing.delivery}</strong>
-            </span>
-          </div>
-        ) : null}
+        <div className={styles.projectPricing}>
+          {"market" in project.pricing ? (
+            <>
+              <span className={styles.marketPrice}>
+                <small>市场价</small>
+                <del>{project.pricing.market}</del>
+              </span>
+              <span className={styles.priceArrow} aria-hidden="true">
+                →
+              </span>
+            </>
+          ) : null}
+          <span className={styles.deliveryPrice}>
+            <small>落地价</small>
+            <strong>{project.pricing.delivery}</strong>
+          </span>
+        </div>
       </div>
     </article>
   );
@@ -306,14 +348,11 @@ export function WorkSection() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorBubbleRef = useRef<HTMLDivElement>(null);
   const firstRowRef = useRef<HTMLDivElement>(null);
-  const secondRowRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
-    const rows = [firstRowRef.current, secondRowRef.current].filter(
-      (row): row is HTMLDivElement => Boolean(row),
-    );
-    if (!section || rows.length !== 2) return;
+    const row = firstRowRef.current;
+    if (!section || !row) return;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -321,32 +360,28 @@ export function WorkSection() {
     const compact = window.matchMedia("(max-width: 700px)").matches;
 
     if (reduceMotion || compact) {
-      gsap.set(rows, { x: 0 });
+      gsap.set(row, { x: 0 });
       return;
     }
 
     const context = gsap.context(() => {
-      rows.forEach((row, index) => {
-        const direction = index === 0 ? 1 : -1;
-
-        gsap.fromTo(
-          row,
-          {
-            x: () => direction * Math.min(window.innerWidth * 0.085, 150),
+      gsap.fromTo(
+        row,
+        {
+          x: () => Math.min(window.innerWidth * 0.085, 150),
+        },
+        {
+          x: () => Math.min(window.innerWidth * -0.085, 150),
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.1,
+            invalidateOnRefresh: true,
           },
-          {
-            x: () => direction * Math.min(window.innerWidth * -0.085, 150),
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1.1,
-              invalidateOnRefresh: true,
-            },
-          },
-        );
-      });
+        },
+      );
     }, section);
 
     return () => {
@@ -467,7 +502,7 @@ export function WorkSection() {
               <MoveHorizontal size={18} strokeWidth={1.4} aria-hidden="true" />
               <span>
                 Scroll-linked archive
-                <small>上下滚动浏览双向作品墙</small>
+                <small>上下滚动浏览精选作品</small>
               </span>
             </div>
           </div>
@@ -475,30 +510,18 @@ export function WorkSection() {
 
         <div className={styles.archiveHeader} data-reveal="soft">
           <span>Archive capacity</span>
-          <strong>01—08</strong>
-          <p>两排 · 最多八个完整案例</p>
+          <strong>01—04</strong>
+          <p>四个真实案例 · 持续更新</p>
         </div>
       </div>
 
       <div
         ref={galleryRef}
         className={styles.gallery}
-        aria-label="作品展示，共八个案例位"
+        aria-label="作品展示，共四个案例"
       >
         <div ref={firstRowRef} className={styles.projectRow} role="list">
-          {projects.slice(0, 4).map((project) => (
-            <div key={project.index} role="listitem">
-              <ProjectCard project={project} />
-            </div>
-          ))}
-        </div>
-
-        <div
-          ref={secondRowRef}
-          className={`${styles.projectRow} ${styles.projectRowReverse}`}
-          role="list"
-        >
-          {projects.slice(4, 8).map((project) => (
+          {projects.map((project) => (
             <div key={project.index} role="listitem">
               <ProjectCard project={project} />
             </div>
@@ -535,10 +558,64 @@ export function WorkSection() {
         </div>
       </div>
 
+      <div
+        className={styles.moreWorks}
+        aria-labelledby="more-works-title"
+        data-reveal="soft"
+      >
+        <div className={styles.container}>
+          <div className={styles.moreWorksHeader}>
+            <div>
+              <p>Beyond the selected four / 更多作品</p>
+              <h3 id="more-works-title">
+                远不止这四个，
+                <span>更多经验仍在持续发生。</span>
+              </h3>
+            </div>
+            <p>
+              目前已开发 20 家制造业官网、50 家外贸独立站及 100
+              家企业官网。更细分的行业、更复杂的功能与不同阶段的网站需求，也有对应的落地经验。
+            </p>
+          </div>
+        </div>
+
+        <div className={styles.moreWorksViewport}>
+          <div className={styles.moreWorksTrack}>
+            {[0, 1].map((copyIndex) => (
+              <div
+                key={copyIndex}
+                className={styles.moreWorksGroup}
+                role={copyIndex === 0 ? "list" : undefined}
+                aria-hidden={copyIndex === 1 ? true : undefined}
+              >
+                {moreWorkStats.map((item) => (
+                  <div
+                    key={`${copyIndex}-${item.overline}`}
+                    className={styles.moreWorksItem}
+                    role={copyIndex === 0 ? "listitem" : undefined}
+                  >
+                    <small>{item.overline}</small>
+                    <strong>
+                      <b>{item.value}</b>
+                      <span>{item.label}</span>
+                    </strong>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={`${styles.container} ${styles.moreWorksFooter}`}>
+          <span>Different industry · Different scale · Same ownership</span>
+          <p>不套模板，按行业、受众、功能与交付阶段重新组织解决方案。</p>
+        </div>
+      </div>
+
       <div className={styles.container}>
         <footer className={styles.archiveFooter} data-reveal="soft">
           <span>Form × Build · Selected archive</span>
-          <p>案例内容将根据真实项目资料逐步补充。</p>
+          <p>真实项目持续更新，当前展示四个代表案例。</p>
         </footer>
       </div>
     </section>

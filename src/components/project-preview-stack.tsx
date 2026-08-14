@@ -377,6 +377,7 @@ export function ProjectPreviewStack({
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const [active, setActive] = useState<ActivePreview | null>(null);
   const [stackOpen, setStackOpen] = useState(false);
+  const featuredPages = pages.slice(0, 3);
 
   useLayoutEffect(() => {
     const stack = stackRef.current;
@@ -506,9 +507,9 @@ export function ProjectPreviewStack({
         ref={stackRef}
         className={styles.projectPreviewStack}
         aria-label={`${projectTitle} 项目画面预览`}
-        data-preview-count={pages.length}
+        data-preview-count={featuredPages.length}
       >
-        {pages.map((page) => (
+        {featuredPages.map((page) => (
           <button
             key={page.index}
             className={styles.projectPreviewCard}
