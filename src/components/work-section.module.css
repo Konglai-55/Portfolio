@@ -1,7 +1,7 @@
 .section {
   position: relative;
   overflow: hidden;
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 1rem;
   background:
     linear-gradient(90deg, rgb(45 61 73 / 5%) 1px, transparent 1px),
     #f0f1ef;

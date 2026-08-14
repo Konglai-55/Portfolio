@@ -20,7 +20,7 @@ export function SmoothScroll() {
       wheelMultiplier: 0.88,
       touchMultiplier: 1,
       smoothWheel: true,
-      anchors: { offset: -64 },
+      anchors: { offset: -16 },
     });
 
     const root = document.documentElement;

@@ -351,8 +351,9 @@ export function WorkSection() {
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
+    const gallery = galleryRef.current;
     const row = firstRowRef.current;
-    if (!section || !row) return;
+    if (!section || !gallery || !row) return;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -364,20 +365,23 @@ export function WorkSection() {
       return;
     }
 
+    const calculateTravel = () =>
+      Math.min(0, gallery.clientWidth - row.scrollWidth);
+
     const context = gsap.context(() => {
       gsap.fromTo(
         row,
         {
-          x: () => Math.min(window.innerWidth * 0.085, 150),
+          x: 0,
         },
         {
-          x: () => Math.min(window.innerWidth * -0.085, 150),
+          x: calculateTravel,
           ease: "none",
           scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1.1,
+            trigger: gallery,
+            start: "top 88%",
+            end: "bottom 12%",
+            scrub: 0.9,
             invalidateOnRefresh: true,
           },
         },

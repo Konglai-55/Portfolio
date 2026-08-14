@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   ArrowUpRight,
   MessageCircle,
@@ -171,6 +172,35 @@ export function ContactSection() {
                     )}
                   </>
                 );
+
+                if (item.icon === "wechat") {
+                  return (
+                    <details key={item.label} className={styles.wechatContact}>
+                      <summary
+                        className={styles.contactItem}
+                        data-analytics="contact:wechat"
+                        aria-label={`查看微信二维码，微信号 ${item.value}`}
+                      >
+                        {content}
+                      </summary>
+                      <div className={styles.wechatQrCard}>
+                        <span>Scan to connect</span>
+                        <Image
+                          className={styles.wechatQrImage}
+                          src="/images/wechat-qr-as14246791.png"
+                          width={377}
+                          height={410}
+                          sizes="(max-width: 760px) 17rem, 15rem"
+                          alt="梁熙坤微信二维码，微信号 as14246791"
+                        />
+                        <p>
+                          <strong>微信扫码联系</strong>
+                          <small>WeChat · as14246791</small>
+                        </p>
+                      </div>
+                    </details>
+                  );
+                }
 
                 return item.href ? (
                   <a
