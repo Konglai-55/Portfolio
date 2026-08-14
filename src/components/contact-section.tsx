@@ -5,6 +5,7 @@ import {
   MoveUp,
   Phone,
 } from "lucide-react";
+import { mediaUrl } from "@/lib/media";
 import { BrandMark, BrandWordmark } from "./brand-mark";
 import styles from "./contact-section.module.css";
 
@@ -187,7 +188,7 @@ export function ContactSection() {
                         <span>Scan to connect</span>
                         <Image
                           className={styles.wechatQrImage}
-                          src="/images/wechat-qr-as14246791.png"
+                          src={mediaUrl("images/wechat-qr-as14246791.png")}
                           width={377}
                           height={410}
                           sizes="(max-width: 760px) 17rem, 15rem"

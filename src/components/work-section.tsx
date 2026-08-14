@@ -64,7 +64,7 @@ const ruihePreviewPages = [
   {
     index: "01",
     label: "Home",
-    src: "/images/project-ruihe-home.png",
+    src: mediaUrl("images/project-ruihe-home.png"),
     width: 1440,
     height: 7479,
     alt: "衡水瑞和制造业企业官网首页完整长页",
@@ -72,7 +72,7 @@ const ruihePreviewPages = [
   {
     index: "02",
     label: "About",
-    src: "/images/project-ruihe-about.png",
+    src: mediaUrl("images/project-ruihe-about.png"),
     width: 1440,
     height: 4519,
     alt: "衡水瑞和制造业企业官网关于企业完整长页",
@@ -80,7 +80,7 @@ const ruihePreviewPages = [
   {
     index: "03",
     label: "Products",
-    src: "/images/project-ruihe-products.png",
+    src: mediaUrl("images/project-ruihe-products.png"),
     width: 1440,
     height: 6888,
     alt: "衡水瑞和制造业企业官网产品中心完整长页",
@@ -88,7 +88,7 @@ const ruihePreviewPages = [
   {
     index: "04",
     label: "Manufacturing",
-    src: "/images/project-ruihe-quality.png",
+    src: mediaUrl("images/project-ruihe-quality.png"),
     width: 1440,
     height: 3699,
     alt: "衡水瑞和制造业企业官网制造与质量完整长页",
@@ -96,7 +96,7 @@ const ruihePreviewPages = [
   {
     index: "05",
     label: "Contact",
-    src: "/images/project-ruihe-contact.png",
+    src: mediaUrl("images/project-ruihe-contact.png"),
     width: 1440,
     height: 2661,
     alt: "衡水瑞和制造业企业官网项目联系完整长页",
@@ -107,7 +107,7 @@ const suxinPreviewPages = [
   {
     index: "01",
     label: "Homepage",
-    src: "/images/project-suxin-furniture.png",
+    src: mediaUrl("images/project-suxin-furniture.png"),
     width: 1440,
     height: 8086,
     alt: "SUXIN 家具品牌外贸站首页完整长页",
@@ -170,7 +170,7 @@ const projects = [
     surface: "#d9e1e3",
     surfaceAlt: "#f5f1e8",
     ink: "#0b2940",
-    image: "/images/project-ruihe-home.png",
+    image: mediaUrl("images/project-ruihe-home.png"),
     alt: "衡水瑞和制造业企业官网首页",
     coverCrop: true,
     description:
@@ -192,7 +192,7 @@ const projects = [
     surface: "#d9d4ca",
     surfaceAlt: "#eee8dd",
     ink: "#201b18",
-    image: "/images/project-suxin-furniture.png",
+    image: mediaUrl("images/project-suxin-furniture.png"),
     alt: "SUXIN 高端家具品牌外贸站首页",
     coverCrop: true,
     description:
