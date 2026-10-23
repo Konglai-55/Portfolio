@@ -3,9 +3,9 @@
   overflow: hidden;
   scroll-margin-top: 1rem;
   background:
-    radial-gradient(circle at 87% 9%, rgb(255 255 255 / 84%), transparent 28rem),
-    radial-gradient(circle at 9% 74%, rgb(168 181 190 / 16%), transparent 34rem),
-    var(--brand-paper-cool);
+    radial-gradient(circle at 87% 9%, rgb(255 255 255 / 70%), transparent 28rem),
+    radial-gradient(circle at 9% 74%, rgb(197 111 77 / 6%), transparent 34rem),
+    var(--brand-paper);
   color: var(--brand-ink-deep);
   font-family: var(--font-cjk);
 }
@@ -1351,8 +1351,9 @@
   overflow: hidden;
   border-radius: clamp(1.2rem, 2.5vw, 2rem);
   background:
-    radial-gradient(circle at 87% 18%, rgb(157 181 202 / 28%), transparent 20rem),
-    #4b6175;
+    radial-gradient(circle at 88% 12%, rgb(197 111 77 / 22%), transparent 22rem),
+    radial-gradient(circle at 10% 100%, rgb(82 108 129 / 30%), transparent 26rem),
+    #0d161c;
   color: #f7fafc;
   box-shadow: 0 24px 80px rgb(35 52 66 / 17%);
 }

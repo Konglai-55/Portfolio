@@ -5,7 +5,7 @@
   isolation: isolate;
   background:
     linear-gradient(90deg, rgb(45 61 73 / 4.5%) 1px, transparent 1px),
-    #e8ecec;
+    var(--brand-paper);
   background-size: calc(100% / 12) 100%;
   color: #213440;
   font-family: var(--font-cjk);
@@ -199,6 +199,9 @@
   border: 0;
   outline: none;
   cursor: pointer;
+  border-radius: 0.9rem;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .cardInner {
@@ -218,8 +221,10 @@
   inset: 0;
   flex-direction: column;
   justify-content: space-between;
-  background: #f2f3ef;
-  box-shadow: 0 1.6rem 3.6rem rgb(38 52 61 / 8%);
+  background: #fbfaf6;
+  box-shadow:
+    0 2.4rem 4.5rem -1.5rem rgb(23 40 51 / 22%),
+    0 0 0 1px rgb(23 40 51 / 4%);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   color: inherit;
@@ -244,28 +249,20 @@
   bottom: -4.5rem;
 }
 
-.flipCard[data-tone="slate"] .cardFace {
-  border-color: rgb(255 255 255 / 12%);
-  background: #4e687a;
-  color: #f2f3ef;
+.flipCard[data-tone="ink"] .cardFace {
+  border-color: rgb(255 255 255 / 9%);
+  background:
+    radial-gradient(90% 60% at 100% 0%, rgb(82 108 129 / 30%), transparent 70%),
+    #0d161c;
+  color: #f2eee5;
 }
 
 .flipCard[data-tone="clay"] .cardFace {
-  border-color: rgb(255 255 255 / 12%);
-  background: #b87355;
+  border-color: rgb(255 255 255 / 14%);
+  background:
+    radial-gradient(90% 60% at 100% 0%, rgb(255 255 255 / 14%), transparent 70%),
+    #b9643f;
   color: #fff8f2;
-}
-
-.flipCard[data-tone="violet"] .cardFace {
-  border-color: rgb(255 255 255 / 12%);
-  background: #756c8d;
-  color: #f7f4fb;
-}
-
-.flipCard[data-tone="ink"] .cardFace {
-  border-color: rgb(255 255 255 / 11%);
-  background: #233743;
-  color: #eff2ef;
 }
 
 .cardFront {

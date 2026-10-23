@@ -3,7 +3,10 @@
   overflow: hidden;
   scroll-margin-top: 1rem;
   isolation: isolate;
-  background: linear-gradient(180deg, #1a2f3a 0%, #172a34 46%, #142630 100%);
+  background:
+    radial-gradient(70% 45% at 15% 0%, rgb(197 111 77 / 12%), transparent 70%),
+    radial-gradient(60% 50% at 90% 100%, rgb(82 108 129 / 22%), transparent 70%),
+    #0d161c;
   color: #edf0ec;
   font-family: var(--font-cjk);
 }

@@ -1,0 +1,83 @@
+.marquee {
+  position: relative;
+  display: grid;
+  gap: clamp(0.4rem, 1vw, 1rem);
+  padding: clamp(2.5rem, 6vw, 5.5rem) 0;
+  overflow: hidden;
+  border-top: 1px solid rgb(255 255 255 / 8%);
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+  background:
+    linear-gradient(90deg, rgb(255 255 255 / 3.5%) 1px, transparent 1px),
+    radial-gradient(50% 90% at 50% 50%, rgb(197 111 77 / 10%), transparent 75%),
+    #0b1318;
+  background-size:
+    calc(100% / 12) 100%,
+    auto,
+    auto;
+  color: #f2eee5;
+}
+
+.row {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 7%,
+    #000 93%,
+    transparent
+  );
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.group {
+  display: flex;
+  flex: 0 0 auto;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(1.2rem, 2.6vw, 2.6rem);
+  padding-right: clamp(1.2rem, 2.6vw, 2.6rem);
+  white-space: nowrap;
+}
+
+.item i {
+  color: var(--brand-accent);
+  font-size: 0.22em;
+  font-style: normal;
+  -webkit-text-stroke: 0;
+}
+
+.row[data-variant="display"] .item {
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: clamp(3.6rem, 9vw, 9.5rem);
+  font-weight: 620;
+  line-height: 1;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+}
+
+/* Alternate solid and outlined words for rhythm. */
+.row[data-variant="display"] .item:nth-child(even) {
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(242 238 229 / 55%);
+}
+
+.row[data-variant="serif"] .item {
+  color: rgb(242 238 229 / 62%);
+  font-family: var(--font-cjk-art);
+  font-size: clamp(1.4rem, 3vw, 3rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.row[data-variant="serif"] .item i {
+  font-size: 0.4em;
+}

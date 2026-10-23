@@ -78,6 +78,37 @@ body::before {
   will-change: transform;
 }
 
+/* Fine film grain over the whole site: a static layer, composited once. */
+html::after {
+  position: fixed;
+  z-index: 950;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  content: "";
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+[data-tilt]::after {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--sheen-x, 50%) var(--sheen-y, 0%),
+    rgb(255 255 255 / 16%),
+    transparent 45%
+  );
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms ease;
+}
+
+[data-tilt]:hover::after {
+  opacity: 1;
+}
+
 html.has-reveal-js [data-reveal] {
   --reveal-delay: 0ms;
   opacity: 0;

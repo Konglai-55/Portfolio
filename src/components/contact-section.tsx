@@ -90,6 +90,7 @@ export function ContactSection() {
               <span className={styles.signatureLatin}>liangxikun</span>
               <svg
                 className={styles.signatureStroke}
+                data-draw
                 viewBox="0 0 360 96"
                 preserveAspectRatio="none"
               >
@@ -242,7 +243,7 @@ export function ContactSection() {
 
           <p>© 2026 Portfolio · Tangshan, China</p>
 
-          <a href="#home">
+          <a href="#home" data-magnetic="0.4">
             返回顶部
             <MoveUp size={15} strokeWidth={1.4} aria-hidden="true" />
           </a>

@@ -42,10 +42,16 @@ function getRevealState(kind: RevealKind) {
       };
     case "card":
       return {
-        from: { opacity: 0, y: "1rem", scale: 0.985 },
-        to: { opacity: 1, y: 0, scale: 1 },
-        duration: 0.78,
-        ease: "power3.out",
+        from: {
+          opacity: 0,
+          y: "3.5rem",
+          rotationX: -24,
+          transformPerspective: 1000,
+          transformOrigin: "50% 0%",
+        },
+        to: { opacity: 1, y: 0, rotationX: 0 },
+        duration: 1.1,
+        ease: "expo.out",
       };
     case "left":
       return {
@@ -146,12 +152,17 @@ export function EntranceEffects() {
           y: 0,
           scale: 1,
         });
-        gsap.set(split.lines, { yPercent: 112 });
+        gsap.set(split.lines, {
+          yPercent: 118,
+          rotation: 3.5,
+          transformOrigin: "0% 100%",
+        });
         const tween = gsap.to(split.lines, {
           yPercent: 0,
-          duration: 0.96,
-          stagger: 0.08,
-          ease: "power3.out",
+          rotation: 0,
+          duration: 1.2,
+          stagger: 0.09,
+          ease: "expo.out",
           delay,
           paused: true,
           overwrite: "auto",
@@ -260,9 +271,145 @@ export function EntranceEffects() {
       });
     }
 
+    const cleanups: Array<() => void> = [];
+
+    if (!reduceMotion) {
+      // Editorial read-along: characters light up as the paragraph scrolls by.
+      document
+        .querySelectorAll<HTMLElement>("[data-scrub-text]")
+        .forEach((target) => {
+          const split = SplitText.create(target, {
+            type: "chars",
+            aria: "auto",
+          });
+          splitInstances.push(split);
+          const tween = gsap.fromTo(
+            split.chars,
+            { opacity: 0.16 },
+            {
+              opacity: 1,
+              ease: "none",
+              stagger: 0.02,
+              scrollTrigger: {
+                trigger: target,
+                start: "top 82%",
+                end: "bottom 48%",
+                scrub: 0.6,
+              },
+            },
+          );
+          if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
+          revealTweens.push(tween);
+        });
+
+      // Hand-drawn strokes draw themselves in once.
+      document
+        .querySelectorAll<SVGPathElement>("[data-draw] path")
+        .forEach((path) => {
+          // pathLength normalises dashes, even with non-scaling strokes.
+          path.setAttribute("pathLength", "1");
+          gsap.set(path, { strokeDasharray: 1, strokeDashoffset: 1 });
+          const tween = gsap.to(path, {
+            strokeDashoffset: 0,
+            duration: 1.8,
+            ease: "power2.inOut",
+            paused: true,
+          });
+          revealTweens.push(tween);
+          triggers.push(
+            ScrollTrigger.create({
+              trigger: path.closest("[data-draw]") ?? path,
+              start: "top 85%",
+              once: true,
+              onEnter: () => tween.play(),
+            }),
+          );
+        });
+    }
+
+    // Magnetic controls lean towards the pointer, then spring back.
+    if (
+      !reduceMotion &&
+      window.matchMedia("(hover: hover) and (pointer: fine)").matches
+    ) {
+      document
+        .querySelectorAll<HTMLElement>("[data-magnetic]")
+        .forEach((element) => {
+          const strength = Number(element.dataset.magnetic || 0.32);
+          const moveX = gsap.quickTo(element, "x", {
+            duration: 0.6,
+            ease: "power3.out",
+          });
+          const moveY = gsap.quickTo(element, "y", {
+            duration: 0.6,
+            ease: "power3.out",
+          });
+          const handleMove = (event: PointerEvent) => {
+            const bounds = element.getBoundingClientRect();
+            moveX((event.clientX - bounds.left - bounds.width / 2) * strength);
+            moveY((event.clientY - bounds.top - bounds.height / 2) * strength);
+          };
+          const handleLeave = () => {
+            gsap.to(element, {
+              x: 0,
+              y: 0,
+              duration: 0.9,
+              ease: "elastic.out(1, 0.45)",
+              overwrite: "auto",
+            });
+          };
+          element.addEventListener("pointermove", handleMove);
+          element.addEventListener("pointerleave", handleLeave);
+          cleanups.push(() => {
+            element.removeEventListener("pointermove", handleMove);
+            element.removeEventListener("pointerleave", handleLeave);
+            gsap.set(element, { clearProps: "transform" });
+          });
+        });
+    }
+
+    // Cards tilt in 3D under the pointer, with a soft light sheen.
+    if (
+      !reduceMotion &&
+      window.matchMedia("(hover: hover) and (pointer: fine)").matches
+    ) {
+      document.querySelectorAll<HTMLElement>("[data-tilt]").forEach((card) => {
+        gsap.set(card, { transformPerspective: 900 });
+        const rotateX = gsap.quickTo(card, "rotationX", {
+          duration: 0.7,
+          ease: "power3.out",
+        });
+        const rotateY = gsap.quickTo(card, "rotationY", {
+          duration: 0.7,
+          ease: "power3.out",
+        });
+        const handleMove = (event: PointerEvent) => {
+          const bounds = card.getBoundingClientRect();
+          const x = (event.clientX - bounds.left) / bounds.width;
+          const y = (event.clientY - bounds.top) / bounds.height;
+          rotateY((x - 0.5) * 10);
+          rotateX((0.5 - y) * 8);
+          card.style.setProperty("--sheen-x", `${x * 100}%`);
+          card.style.setProperty("--sheen-y", `${y * 100}%`);
+        };
+        const handleLeave = () => {
+          rotateX(0);
+          rotateY(0);
+        };
+        card.addEventListener("pointermove", handleMove);
+        card.addEventListener("pointerleave", handleLeave);
+        cleanups.push(() => {
+          card.removeEventListener("pointermove", handleMove);
+          card.removeEventListener("pointerleave", handleLeave);
+          gsap.set(card, { clearProps: "transform" });
+        });
+      });
+    }
+
     ScrollTrigger.refresh();
 
     return () => {
+      cleanups.forEach((cleanup) => cleanup());
       triggers.forEach((trigger) => trigger.kill());
       revealTweens.forEach((tween) => tween.kill());
       countTweens.forEach((tween) => tween.kill());

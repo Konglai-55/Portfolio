@@ -148,7 +148,7 @@ export function AboutSection() {
           </div>
 
           <div className={styles.introContent} data-reveal="right">
-            <p className={styles.lead}>
+            <p className={styles.lead} data-scrub-text>
               美术出身，但拥有 5 年以上独立开发经验，长期专注于 Web
               开发、前端视觉设计及全栈网站建设。具备从需求分析、产品设计、技术架构到开发部署与后期维护的完整项目交付能力，能够独立完成兼顾用户体验、视觉表现、性能优化与业务需求的高质量网站项目。
             </p>
@@ -422,7 +422,7 @@ export function AboutSection() {
 
         <blockquote className={styles.statement} data-reveal="soft">
           <span>Flexible team · Consistent delivery</span>
-          <p>
+          <p data-scrub-text>
             您获得的不是一个人的有限产能，也不是一支成本高昂、结构冗余的固定团队，而是一套由我统一负责、按项目需求灵活配置的专业开发能力。
           </p>
         </blockquote>

@@ -27,7 +27,7 @@ const evidence = [
     detail: "客户在项目推进后主动确认长期合作意向。",
     image: mediaUrl("images/trust-evidence-01.jpg"),
     alt: "客户确认长期合作的项目沟通记录",
-    tone: "slate",
+    tone: "ink",
   },
   {
     index: "02",
@@ -57,7 +57,7 @@ const evidence = [
     detail: "网站修正完成后，客户确认体验符合预期。",
     image: mediaUrl("images/trust-evidence-04.jpg"),
     alt: "客户确认网站交付效果的沟通记录",
-    tone: "violet",
+    tone: "paper",
   },
   {
     index: "05",
@@ -67,7 +67,7 @@ const evidence = [
     detail: "一段合作不是单笔交易，而是多次真实委托。",
     image: mediaUrl("images/trust-evidence-05.jpg"),
     alt: "同一客户多次项目结算的交易记录",
-    tone: "ink",
+    tone: "paper",
   },
   {
     index: "06",
@@ -77,7 +77,7 @@ const evidence = [
     detail: "同一合作方在短周期内产生多次项目结算。",
     image: mediaUrl("images/trust-evidence-06.jpg"),
     alt: "合作方连续多次结算的交易记录",
-    tone: "paper",
+    tone: "ink",
   },
   {
     index: "07",
@@ -87,7 +87,7 @@ const evidence = [
     detail: "2026 年 7 月账单记录：21 笔收入，合计 ¥16,188。",
     image: mediaUrl("images/trust-evidence-07.jpg"),
     alt: "2026 年 7 月收入账单记录",
-    tone: "clay",
+    tone: "paper",
   },
   {
     index: "08",
@@ -97,7 +97,7 @@ const evidence = [
     detail: "2026 年 8 月账单记录：22 笔收入，合计 ¥10,662。",
     image: mediaUrl("images/trust-evidence-08.jpg"),
     alt: "2026 年 8 月收入账单记录",
-    tone: "slate",
+    tone: "ink",
   },
 ] as const;
 
@@ -136,6 +136,7 @@ function EvidenceCard({
     <div className={styles.cardReveal} data-reveal="card">
       <article
         className={styles.flipCard}
+        data-tilt
         data-tone={item.tone}
         data-flipped={isFlipped}
         onPointerLeave={(event) => {
