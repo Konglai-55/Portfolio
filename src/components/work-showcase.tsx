@@ -111,6 +111,7 @@ export function WorkShowcase({
       screen: article.querySelector<HTMLElement>("[data-screen]")!,
       image: article.querySelector<HTMLElement>("[data-screen-image]")!,
       thumb: article.querySelector<HTMLElement>("[data-thumb]")!,
+      title: article.querySelector<HTMLElement>("h3")!,
       chars: Array.from(
         article.querySelectorAll<HTMLElement>("[data-title-char]"),
       ),
@@ -137,6 +138,7 @@ export function WorkShowcase({
         if (index === 0) return;
         gsap.set(part.device, { clipPath: "inset(100% 0% 0% 0%)" });
         gsap.set(part.chars, { yPercent: 115 });
+        gsap.set(part.title, { autoAlpha: 0 });
         gsap.set(part.info, { autoAlpha: 0, y: 24 });
         gsap.set(part.index, { yPercent: 100 });
         gsap.set(part.glow, { autoAlpha: 0 });
@@ -144,101 +146,136 @@ export function WorkShowcase({
       gsap.set(parts[0].device, { clipPath: "inset(0% 0% 0% 0%)" });
       gsap.set(segments, { scaleX: 0, transformOrigin: "0% 50%" });
 
+      // Every tween is an explicit fromTo with immediateRender off, so the
+      // scrubbed state depends only on scroll progress. A plain .to() would
+      // re-record its start on refresh (resize, late image loads) and could
+      // leave the next project's title stuck on screen.
       const starts: number[] = [];
-      const timeline = gsap.timeline({ defaults: { ease: "none" } });
+      const timeline = gsap.timeline({
+        defaults: { ease: "none", immediateRender: false },
+      });
+      const span = (
+        target: gsap.TweenTarget,
+        from: gsap.TweenVars,
+        to: gsap.TweenVars,
+        position: number,
+      ) => timeline.fromTo(target, from, to, position);
+
       parts.forEach((part, index) => {
         const start = index * (holdDuration + swapDuration);
         starts.push(start);
-        timeline
-          .to(
-            part.image,
-            { y: screenTravel(part), duration: holdDuration, ease: "power1.inOut" },
-            start,
-          )
-          .to(
-            part.thumb,
-            { y: thumbTravel(part), duration: holdDuration, ease: "power1.inOut" },
-            start,
-          )
-          .to(segments[index], { scaleX: 1, duration: holdDuration }, start);
+        span(
+          part.image,
+          { y: 0 },
+          { y: screenTravel(part), duration: holdDuration, ease: "power1.inOut" },
+          start,
+        );
+        span(
+          part.thumb,
+          { y: 0 },
+          { y: thumbTravel(part), duration: holdDuration, ease: "power1.inOut" },
+          start,
+        );
+        span(segments[index], { scaleX: 0 }, { scaleX: 1, duration: holdDuration }, start);
 
         const next = parts[index + 1];
         if (!next) return;
         const swap = start + holdDuration;
-        timeline
-          .to(
-            next.device,
-            {
-              clipPath: "inset(0% 0% 0% 0%)",
-              duration: swapDuration,
-              ease: "power3.inOut",
-            },
-            swap,
-          )
-          .to(
-            part.device,
-            {
-              scale: 0.9,
-              yPercent: -5,
-              duration: swapDuration,
-              ease: "power3.inOut",
-            },
-            swap,
-          )
-          .to(
-            part.chars,
-            {
-              yPercent: -115,
-              duration: swapDuration * 0.5,
-              ease: "power2.in",
-              stagger: 0.012,
-            },
-            swap,
-          )
-          .to(
-            next.chars,
-            {
-              yPercent: 0,
-              duration: swapDuration * 0.6,
-              ease: "power3.out",
-              stagger: 0.014,
-            },
-            swap + swapDuration * 0.35,
-          )
-          .to(
-            part.info,
-            {
-              autoAlpha: 0,
-              y: -18,
-              duration: swapDuration * 0.4,
-              ease: "power2.in",
-              stagger: 0.02,
-            },
-            swap,
-          )
-          .to(
-            next.info,
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: swapDuration * 0.5,
-              ease: "power3.out",
-              stagger: 0.03,
-            },
-            swap + swapDuration * 0.45,
-          )
-          .to(
-            part.index,
-            { yPercent: -100, duration: swapDuration, ease: "power3.inOut" },
-            swap,
-          )
-          .to(
-            next.index,
-            { yPercent: 0, duration: swapDuration, ease: "power3.inOut" },
-            swap,
-          )
-          .to(part.glow, { autoAlpha: 0, duration: swapDuration }, swap)
-          .to(next.glow, { autoAlpha: 1, duration: swapDuration }, swap);
+        span(
+          next.device,
+          { clipPath: "inset(100% 0% 0% 0%)" },
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: swapDuration,
+            ease: "power3.inOut",
+          },
+          swap,
+        );
+        span(
+          part.device,
+          { scale: 1, yPercent: 0 },
+          {
+            scale: 0.9,
+            yPercent: -5,
+            duration: swapDuration,
+            ease: "power3.inOut",
+          },
+          swap,
+        );
+        span(
+          part.chars,
+          { yPercent: 0 },
+          {
+            yPercent: -115,
+            duration: swapDuration * 0.5,
+            ease: "power2.in",
+            stagger: 0.012,
+          },
+          swap,
+        );
+        span(
+          next.chars,
+          { yPercent: 115 },
+          {
+            yPercent: 0,
+            duration: swapDuration * 0.6,
+            ease: "power3.out",
+            stagger: 0.014,
+          },
+          swap + swapDuration * 0.35,
+        );
+        span(
+          part.info,
+          { autoAlpha: 1, y: 0 },
+          {
+            autoAlpha: 0,
+            y: -18,
+            duration: swapDuration * 0.4,
+            ease: "power2.in",
+            stagger: 0.02,
+          },
+          swap,
+        );
+        span(
+          next.info,
+          { autoAlpha: 0, y: 24 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: swapDuration * 0.5,
+            ease: "power3.out",
+            stagger: 0.03,
+          },
+          swap + swapDuration * 0.45,
+        );
+        span(
+          part.index,
+          { yPercent: 0 },
+          { yPercent: -100, duration: swapDuration, ease: "power3.inOut" },
+          swap,
+        );
+        span(
+          next.index,
+          { yPercent: 100 },
+          { yPercent: 0, duration: swapDuration, ease: "power3.inOut" },
+          swap,
+        );
+        // Belt and braces: a title is only visible while it is (or is
+        // becoming) the active one.
+        span(
+          next.title,
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: 0.01 },
+          swap + swapDuration * 0.3,
+        );
+        span(
+          part.title,
+          { autoAlpha: 1 },
+          { autoAlpha: 0, duration: 0.01 },
+          swap + swapDuration * 0.99,
+        );
+        span(part.glow, { autoAlpha: 1 }, { autoAlpha: 0, duration: swapDuration }, swap);
+        span(next.glow, { autoAlpha: 0 }, { autoAlpha: 1, duration: swapDuration }, swap);
       });
       timeline.to({}, { duration: 0.25 });
 
@@ -252,8 +289,9 @@ export function WorkShowcase({
         scrub: 0.9,
         anticipatePin: 1,
         invalidateOnRefresh: true,
-        onUpdate: () => {
-          const time = timeline.time();
+        onUpdate: (self) => {
+          // Use scroll progress, not the scrubbed (lagging) timeline time.
+          const time = self.progress * timeline.duration();
           let active = 0;
           starts.forEach((start, index) => {
             if (time >= start - swapDuration * 0.5) active = index;
