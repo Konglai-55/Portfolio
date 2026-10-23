@@ -179,6 +179,15 @@
   align-self: end;
 }
 
+@media (min-width: 901px) {
+  /* Keep the heading in view while the long capability column scrolls by. */
+  .titleBlock {
+    position: sticky;
+    top: 8rem;
+    align-self: start;
+  }
+}
+
 .lead {
   margin: 0;
   color: #273744;
@@ -405,7 +414,7 @@
 
 .whyGrid {
   display: block;
-  padding: clamp(5rem, 9vw, 9rem) 0;
+  padding: clamp(5rem, 9vw, 9rem) 0 clamp(2rem, 4vw, 4rem);
 }
 
 .whyHeading {
@@ -828,7 +837,7 @@
 
 .costProof {
   position: relative;
-  margin-top: clamp(7rem, 12vw, 12rem);
+  margin-top: clamp(3rem, 6vw, 6rem);
   padding-top: clamp(2rem, 3vw, 3rem);
   border-top: 1px solid rgb(48 67 84 / 19%);
 }
@@ -1222,8 +1231,8 @@
 
 .caseStudyFooter {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(32rem, 1.1fr);
-  gap: clamp(3rem, 7vw, 8rem);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2.5rem, 4vw, 3.5rem);
   align-items: end;
   padding: clamp(2.8rem, 5vw, 5rem) clamp(1.4rem, 4.5vw, 4.5rem);
 }
@@ -1243,7 +1252,7 @@
   margin: 0 0 1.35rem;
   color: #263946;
   font-family: var(--font-cjk-art);
-  font-size: clamp(1.8rem, 3.2vw, 3.2rem);
+  font-size: clamp(1.8rem, 2.6vw, 2.8rem);
   font-weight: 510;
   line-height: 1.4;
   letter-spacing: -0.02em;

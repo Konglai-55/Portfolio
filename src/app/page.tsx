@@ -20,9 +20,9 @@ export default function Home() {
       <EntranceEffects />
       <HeroStage />
       <HeroTransition />
-      <AboutSection />
       <WorkSection />
       <TrustSection />
+      <AboutSection />
       <ContactSection />
     </main>
   );

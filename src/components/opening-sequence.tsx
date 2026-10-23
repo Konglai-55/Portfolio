@@ -18,6 +18,8 @@ const greetings = [
   { text: "مرحبًا", locale: "العربية · العالم العربي", script: "arabic" },
 ] as const;
 
+const openingSeenKey = "lx-opening-seen";
+
 export function OpeningSequence() {
   const [visible, setVisible] = useState(true);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -57,6 +59,8 @@ export function OpeningSequence() {
     }
 
     const root = document.documentElement;
+    // Returning visitors: the overlay is already hidden by CSS before paint.
+    if (root.classList.contains("opening-seen")) return;
     const previousRootOverflow = root.style.overflow;
     const previousBodyOverflow = document.body.style.overflow;
     root.style.overflow = "hidden";
@@ -175,6 +179,9 @@ export function OpeningSequence() {
       }
       root.style.overflow = previousRootOverflow;
       document.body.style.overflow = previousBodyOverflow;
+      try {
+        sessionStorage.setItem(openingSeenKey, "1");
+      } catch {}
       setVisible(false);
     };
 
@@ -206,7 +213,7 @@ export function OpeningSequence() {
         y: 5,
       });
 
-      const greetingWindow = 2.28;
+      const greetingWindow = 1.56;
       const greetingDuration = greetingWindow / words.length;
       words.forEach((word, index) => {
         const start = 0.12 + index * greetingDuration;
@@ -290,6 +297,7 @@ export function OpeningSequence() {
       });
 
       const exitStart = logoStart + 1.58;
+      timeline.addLabel("morph", exitStart - 0.24);
       timeline
         .to(
           signal,
@@ -440,10 +448,23 @@ export function OpeningSequence() {
         timeline.progress(1);
       }
     };
+    // Visitors who try to scroll want the content now: jump to the
+    // logo-to-navigation morph instead of making them wait.
+    const fastForward = () => {
+      if (reduceMotion) return;
+      const morphStart = timeline.labels.morph;
+      if (morphStart !== undefined && timeline.time() < morphStart) {
+        timeline.seek(morphStart);
+      }
+    };
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("wheel", fastForward, { passive: true });
+    window.addEventListener("touchmove", fastForward, { passive: true });
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("wheel", fastForward);
+      window.removeEventListener("touchmove", fastForward);
       timeline.kill();
       timelineRef.current = null;
       gsap.set(navigationRevealElements, {
@@ -465,6 +486,7 @@ export function OpeningSequence() {
     <div
       ref={overlayRef}
       className={styles.overlay}
+      data-opening
       aria-label="网站品牌开场动画"
       data-lenis-prevent
     >

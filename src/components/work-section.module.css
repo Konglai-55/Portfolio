@@ -74,7 +74,7 @@
   grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.55fr);
   gap: clamp(3rem, 7vw, 8rem);
   align-items: end;
-  padding: clamp(5rem, 9vw, 9rem) 0 clamp(4rem, 7vw, 7rem);
+  padding: clamp(5rem, 9vw, 9rem) 0 clamp(2rem, 4vw, 4rem);
 }
 
 .heading > p {
@@ -141,49 +141,57 @@
   text-transform: none;
 }
 
-.archiveHeader {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 1.5rem;
-  align-items: end;
-  padding: 1rem 0;
-  border-top: 1px solid rgb(52 72 88 / 18%);
-  border-bottom: 1px solid rgb(52 72 88 / 18%);
-  color: #6c7f8c;
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.archiveHeader strong {
-  color: #324956;
-  font-family: var(--font-geist-sans), sans-serif;
-  font-size: clamp(1.4rem, 2vw, 2rem);
-  font-weight: 430;
-  line-height: 1;
-  letter-spacing: -0.04em;
-}
-
-.archiveHeader p {
-  margin: 0;
-  text-align: right;
-}
-
 .gallery {
   position: relative;
   z-index: 2;
   display: grid;
-  gap: clamp(1rem, 2vw, 2rem);
-  padding: clamp(2rem, 4vw, 4rem) 0;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  gap: clamp(1.25rem, 2.4vh, 2rem);
+  padding: clamp(1.5rem, 3vh, 2.5rem) 0;
+}
+
+.galleryProgress {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  align-items: center;
+  width: min(100%, 104rem);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 5vw, 5rem);
+  color: #657b8b;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.galleryCount span {
+  color: #23313b;
+  font-weight: 650;
+}
+
+.galleryTrack {
+  position: relative;
+  height: 1px;
+  overflow: hidden;
+  background: rgb(52 72 88 / 16%);
+}
+
+.galleryTrack > span {
+  position: absolute;
+  inset: 0;
+  background: var(--brand-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
 }
 
 .projectRow {
   display: flex;
   width: max-content;
-  gap: clamp(0.9rem, 1.7vw, 1.7rem);
-  padding-right: 3vw;
-  padding-left: 3vw;
+  gap: clamp(1.5rem, 3vw, 3.5rem);
+  padding-right: clamp(1.25rem, 5vw, 5rem);
+  padding-left: clamp(1.25rem, 5vw, 5rem);
   will-change: transform;
 }
 
@@ -192,7 +200,7 @@
 }
 
 .projectRow > div {
-  width: clamp(20rem, 30vw, 32rem);
+  width: min(82vw, 92rem, calc((100svh - 13rem) * 2.35));
   flex: 0 0 auto;
 }
 
@@ -203,7 +211,11 @@
   --project-ink: #23303a;
   position: relative;
   z-index: 1;
+  display: grid;
   min-width: 0;
+  grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr);
+  gap: clamp(1.5rem, 3vw, 3.5rem);
+  align-items: stretch;
   isolation: isolate;
 }
 
@@ -215,7 +227,9 @@
 .projectVisual {
   position: relative;
   z-index: 2;
+  align-self: start;
   aspect-ratio: 16 / 10;
+  border-radius: clamp(0.75rem, 1.2vw, 1.25rem);
   padding: clamp(1rem, 1.8vw, 1.6rem);
   overflow: hidden;
   background:
@@ -428,11 +442,11 @@
 
 .projectPreviewStack {
   position: absolute;
-  z-index: 1;
-  bottom: calc(100% - 2.5rem);
-  left: 0;
-  width: 115%;
-  height: clamp(21rem, 34vw, 36rem);
+  z-index: 3;
+  top: 7%;
+  left: 14%;
+  width: 46%;
+  height: 86%;
   visibility: hidden;
   pointer-events: none;
 }
@@ -1119,167 +1133,98 @@
   position: relative;
   z-index: 2;
   display: flex;
-  min-height: 6.8rem;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1.25rem;
-  padding: 1rem 0 0.2rem;
+  min-width: 0;
+  flex-direction: column;
+  gap: clamp(1rem, 2.2vh, 1.6rem);
+  padding: clamp(0.25rem, 1vh, 0.75rem) 0;
   border-top: 1px solid rgb(49 68 82 / 17%);
   color: #263844;
 }
 
-.cardCaptionDetailed {
-  display: grid;
-  min-height: 8.8rem;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-content: start;
-  align-items: start;
-}
-
-.cardCaption > div:first-child {
+.cardMeta {
   display: flex;
-  gap: 0.9rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
 }
 
 .cardIndex {
-  padding-top: 0.2rem;
-  color: #7b8c98;
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.08em;
-}
-
-.cardCaption h3 {
-  margin: 0 0 0.3rem;
-  font-size: clamp(1rem, 1.25vw, 1.2rem);
-  font-weight: 620;
-  letter-spacing: 0.015em;
-}
-
-.cardCaption p {
-  margin: 0;
-  color: #70818d;
-  font-family: var(--font-geist-sans), sans-serif;
-  font-size: 0.58rem;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-
-.cardCaption .projectDescription {
-  max-width: 22rem;
-  margin: 0;
-  color: #506775;
-  font-family: var(--font-cjk);
-  font-size: 0.72rem;
-  line-height: 1.75;
-  letter-spacing: 0.015em;
-  text-transform: none;
-}
-
-.projectDescription::before {
-  display: block;
-  margin-bottom: 0.42rem;
   color: var(--project-accent);
-  content: "Client brief";
   font-family: var(--font-geist-mono), monospace;
-  font-size: 0.5rem;
+  font-size: 0.62rem;
   font-weight: 650;
+  letter-spacing: 0.14em;
+}
+
+.cardStatus {
+  padding: 0.38rem 0.7rem;
+  border: 1px solid rgb(58 78 93 / 18%);
+  border-radius: 999px;
+  color: #5d7281;
+  font-size: 0.62rem;
+  white-space: nowrap;
+}
+
+.cardTitle h3 {
+  margin: 0;
+  color: var(--project-ink);
+  font-family: var(--font-cjk-art);
+  font-size: clamp(2rem, 3.3vw, 3.6rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.cardTitle p {
+  margin: 0.75rem 0 0;
+  color: #70818d;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.cardStatus {
-  padding: 0.38rem 0.55rem;
-  border: 1px solid rgb(58 78 93 / 16%);
-  border-radius: 999px;
-  color: #738590;
-  font-size: 0.58rem;
-  white-space: nowrap;
+.projectDescription {
+  max-width: 30rem;
+  margin: 0;
+  color: #4d6371;
+  font-family: var(--font-cjk);
+  font-size: clamp(0.82rem, 0.95vw, 0.95rem);
+  line-height: 1.9;
+  letter-spacing: 0.015em;
 }
 
 .valueStrip {
   display: grid;
-  grid-template-columns: auto auto;
-  gap: 0.15rem 0.6rem;
-  align-items: baseline;
-  text-align: right;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgb(49 68 82 / 13%);
 }
 
 .valueStrip > span {
-  grid-column: 1 / -1;
   color: var(--brand-accent);
   font-family: var(--font-geist-mono), monospace;
-  font-size: 0.52rem;
+  font-size: 0.56rem;
   font-weight: 620;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-}
-
-.valueStrip del {
-  margin-left: 0.25rem;
 }
 
 .valueStrip strong {
   color: var(--brand-ink);
-  font-family: var(--font-geist-sans), var(--font-cjk);
-  font-size: 0.82rem;
-  font-weight: 650;
+  font-family: var(--font-cjk-art);
+  font-size: clamp(1.15rem, 1.5vw, 1.5rem);
+  font-weight: 560;
 }
 
 .valueStrip small {
   color: #687c89;
   font-family: var(--font-geist-mono), monospace;
-  font-size: 0.52rem;
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-}
-
-.projectPricing {
-  display: flex;
-  grid-column: 1 / -1;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.72rem;
-  margin-top: 0.72rem;
-  padding-top: 0.68rem;
-  border-top: 1px solid rgb(49 68 82 / 13%);
-}
-
-.projectPricing > span:not(.priceArrow) {
-  display: flex;
-  align-items: baseline;
-  gap: 0.38rem;
-}
-
-.projectPricing small {
-  color: #718590;
-  font-family: var(--font-cjk);
-  font-size: 0.58rem;
-  font-weight: 560;
-  letter-spacing: 0.08em;
-}
-
-.marketPrice del {
-  color: #728691;
-  font-family: var(--font-geist-sans), var(--font-cjk);
-  font-size: 0.76rem;
-  font-weight: 570;
-  text-decoration-color: rgb(83 104 117 / 65%);
-  text-decoration-thickness: 1px;
-}
-
-.priceArrow {
-  color: var(--project-accent);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 0.72rem;
-  line-height: 1;
-}
-
-.deliveryPrice strong {
-  color: var(--project-accent);
-  font-family: var(--font-geist-sans), var(--font-cjk);
-  font-size: 1.02rem;
-  font-weight: 760;
-  letter-spacing: -0.035em;
 }
 
 .moreWorks {
@@ -1486,8 +1431,43 @@
     max-width: 35rem;
   }
 
+  .gallery {
+    gap: 3.5rem;
+    padding-right: clamp(1.25rem, 5vw, 5rem);
+    padding-left: clamp(1.25rem, 5vw, 5rem);
+  }
+
+  .galleryProgress {
+    display: none;
+  }
+
+  .projectRow {
+    display: grid;
+    width: 100%;
+    gap: 4.5rem;
+    padding: 0;
+    transform: none !important;
+  }
+
   .projectRow > div {
-    width: clamp(20rem, 48vw, 27rem);
+    width: 100%;
+  }
+
+  .projectCard {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  .previewTrigger {
+    display: flex;
+  }
+
+  .projectPreviewStack {
+    top: auto;
+    bottom: calc(100% - 2.25rem);
+    left: -3%;
+    width: 106%;
+    height: min(78vw, 26rem);
   }
 }
 
@@ -1498,20 +1478,6 @@
 
   .heading h2 {
     font-size: clamp(2.65rem, 12vw, 4.2rem);
-  }
-
-  .archiveHeader {
-    grid-template-columns: 1fr auto;
-  }
-
-  .archiveHeader p {
-    display: none;
-  }
-
-  .gallery {
-    gap: 1.6rem;
-    padding-right: 1.25rem;
-    padding-left: 1.25rem;
   }
 
   .projectRow,
@@ -1656,14 +1622,6 @@
 
   .projectCoverFrame {
     inset: 17% 4% 15%;
-  }
-
-  .cardCaption {
-    min-height: 6rem;
-  }
-
-  .cardCaptionDetailed {
-    min-height: 9rem;
   }
 
   .archiveFooter {

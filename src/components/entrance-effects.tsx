@@ -107,25 +107,15 @@ export function EntranceEffects() {
       target: HTMLElement,
       tween: gsap.core.Tween,
     ) {
+      // Reveal once: replaying on every pass makes content flicker in and
+      // out while visitors scroll back to re-read something.
       const trigger = ScrollTrigger.create({
         trigger: target,
         start: "top 88%",
-        end: "bottom 12%",
+        once: true,
         onEnter: () => {
           target.classList.add("is-revealed");
-          tween.restart();
-        },
-        onEnterBack: () => {
-          target.classList.add("is-revealed");
-          tween.restart();
-        },
-        onLeave: () => {
-          target.classList.remove("is-revealed");
-          tween.reverse();
-        },
-        onLeaveBack: () => {
-          target.classList.remove("is-revealed");
-          tween.reverse();
+          tween.play();
         },
       });
       triggers.push(trigger);
@@ -198,11 +188,6 @@ export function EntranceEffects() {
             Math.round(state.value),
           )}${suffix}`;
         };
-        const replay = () => {
-          state.value = startValue;
-          render();
-          tween.restart();
-        };
         const tween = gsap.to(state, {
           value: targetValue,
           duration,
@@ -213,14 +198,8 @@ export function EntranceEffects() {
         const trigger = ScrollTrigger.create({
           trigger: target,
           start: "top 90%",
-          end: "bottom 10%",
-          onEnter: replay,
-          onEnterBack: replay,
-          onLeaveBack: () => {
-            tween.pause(0);
-            state.value = startValue;
-            render();
-          },
+          once: true,
+          onEnter: () => tween.play(),
         });
 
         state.value = startValue;

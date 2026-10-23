@@ -132,10 +132,6 @@ const projects = [
       "一家位于肯尼亚的医院官网。客户希望在体现医疗机构专业、严谨感的同时，保留面向女性客户所需要的温馨与安全感。",
     result: "专业可信 × 温馨安全",
     period: "Kenya",
-    pricing: {
-      market: "¥15,000+",
-      delivery: "¥8,000",
-    },
   },
   {
     index: "02",
@@ -154,10 +150,6 @@ const projects = [
       "一家位于加拿大的拼豆创意店。客户希望拥有清晰丰富的拼豆作品展示区、优秀的移动端体验，以及便于持续更新图纸与内容的后台上传功能。",
     result: "活力文艺 × 流畅有趣",
     period: "Montréal · Canada",
-    pricing: {
-      market: "¥10,000+",
-      delivery: "¥5,000",
-    },
   },
   {
     index: "03",
@@ -177,9 +169,6 @@ const projects = [
       "一家服务铁路、电力配件及接触网专业设备领域的制造业企业官网。项目将专业制造、可靠交付与真实工程能力转化为清晰的信息架构，完整承载产品体系、制造资质、合作网络与项目咨询。",
     result: "专业制造 × 可靠交付",
     period: "Hebei · China",
-    pricing: {
-      delivery: "¥5,000",
-    },
   },
   {
     index: "04",
@@ -199,9 +188,6 @@ const projects = [
       "一个面向海外市场的家具品牌外贸站。以深色空间影像与编辑式排版建立高端品牌气质，围绕产品系列、工艺能力、项目案例与合作咨询，构建兼顾品牌表达和海外询盘转化的完整体验。",
     result: "品牌叙事 × 海外询盘",
     period: "Global market",
-    pricing: {
-      delivery: "正在制作中",
-    },
   },
 ] as const;
 
@@ -306,36 +292,27 @@ function ProjectCard({ project }: { project: Project }) {
         />
       ) : null}
 
-      <div className={`${styles.cardCaption} ${styles.cardCaptionDetailed}`}>
-        <div>
-          <span className={styles.cardIndex}>{project.index}</span>
-          <div>
-            <p className={styles.projectDescription}>{project.description}</p>
-          </div>
+      <div className={styles.cardCaption}>
+        <div className={styles.cardMeta}>
+          <span className={styles.cardIndex}>
+            {project.index} / {projectCountLabel}
+          </span>
+          {project.status !== "完整案例" ? (
+            <span className={styles.cardStatus}>{project.status}</span>
+          ) : null}
         </div>
+
+        <div className={styles.cardTitle}>
+          <h3>{project.title}</h3>
+          <p>{project.category}</p>
+        </div>
+
+        <p className={styles.projectDescription}>{project.description}</p>
 
         <div className={styles.valueStrip}>
           <span>Delivery proof</span>
           <strong>{project.result}</strong>
           <small>{project.period}</small>
-        </div>
-
-        <div className={styles.projectPricing}>
-          {"market" in project.pricing ? (
-            <>
-              <span className={styles.marketPrice}>
-                <small>市场价</small>
-                <del>{project.pricing.market}</del>
-              </span>
-              <span className={styles.priceArrow} aria-hidden="true">
-                →
-              </span>
-            </>
-          ) : null}
-          <span className={styles.deliveryPrice}>
-            <small>落地价</small>
-            <strong>{project.pricing.delivery}</strong>
-          </span>
         </div>
       </div>
     </article>
@@ -348,48 +325,64 @@ export function WorkSection() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorBubbleRef = useRef<HTMLDivElement>(null);
   const firstRowRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLSpanElement>(null);
+  const progressIndexRef = useRef<HTMLSpanElement>(null);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
     const gallery = galleryRef.current;
     const row = firstRowRef.current;
-    if (!section || !gallery || !row) return;
+    const progressBar = progressBarRef.current;
+    const progressIndex = progressIndexRef.current;
+    if (!section || !gallery || !row || !progressBar || !progressIndex) return;
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const compact = window.matchMedia("(max-width: 700px)").matches;
+    const media = gsap.matchMedia();
 
-    if (reduceMotion || compact) {
-      gsap.set(row, { x: 0 });
-      return;
-    }
+    // Desktop: pin the archive and translate vertical scroll into a calm
+    // horizontal pass, so every project gets a full, readable moment.
+    media.add(
+      "(min-width: 901px) and (min-height: 620px) and (prefers-reduced-motion: no-preference)",
+      () => {
+        const calculateTravel = () =>
+          Math.min(0, gallery.clientWidth - row.scrollWidth);
+        let lastIndex = -1;
 
-    const calculateTravel = () =>
-      Math.min(0, gallery.clientWidth - row.scrollWidth);
-
-    const context = gsap.context(() => {
-      gsap.fromTo(
-        row,
-        {
-          x: 0,
-        },
-        {
-          x: calculateTravel,
-          ease: "none",
-          scrollTrigger: {
-            trigger: gallery,
-            start: "top 88%",
-            end: "bottom 12%",
-            scrub: 0.9,
-            invalidateOnRefresh: true,
+        gsap.fromTo(
+          row,
+          { x: 0 },
+          {
+            x: calculateTravel,
+            ease: "none",
+            scrollTrigger: {
+              trigger: gallery,
+              start: "center center",
+              end: () => `+=${Math.abs(calculateTravel())}`,
+              pin: true,
+              scrub: 0.6,
+              anticipatePin: 1,
+              refreshPriority: 1,
+              invalidateOnRefresh: true,
+              onUpdate: (self) => {
+                progressBar.style.transform = `scaleX(${self.progress})`;
+                const index = Math.min(
+                  projects.length - 1,
+                  Math.round(self.progress * (projects.length - 1)),
+                );
+                if (index !== lastIndex) {
+                  lastIndex = index;
+                  progressIndex.textContent = projects[index].index;
+                }
+              },
+            },
           },
-        },
-      );
-    }, section);
+        );
+        ScrollTrigger.refresh();
+      },
+      section,
+    );
 
     return () => {
-      context.revert();
+      media.revert();
     };
   }, []);
 
@@ -483,7 +476,7 @@ export function WorkSection() {
       <div className={styles.container}>
         <header className={styles.sectionHeader} data-reveal="soft">
           <p>
-            <span>02</span>
+            <span>01</span>
             Form · Build · Result
           </p>
           <small>Selected work / 2024—2026</small>
@@ -512,11 +505,6 @@ export function WorkSection() {
           </div>
         </div>
 
-        <div className={styles.archiveHeader} data-reveal="soft">
-          <span>Archive capacity</span>
-          <strong>01—04</strong>
-          <p>四个真实案例 · 持续更新</p>
-        </div>
       </div>
 
       <div
@@ -524,6 +512,15 @@ export function WorkSection() {
         className={styles.gallery}
         aria-label="作品展示，共四个案例"
       >
+        <div className={styles.galleryProgress} aria-hidden="true">
+          <span className={styles.galleryCount}>
+            <span ref={progressIndexRef}>01</span> / {projectCountLabel}
+          </span>
+          <span className={styles.galleryTrack}>
+            <span ref={progressBarRef} />
+          </span>
+          <span className={styles.galleryHint}>Scroll to explore</span>
+        </div>
         <div ref={firstRowRef} className={styles.projectRow} role="list">
           {projects.map((project) => (
             <div key={project.index} role="listitem">

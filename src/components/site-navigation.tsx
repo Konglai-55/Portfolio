@@ -5,8 +5,9 @@ import { BrandMark } from "./brand-mark";
 import styles from "./site-navigation.module.css";
 
 const navigationItems = [
-  { label: "了解我", englishLabel: "About me", href: "#about" },
   { label: "我的作品", englishLabel: "My work", href: "#work" },
+  { label: "客户口碑", englishLabel: "Proof", href: "#trust" },
+  { label: "了解我", englishLabel: "About me", href: "#about" },
   { label: "联系我", englishLabel: "Contact me", href: "#contact" },
 ] as const;
 
@@ -16,27 +17,51 @@ export function SiteNavigation() {
   const [activeHref, setActiveHref] = useState("");
 
   useEffect(() => {
-    function updateNavigation() {
+    let frame = 0;
+    function updateFloating() {
+      frame = 0;
       const shouldFloat = window.scrollY > 72;
       setIsFloating(shouldFloat);
-
-      const readingLine = window.scrollY + window.innerHeight * 0.42;
-      const currentSection = [...navigationItems]
-        .reverse()
-        .find((item) => {
-          const section = document.querySelector<HTMLElement>(item.href);
-          return section && section.offsetTop <= readingLine;
-        });
-      setActiveHref(currentSection?.href ?? "");
-
       if (!shouldFloat) {
         setIsExpanded(false);
       }
     }
+    function scheduleUpdate() {
+      if (!frame) frame = requestAnimationFrame(updateFloating);
+    }
 
-    updateNavigation();
-    window.addEventListener("scroll", updateNavigation, { passive: true });
-    return () => window.removeEventListener("scroll", updateNavigation);
+    // A thin "reading line" at 42% of the viewport decides the active section,
+    // without reading layout on every scroll frame.
+    const sections = navigationItems
+      .map((item) => document.querySelector<HTMLElement>(item.href))
+      .filter((section): section is HTMLElement => Boolean(section))
+      .sort((a, b) =>
+        a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1,
+      );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveHref(`#${entry.target.id}`);
+          } else if (
+            entry.target === sections[0] &&
+            entry.boundingClientRect.top > 0
+          ) {
+            setActiveHref("");
+          }
+        });
+      },
+      { rootMargin: "-42% 0px -57% 0px" },
+    );
+    sections.forEach((section) => observer.observe(section));
+
+    updateFloating();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
   }, []);
 
   return (
@@ -104,13 +129,6 @@ export function SiteNavigation() {
           </a>
         ))}
       </nav>
-
-      <div className={styles.utilities} aria-hidden="true">
-        <span className={styles.themeControl}>
-          <span className={styles.moonIcon} aria-hidden="true" />
-        </span>
-        <span className={styles.languageControl}>中文</span>
-      </div>
 
       <a
         href="#contact"

@@ -117,7 +117,7 @@ export function AboutSection() {
       <div className={styles.container}>
         <header className={styles.sectionHeader} data-reveal="soft">
           <p className={styles.sectionIndex}>
-            <span>01</span>
+            <span>03</span>
             About me
           </p>
           <p className={styles.discipline}>Form × Build · One creative direction</p>
@@ -269,13 +269,7 @@ export function AboutSection() {
                 <div className={styles.priceFlow}>
                   <div className={styles.pricePoint}>
                     <small>市场参考</small>
-                    <del
-                      data-count-to="10000"
-                      data-count-prefix="¥"
-                      data-count-duration="1.15"
-                    >
-                      ¥10,000
-                    </del>
+                    <del>¥10,000</del>
                   </div>
                   <ArrowRight
                     className={styles.priceArrow}
@@ -309,7 +303,7 @@ export function AboutSection() {
           <header className={styles.costProofIntro}>
             <div className={styles.costProofHeading} data-reveal="left">
               <p className={styles.costProofIndex}>
-                <span>02.1</span>
+                <span>03.1</span>
                 Cost architecture
               </p>
               <h2 id="cost-proof-title" data-reveal="title">
@@ -379,7 +373,7 @@ export function AboutSection() {
                 <span>Project evidence</span>
                 <h3 data-reveal="title">
                   从统一风格到开发上线，
-                  <em>一条连续的一线流程。</em>
+                  <em>一条不断档的完整流程。</em>
                 </h3>
                 <p>
                   这是一个低空经济公司的多页面企业官网，覆盖品牌风格定稿、全站视觉系统、动效语言、前端开发与上线交付。同等范围的市场预算通常从

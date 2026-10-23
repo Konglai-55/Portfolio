@@ -32,8 +32,15 @@ export default function RootLayout({
     <html
       lang="zh-CN"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'try{if(sessionStorage.getItem("lx-opening-seen"))document.documentElement.classList.add("opening-seen")}catch(e){}',
+          }}
+        />
         <link rel="dns-prefetch" href={mediaOrigin} />
         <link rel="preconnect" href={mediaOrigin} crossOrigin="anonymous" />
       </head>

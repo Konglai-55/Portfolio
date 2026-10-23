@@ -366,7 +366,7 @@ export function TrustSection() {
       <div className={styles.container}>
         <header className={styles.sectionHeader} data-reveal="soft">
           <p>
-            <span>03</span>
+            <span>02</span>
             Trust · Proof · Delivery
           </p>
           <small>Evidence archive / 2026</small>

@@ -10,7 +10,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { BrandMark } from "./brand-mark";
 import { mediaUrl } from "@/lib/media";
 import styles from "./hero-stage.module.css";
 
@@ -19,6 +18,7 @@ const slides = [
     id: "designer",
     role: "设计师",
     copy: "洞察需求，构建美感，让每一个想法拥有清晰表达。",
+    phrases: ["洞察需求，", "构建美感，", "让每一个想法", "拥有清晰表达。"],
     image: mediaUrl("images/hero-designer.png"),
     alt: "阳光洒进画室，一位设计师正在窗边创作",
   },
@@ -26,6 +26,7 @@ const slides = [
     id: "developer",
     role: "开发者",
     copy: "拆解问题，实现创意，让每一个设计真正稳定运行。",
+    phrases: ["拆解问题，", "实现创意，", "让每一个设计", "真正稳定运行。"],
     image: mediaUrl("images/hero-developer.png"),
     alt: "夜晚的城市窗景前，一位开发者正在桌前工作",
   },
@@ -40,6 +41,7 @@ type HeroCopyProps = {
   activeIndex: number;
   role: (typeof slides)[number]["role"];
   copy: (typeof slides)[number]["copy"];
+  phrases: (typeof slides)[number]["phrases"];
   titleRef?: Ref<HTMLHeadingElement>;
   interactive?: boolean;
 };
@@ -48,6 +50,7 @@ function HeroCopy({
   activeIndex,
   role,
   copy,
+  phrases,
   titleRef,
   interactive = false,
 }: HeroCopyProps) {
@@ -72,7 +75,14 @@ function HeroCopy({
         </small>
       </p>
 
-      <h1 ref={titleRef}>{copy}</h1>
+      {/* Phrases never break internally, so Chinese lines wrap at meaning. */}
+      <h1 ref={titleRef} aria-label={copy}>
+        {phrases.map((phrase) => (
+          <span key={phrase} className={styles.phrase} aria-hidden="true">
+            {phrase}
+          </span>
+        ))}
+      </h1>
 
       <p className={styles.serviceCopy}>
         从视觉方向，到完整开发与上线。
@@ -422,6 +432,8 @@ export function HeroStage() {
             sizes="100vw"
             preload={index === 0}
             loading={index === 0 ? undefined : "eager"}
+            fetchPriority={index === 0 ? "high" : "low"}
+            quality={index === 0 ? 75 : 68}
             className={`${styles.image} ${styles[slide.id]} ${index === activeIndex ? styles.imageActive : ""}`}
           />
         ))}
@@ -429,16 +441,6 @@ export function HeroStage() {
 
       <div className={styles.scrim} aria-hidden="true" />
       <div className={styles.grain} data-scroll-shift="0.28" aria-hidden="true" />
-      <div className={styles.heroMeta} aria-hidden="true">
-        <span className={styles.heroBrand}>
-          <BrandMark className={styles.heroBrandMark} />
-          <span>
-            <strong>形构 / Form × Build</strong>
-            <small>Design expression · Engineered delivery</small>
-          </span>
-        </span>
-        <span>China · 2026</span>
-      </div>
 
       <div
         key={activeSlide.id}
@@ -450,6 +452,7 @@ export function HeroStage() {
           activeIndex={activeIndex}
           role={activeSlide.role}
           copy={activeSlide.copy}
+          phrases={activeSlide.phrases}
           titleRef={baseTitleRef}
           interactive
         />
@@ -464,6 +467,7 @@ export function HeroStage() {
           activeIndex={activeIndex}
           role={activeSlide.role}
           copy={activeSlide.copy}
+          phrases={activeSlide.phrases}
         />
       </div>
 
@@ -476,6 +480,7 @@ export function HeroStage() {
           activeIndex={transitionCopyIndex}
           role={transitionSlide.role}
           copy={transitionSlide.copy}
+          phrases={transitionSlide.phrases}
         />
       </div>
 

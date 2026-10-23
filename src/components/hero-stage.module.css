@@ -212,8 +212,11 @@
   font-weight: 510;
   line-height: 1.19;
   letter-spacing: -0.012em;
-  text-wrap: balance;
   text-shadow: 0 3px 34px rgb(0 0 0 / 35%);
+}
+
+.phrase {
+  display: inline-block;
 }
 
 .serviceCopy {
