@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 import { mediaUrl } from "@/lib/media";
+import { openingRevealEvent } from "./opening-sequence";
 import styles from "./hero-stage.module.css";
 
 const slides = [
@@ -67,7 +68,7 @@ function HeroCopy({
 
   return (
     <>
-      <p className={styles.eyebrow}>
+      <p className={styles.eyebrow} data-hero-eyebrow>
         <span />
         身份 · {role}
         <small className={styles.identityCount}>
@@ -84,12 +85,12 @@ function HeroCopy({
         ))}
       </h1>
 
-      <p className={styles.serviceCopy}>
+      <p className={styles.serviceCopy} data-hero-supporting>
         从视觉方向，到完整开发与上线。
         <small>From visual direction to full-stack delivery.</small>
       </p>
 
-      <div className={styles.actions}>
+      <div className={styles.actions} data-hero-supporting>
         {actions.map((action, index) =>
           interactive ? (
             <a
@@ -136,6 +137,7 @@ export function HeroStage() {
   const baseCopyRef = useRef<HTMLDivElement>(null);
   const baseTitleRef = useRef<HTMLHeadingElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
+  const hintRef = useRef<HTMLButtonElement>(null);
   const transitionDotRef = useRef<HTMLDivElement>(null);
   const transitionCopyRef = useRef<HTMLDivElement>(null);
   const incomingCopyRef = useRef<HTMLDivElement>(null);
@@ -154,27 +156,88 @@ export function HeroStage() {
   const nextSlide = slides[(activeIndex + 1) % slides.length];
   const transitionSlide = slides[transitionCopyIndex];
 
+  // Hero entrance. On a first visit it waits for the opening sequence to
+  // lift its columns, so the two read as one continuous shot.
   useLayoutEffect(() => {
-    const title = baseTitleRef.current;
-    if (!title) return;
+    const root = document.documentElement;
+    const copy = baseCopyRef.current;
+    const image = imageRefs.current[0];
+    const hint = hintRef.current;
+    if (!copy || !image) {
+      root.classList.remove("hero-intro-pending");
+      return;
+    }
 
-    const tween = gsap.fromTo(
-      title,
-      {
-        clipPath: "inset(100% 0% 0% 0%)",
-        y: "1.25rem",
-      },
-      {
-        clipPath: "inset(0% 0% 0% 0%)",
-        y: 0,
-        duration: 1,
-        delay: 0.3,
-        ease: "power3.out",
-      },
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      root.classList.remove("hero-intro-pending");
+      return;
+    }
+
+    const eyebrow = copy.querySelector("[data-hero-eyebrow]");
+    const phrases = Array.from(copy.querySelectorAll(`.${styles.phrase}`));
+    const supporting = Array.from(
+      copy.querySelectorAll("[data-hero-supporting]"),
     );
 
+    gsap.set(image, { scale: 1.24, transition: "none" });
+    gsap.set(eyebrow, { autoAlpha: 0, x: -18 });
+    gsap.set(phrases, { autoAlpha: 0, yPercent: 55, filter: "blur(12px)" });
+    gsap.set([...supporting, hint], { autoAlpha: 0, y: 18 });
+    root.classList.remove("hero-intro-pending");
+
+    const timeline = gsap.timeline({
+      paused: true,
+      onComplete: () => {
+        gsap.set(image, { clearProps: "transform,transition" });
+        gsap.set([eyebrow, ...phrases, ...supporting, hint], {
+          clearProps: "opacity,visibility,transform,filter",
+        });
+      },
+    });
+    timeline
+      .to(image, { scale: 1, duration: 2.1, ease: "expo.out" }, 0)
+      .to(
+        eyebrow,
+        { autoAlpha: 1, x: 0, duration: 0.9, ease: "power3.out" },
+        0.35,
+      )
+      .to(
+        phrases,
+        {
+          autoAlpha: 1,
+          yPercent: 0,
+          filter: "blur(0px)",
+          duration: 1.1,
+          ease: "expo.out",
+          stagger: 0.09,
+        },
+        0.42,
+      )
+      .to(
+        [...supporting, hint],
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          stagger: 0.08,
+        },
+        0.85,
+      );
+
+    const play = () => timeline.play();
+    const openingPending =
+      !root.classList.contains("opening-seen") &&
+      Boolean(document.querySelector("[data-opening]"));
+    if (openingPending) {
+      window.addEventListener(openingRevealEvent, play, { once: true });
+    } else {
+      timeline.delay(0.15).play();
+    }
+
     return () => {
-      tween.kill();
+      window.removeEventListener(openingRevealEvent, play);
+      timeline.kill();
     };
   }, []);
 
@@ -486,6 +549,7 @@ export function HeroStage() {
 
       <button
         type="button"
+        ref={hintRef}
         className={styles.hint}
         data-hero-action
         data-analytics="hero:identity-toggle"

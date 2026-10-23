@@ -24,13 +24,13 @@ export type ProjectPreviewPage = {
   alt: string;
 };
 
-type ActivePreview = {
+export type ActivePreview = {
   page: ProjectPreviewPage;
   origin: DOMRect;
   source: HTMLButtonElement;
 };
 
-function ProjectLightbox({
+export function ProjectLightbox({
   active,
   projectTitle,
   pages,

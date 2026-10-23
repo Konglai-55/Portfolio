@@ -38,7 +38,7 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              'try{if(sessionStorage.getItem("lx-opening-seen"))document.documentElement.classList.add("opening-seen")}catch(e){}',
+              'document.documentElement.classList.add("hero-intro-pending");try{if(sessionStorage.getItem("lx-opening-seen"))document.documentElement.classList.add("opening-seen")}catch(e){}',
           }}
         />
         <link rel="dns-prefetch" href={mediaOrigin} />

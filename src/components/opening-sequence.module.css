@@ -3,238 +3,217 @@
   z-index: 12000;
   inset: 0;
   overflow: hidden;
-  color: #f5f1e7;
+  color: #f2eee5;
   isolation: isolate;
   touch-action: none;
 }
 
-.curtain {
+/* The canvas is built from columns so it can lift away in slices. */
+.columns {
   position: absolute;
   z-index: -2;
   inset: 0;
-  width: 100%;
-  height: 120%;
-  contain: paint;
+  display: flex;
   pointer-events: none;
-  transform: translate3d(0, 0, 0);
+}
+
+.column {
+  height: 100%;
+  flex: 1 1 0;
+  margin-right: -1px;
+  background: #0e171d;
   will-change: transform;
 }
 
-.navMorph {
+.grid {
   position: absolute;
   z-index: -1;
   inset: 0;
-  visibility: hidden;
-  opacity: 0;
-  will-change: opacity, transform;
+  pointer-events: none;
 }
 
-.navMorphSurface {
+.grid::before {
   position: absolute;
   inset: 0;
-  overflow: hidden;
-  border-radius: inherit;
-  background: rgb(54 70 87 / 66%);
+  background: radial-gradient(
+    80% 55% at 50% 100%,
+    rgb(197 111 77 / 14%),
+    transparent 70%
+  );
+  content: "";
+}
+
+.lineV,
+.lineH {
+  position: absolute;
+  background: rgb(242 238 229 / 9%);
+}
+
+.lineV {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.lineH {
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 1px;
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
   pointer-events: none;
-  transform: translate3d(0, 0, 0);
+}
+
+.word,
+.markStage {
+  grid-area: 1 / 1;
+}
+
+.word {
+  display: inline-flex;
+  color: #f4efe5;
+  font-size: clamp(5rem, 19vw, 19rem);
+  line-height: 0.82;
+  white-space: nowrap;
+}
+
+.word[data-mode="form"] {
+  font-family: "Baskerville", "Didot", "Times New Roman", var(--font-cjk-art);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+
+.word[data-mode="code"] {
+  color: var(--brand-accent-soft);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: clamp(4rem, 15vw, 15rem);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+}
+
+.word[data-mode="build"] {
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: clamp(4.5rem, 16vw, 16rem);
+  font-weight: 650;
+  letter-spacing: -0.065em;
+}
+
+.charMask {
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.04em 0.14em 0.1em;
+  margin: 0 -0.11em;
+}
+
+.char {
+  display: inline-block;
   will-change: transform;
 }
 
-.navMorphFill {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #61778a 0%, #526a7d 54%, #42586b 100%);
-  pointer-events: none;
-  will-change: opacity;
-}
-
-.content {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-}
-
-.greetings,
-.logoStage {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.greetings {
-  display: grid;
-  width: min(90vw, 62rem);
-  height: clamp(8rem, 22vw, 16rem);
-  place-items: center;
-}
-
-.greeting {
-  position: absolute;
-  display: grid;
-  gap: 0.8rem;
-  place-items: center;
-  text-align: center;
+.markStage {
+  width: clamp(4.5rem, 8vw, 7.5rem);
   visibility: hidden;
   opacity: 0;
+  will-change: transform;
 }
 
-.greeting strong {
+.mark {
   display: block;
-  color: #f8f3e8;
-  font-size: clamp(4.2rem, 10vw, 9.5rem);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.045em;
-  white-space: nowrap;
-  text-shadow: 0 16px 38px rgb(22 39 52 / 16%);
-}
-
-.greeting small {
-  color: rgb(244 240 229 / 54%);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 0.5rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
-.greeting[data-script="chinese"] strong {
-  font-family: "STKaiti", "KaiTi", "Kaiti SC", var(--font-cjk-art);
-  font-style: italic;
-  letter-spacing: 0.02em;
-}
-
-.greeting[data-script="latin"] strong {
-  font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
-  font-size: clamp(4rem, 9vw, 8.6rem);
-  font-style: italic;
-}
-
-.greeting[data-script="japanese"] strong {
-  font-family: "Yuji Syuku", "Yu Mincho", "Hiragino Mincho ProN",
-    var(--font-cjk-art);
-  font-size: clamp(3.1rem, 7.5vw, 7rem);
-  font-style: italic;
-}
-
-.greeting[data-script="french"] strong {
-  font-family: "Segoe Script", "Snell Roundhand", "Brush Script MT", cursive;
-  font-size: clamp(3.8rem, 9vw, 8.2rem);
-}
-
-.greeting[data-script="spanish"] strong {
-  font-family: "Bradley Hand", "Segoe Print", "Comic Sans MS", cursive;
-  font-size: clamp(4.4rem, 10vw, 9rem);
-  font-style: italic;
-}
-
-.greeting[data-script="korean"] strong {
-  font-family: "Nanum Pen Script", "Apple SD Gothic Neo", "Malgun Gothic",
-    sans-serif;
-  font-size: clamp(3rem, 7.2vw, 6.6rem);
-  font-weight: 300;
-}
-
-.greeting[data-script="cyrillic"] strong {
-  font-family: "Segoe Script", "Monotype Corsiva", "Georgia", cursive;
-  font-size: clamp(3.8rem, 9vw, 8.2rem);
-  font-style: italic;
-}
-
-.greeting[data-script="arabic"] strong {
-  font-family: "Segoe UI", "Traditional Arabic", "Noto Naskh Arabic", serif;
-  font-size: clamp(4rem, 9vw, 8.4rem);
-  font-weight: 300;
-  letter-spacing: 0;
-  direction: rtl;
-}
-
-.logoStage {
-  display: grid;
-  width: min(78vw, 35rem);
-  grid-template-columns: clamp(3.8rem, 8vw, 6.5rem) minmax(0, 1fr);
-  gap: clamp(1.2rem, 3vw, 2.5rem);
-  align-items: center;
-  padding: 1.4rem 0;
-  visibility: hidden;
-  opacity: 0;
-}
-
-.logoMark {
   width: 100%;
-  aspect-ratio: 148.71 / 123.47;
-  color: #f7f2e8;
-}
-
-.logoWordmark {
-  width: 100%;
-  color: #f7f2e8;
-}
-
-.logoSignal {
-  position: absolute;
-  right: 0;
-  bottom: 0.35rem;
-  left: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgb(255 255 255 / 74%) 16%,
-    rgb(255 255 255 / 74%) 84%,
-    transparent
-  );
-  box-shadow: 0 0 14px rgb(255 255 255 / 24%);
-}
-
-.logoSignal::after {
-  position: absolute;
-  right: 0;
-  top: -0.17rem;
-  width: 0.36rem;
-  height: 0.36rem;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 0 0.28rem rgb(255 255 255 / 12%);
-  content: "";
+  height: auto;
+  color: #f4efe5;
 }
 
 .chrome {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  font-family: var(--font-geist-mono), monospace;
+  text-transform: uppercase;
 }
 
-.meta {
+.topLeft,
+.topRight,
+.bottomRight {
   position: absolute;
-  top: clamp(1.2rem, 3vw, 2.5rem);
-  right: clamp(1.2rem, 3vw, 3rem);
-  left: clamp(1.2rem, 3vw, 3rem);
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.56rem;
+  letter-spacing: 0.16em;
+}
+
+.topLeft strong,
+.topRight strong {
+  color: #f4efe5;
+  font-weight: 500;
+}
+
+.topLeft span,
+.topRight span,
+.bottomRight > span {
+  color: rgb(242 238 229 / 42%);
+}
+
+.topLeft {
+  top: clamp(1.25rem, 3vw, 2.5rem);
+  left: clamp(1.25rem, 3vw, 3rem);
+}
+
+.topRight {
+  top: clamp(1.25rem, 3vw, 2.5rem);
+  right: clamp(1.25rem, 3vw, 3rem);
+  text-align: right;
+}
+
+.counter {
+  position: absolute;
+  bottom: clamp(1.1rem, 2.6vw, 2.2rem);
+  left: clamp(1.25rem, 3vw, 3rem);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: rgb(244 240 229 / 48%);
+  align-items: flex-start;
+  gap: 0.35rem;
+  color: #f4efe5;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: clamp(3.4rem, 8vw, 7.5rem);
+  font-weight: 250;
+  font-variant-numeric: tabular-nums;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+}
+
+.counter small {
+  margin-top: 0.4em;
+  color: var(--brand-accent);
   font-family: var(--font-geist-mono), monospace;
-  font-size: 0.48rem;
-  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+}
+
+.bottomRight {
+  right: clamp(1.25rem, 3vw, 3rem);
+  bottom: clamp(1.25rem, 3vw, 2.5rem);
+  justify-items: end;
+  gap: 0.9rem;
 }
 
 .skip {
-  position: absolute;
-  right: clamp(1.2rem, 3vw, 3rem);
-  bottom: clamp(1.2rem, 3vw, 2.5rem);
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.55rem 0;
+  padding: 0.45rem 0;
   border: 0;
-  border-bottom: 1px solid rgb(244 240 229 / 28%);
+  border-bottom: 1px solid rgb(242 238 229 / 28%);
   background: transparent;
-  color: rgb(244 240 229 / 65%);
+  color: rgb(242 238 229 / 72%);
   font-family: var(--font-cjk);
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   letter-spacing: 0.08em;
   cursor: pointer;
   pointer-events: auto;
@@ -245,37 +224,31 @@
 
 .skip:hover,
 .skip:focus-visible {
-  border-color: rgb(244 240 229 / 72%);
+  border-color: rgb(242 238 229 / 80%);
   color: #fff;
   outline: none;
 }
 
-@media (max-width: 600px) {
-  .greeting strong {
-    font-size: clamp(3.4rem, 21vw, 5.5rem);
-  }
-
-  .greeting[data-script="japanese"] strong,
-  .greeting[data-script="korean"] strong {
-    font-size: clamp(2.5rem, 14vw, 4rem);
-  }
-
-  .logoStage {
-    width: min(84vw, 25rem);
-    grid-template-columns: 3.5rem minmax(0, 1fr);
-    gap: 1rem;
-  }
-
-  .meta span:last-child {
-    display: none;
-  }
+.bar {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: rgb(242 238 229 / 6%);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .greeting,
-  .logoStage,
-  .logoSignal,
-  .curtain {
-    will-change: auto;
+.bar > span {
+  position: absolute;
+  inset: 0;
+  background: var(--brand-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+@media (max-width: 600px) {
+  .topRight span,
+  .bottomRight > span {
+    display: none;
   }
 }

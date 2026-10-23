@@ -1,18 +1,8 @@
-"use client";
-
-import Image from "next/image";
-import { useLayoutEffect, useRef, type CSSProperties } from "react";
-import { ArrowUpRight, MoveHorizontal } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MoveHorizontal } from "lucide-react";
 import { mediaUrl } from "@/lib/media";
-import {
-  ProjectPreviewStack,
-  type ProjectPreviewPage,
-} from "./project-preview-stack";
+import type { ProjectPreviewPage } from "./project-preview-stack";
+import { WorkShowcase, type ShowcaseProject } from "./work-showcase";
 import styles from "./work-section.module.css";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const hillPreviewPages = [
   {
@@ -114,20 +104,14 @@ const suxinPreviewPages = [
   },
 ] satisfies readonly ProjectPreviewPage[];
 
-const projects = [
+const projects: readonly ShowcaseProject[] = [
   {
     index: "01",
+    pages: hillPreviewPages,
     title: "HILL Nairobi",
     category: "Healthcare website · Kenya",
     status: "完整案例",
-    visual: "cover",
-    mark: "01",
     accent: "#f2a078",
-    surface: "#dce7ec",
-    surfaceAlt: "#fffaf6",
-    ink: "#174a72",
-    image: mediaUrl("images/project-hill-nairobi.png"),
-    alt: "肯尼亚 HILL Nairobi 女性专科医院官网首页",
     description:
       "一家位于肯尼亚的医院官网。客户希望在体现医疗机构专业、严谨感的同时，保留面向女性客户所需要的温馨与安全感。",
     result: "专业可信 × 温馨安全",
@@ -135,17 +119,11 @@ const projects = [
   },
   {
     index: "02",
+    pages: pixelCafePreviewPages,
     title: "Pixel Café Montréal",
     category: "Creative commerce · Canada",
     status: "完整案例",
-    visual: "cover",
-    mark: "02",
     accent: "#f2bd3f",
-    surface: "#f2eadc",
-    surfaceAlt: "#fff8ec",
-    ink: "#3a3029",
-    image: mediaUrl("images/project-pixel-cafe-home.png"),
-    alt: "加拿大 Pixel Café 拼豆创意店官网首页",
     description:
       "一家位于加拿大的拼豆创意店。客户希望拥有清晰丰富的拼豆作品展示区、优秀的移动端体验，以及便于持续更新图纸与内容的后台上传功能。",
     result: "活力文艺 × 流畅有趣",
@@ -153,18 +131,11 @@ const projects = [
   },
   {
     index: "03",
+    pages: ruihePreviewPages,
     title: "Ruihe Engineering",
     category: "Industrial website · China",
     status: "完整案例",
-    visual: "cover",
-    mark: "03",
     accent: "#c94719",
-    surface: "#d9e1e3",
-    surfaceAlt: "#f5f1e8",
-    ink: "#0b2940",
-    image: mediaUrl("images/project-ruihe-home.png"),
-    alt: "衡水瑞和制造业企业官网首页",
-    coverCrop: true,
     description:
       "一家服务铁路、电力配件及接触网专业设备领域的制造业企业官网。项目将专业制造、可靠交付与真实工程能力转化为清晰的信息架构，完整承载产品体系、制造资质、合作网络与项目咨询。",
     result: "专业制造 × 可靠交付",
@@ -172,24 +143,17 @@ const projects = [
   },
   {
     index: "04",
+    pages: suxinPreviewPages,
     title: "SUXIN Furniture",
     category: "Furniture export website · Global",
     status: "正在制作中",
-    visual: "cover",
-    mark: "04",
     accent: "#9c6a2f",
-    surface: "#d9d4ca",
-    surfaceAlt: "#eee8dd",
-    ink: "#201b18",
-    image: mediaUrl("images/project-suxin-furniture.png"),
-    alt: "SUXIN 高端家具品牌外贸站首页",
-    coverCrop: true,
     description:
       "一个面向海外市场的家具品牌外贸站。以深色空间影像与编辑式排版建立高端品牌气质，围绕产品系列、工艺能力、项目案例与合作咨询，构建兼顾品牌表达和海外询盘转化的完整体验。",
     result: "品牌叙事 × 海外询盘",
     period: "Global market",
   },
-] as const;
+];
 
 const moreWorkStats = [
   {
@@ -214,261 +178,9 @@ const moreWorkStats = [
   },
 ] as const;
 
-type Project = (typeof projects)[number];
-const projectCountLabel = String(projects.length).padStart(2, "0");
-
-function ProjectCard({ project }: { project: Project }) {
-  const palette = {
-    "--project-accent": project.accent,
-    "--project-surface": project.surface,
-    "--project-surface-alt": project.surfaceAlt,
-    "--project-ink": project.ink,
-  } as CSSProperties;
-
-  return (
-    <article
-      className={styles.projectCard}
-      style={palette}
-      data-visual={project.visual}
-      aria-label={`${project.title}，${project.category}，${project.status}`}
-    >
-      <div className={styles.projectVisual}>
-        <div className={styles.canvasHeader}>
-          <span>Liangxikun / Selected archive</span>
-          <small>
-            {project.index} / {projectCountLabel}
-          </small>
-        </div>
-
-        <div className={styles.projectCoverFrame}>
-          <Image
-            className={`${styles.projectCover} ${
-              "coverCrop" in project && project.coverCrop
-                ? styles.projectCoverCrop
-                : ""
-            }`}
-            src={project.image}
-            alt={project.alt}
-            fill
-            sizes="(max-width: 700px) 100vw, (max-width: 900px) 48vw, 32rem"
-          />
-        </div>
-
-        <div className={styles.canvasFooter}>
-          <span>{project.category}</span>
-          <ArrowUpRight size={15} strokeWidth={1.45} aria-hidden="true" />
-        </div>
-      </div>
-
-      {project.index === "01" ? (
-        <ProjectPreviewStack
-          projectTitle="HILL Nairobi"
-          pages={hillPreviewPages}
-          triggerLabel="完整页面"
-        />
-      ) : null}
-
-      {project.index === "02" ? (
-        <ProjectPreviewStack
-          projectTitle="Pixel Café Montréal"
-          pages={pixelCafePreviewPages}
-          triggerLabel="项目画面"
-        />
-      ) : null}
-
-      {project.index === "03" ? (
-        <ProjectPreviewStack
-          projectTitle="Ruihe Engineering"
-          pages={ruihePreviewPages}
-          triggerLabel="项目页面"
-        />
-      ) : null}
-
-      {project.index === "04" ? (
-        <ProjectPreviewStack
-          projectTitle="SUXIN Furniture"
-          pages={suxinPreviewPages}
-          triggerLabel="完整页面"
-        />
-      ) : null}
-
-      <div className={styles.cardCaption}>
-        <div className={styles.cardMeta}>
-          <span className={styles.cardIndex}>
-            {project.index} / {projectCountLabel}
-          </span>
-          {project.status !== "完整案例" ? (
-            <span className={styles.cardStatus}>{project.status}</span>
-          ) : null}
-        </div>
-
-        <div className={styles.cardTitle}>
-          <h3>{project.title}</h3>
-          <p>{project.category}</p>
-        </div>
-
-        <p className={styles.projectDescription}>{project.description}</p>
-
-        <div className={styles.valueStrip}>
-          <span>Delivery proof</span>
-          <strong>{project.result}</strong>
-          <small>{project.period}</small>
-        </div>
-      </div>
-    </article>
-  );
-}
-
 export function WorkSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const galleryRef = useRef<HTMLDivElement>(null);
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const cursorBubbleRef = useRef<HTMLDivElement>(null);
-  const firstRowRef = useRef<HTMLDivElement>(null);
-  const progressBarRef = useRef<HTMLSpanElement>(null);
-  const progressIndexRef = useRef<HTMLSpanElement>(null);
-
-  useLayoutEffect(() => {
-    const section = sectionRef.current;
-    const gallery = galleryRef.current;
-    const row = firstRowRef.current;
-    const progressBar = progressBarRef.current;
-    const progressIndex = progressIndexRef.current;
-    if (!section || !gallery || !row || !progressBar || !progressIndex) return;
-
-    const media = gsap.matchMedia();
-
-    // Desktop: pin the archive and translate vertical scroll into a calm
-    // horizontal pass, so every project gets a full, readable moment.
-    media.add(
-      "(min-width: 901px) and (min-height: 620px) and (prefers-reduced-motion: no-preference)",
-      () => {
-        const calculateTravel = () =>
-          Math.min(0, gallery.clientWidth - row.scrollWidth);
-        let lastIndex = -1;
-
-        gsap.fromTo(
-          row,
-          { x: 0 },
-          {
-            x: calculateTravel,
-            ease: "none",
-            scrollTrigger: {
-              trigger: gallery,
-              start: "center center",
-              end: () => `+=${Math.abs(calculateTravel())}`,
-              pin: true,
-              scrub: 0.6,
-              anticipatePin: 1,
-              refreshPriority: 1,
-              invalidateOnRefresh: true,
-              onUpdate: (self) => {
-                progressBar.style.transform = `scaleX(${self.progress})`;
-                const index = Math.min(
-                  projects.length - 1,
-                  Math.round(self.progress * (projects.length - 1)),
-                );
-                if (index !== lastIndex) {
-                  lastIndex = index;
-                  progressIndex.textContent = projects[index].index;
-                }
-              },
-            },
-          },
-        );
-        ScrollTrigger.refresh();
-      },
-      section,
-    );
-
-    return () => {
-      media.revert();
-    };
-  }, []);
-
-  useLayoutEffect(() => {
-    const gallery = galleryRef.current;
-    const cursor = cursorRef.current;
-    const cursorBubble = cursorBubbleRef.current;
-    if (!gallery || !cursor || !cursorBubble) return;
-
-    const supportsHover = window.matchMedia(
-      "(hover: hover) and (pointer: fine)",
-    ).matches;
-    if (!supportsHover) return;
-
-    gsap.set(cursor, {
-      xPercent: -50,
-      yPercent: -50,
-      force3D: true,
-    });
-    gsap.set(cursorBubble, {
-      autoAlpha: 0,
-      scale: 0.2,
-      force3D: true,
-    });
-
-    const setX = gsap.quickSetter(cursor, "x", "px");
-    const setY = gsap.quickSetter(cursor, "y", "px");
-    let visible = false;
-
-    const show = () => {
-      if (visible) return;
-      visible = true;
-      cursorBubble.dataset.active = "true";
-      gsap.to(cursorBubble, {
-        autoAlpha: 1,
-        scale: 1,
-        duration: 0.4,
-        ease: "back.out(1.45)",
-        overwrite: "auto",
-      });
-    };
-
-    const hide = () => {
-      if (!visible) return;
-      visible = false;
-      cursorBubble.dataset.active = "false";
-      gsap.to(cursorBubble, {
-        autoAlpha: 0,
-        scale: 0.35,
-        duration: 0.2,
-        ease: "power2.in",
-        overwrite: "auto",
-      });
-    };
-
-    const handlePointerMove = (event: PointerEvent) => {
-      if (event.pointerType !== "mouse") return;
-      const target =
-        event.target instanceof Element
-          ? event.target.closest<HTMLElement>("article")
-          : null;
-      if (!target || !gallery.contains(target)) {
-        hide();
-        return;
-      }
-
-      setX(event.clientX);
-      setY(event.clientY);
-      show();
-    };
-
-    gallery.addEventListener("pointermove", handlePointerMove, {
-      passive: true,
-    });
-    gallery.addEventListener("pointerleave", hide);
-
-    return () => {
-      gallery.removeEventListener("pointermove", handlePointerMove);
-      gallery.removeEventListener("pointerleave", hide);
-      gsap.killTweensOf(cursor);
-      gsap.killTweensOf(cursorBubble);
-    };
-  }, []);
-
   return (
-    <section id="work" ref={sectionRef} className={styles.section}>
+    <section id="work" className={styles.section}>
       <div className={styles.watermark} aria-hidden="true">
         WORK
       </div>
@@ -507,57 +219,7 @@ export function WorkSection() {
 
       </div>
 
-      <div
-        ref={galleryRef}
-        className={styles.gallery}
-        aria-label="作品展示，共四个案例"
-      >
-        <div className={styles.galleryProgress} aria-hidden="true">
-          <span className={styles.galleryCount}>
-            <span ref={progressIndexRef}>01</span> / {projectCountLabel}
-          </span>
-          <span className={styles.galleryTrack}>
-            <span ref={progressBarRef} />
-          </span>
-          <span className={styles.galleryHint}>Scroll to explore</span>
-        </div>
-        <div ref={firstRowRef} className={styles.projectRow} role="list">
-          {projects.map((project) => (
-            <div key={project.index} role="listitem">
-              <ProjectCard project={project} />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div
-        ref={cursorRef}
-        className={styles.workCursor}
-        aria-hidden="true"
-      >
-        <div
-          ref={cursorBubbleRef}
-          className={styles.workCursorBubble}
-          data-active="false"
-        >
-          <svg
-            className={styles.workCursorWave}
-            viewBox="0 0 120 200"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <path
-              className={styles.workCursorWaveBack}
-              d="M-12 34 C 5 17, 22 49, 40 32 S 76 17, 96 33 S 124 42, 136 28 V200 H-12 Z"
-            />
-            <path
-              className={styles.workCursorWaveFront}
-              d="M-12 44 C 8 25, 26 58, 48 40 S 85 26, 104 43 S 127 48, 136 37 V200 H-12 Z"
-            />
-          </svg>
-          <span>预览</span>
-        </div>
-      </div>
+      <WorkShowcase projects={projects} />
 
       <div
         className={styles.moreWorks}

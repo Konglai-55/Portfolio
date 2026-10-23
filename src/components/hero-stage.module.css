@@ -47,7 +47,6 @@
 .images {
   z-index: 0;
   background: #171714;
-  animation: heroImageIn 1600ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .images[data-scroll-shift] {
@@ -169,8 +168,10 @@
   animation: none;
 }
 
-.copyBlock:not(.transitionCopy):not(.interactedCopy) {
-  animation: copyEnter 1000ms cubic-bezier(0.22, 1, 0.36, 1) both;
+/* Entrance is driven by GSAP in hero-stage.tsx. */
+html.hero-intro-pending .copyBlock:not(.transitionCopy):not(.incomingCopy),
+html.hero-intro-pending .hint {
+  opacity: 0;
 }
 
 .eyebrow {
@@ -200,9 +201,7 @@
   background: currentColor;
 }
 
-.copyBlock:not(.transitionCopy):not(.interactedCopy) .eyebrow {
-  animation: heroEyebrowIn 850ms cubic-bezier(0.22, 1, 0.36, 1) 180ms both;
-}
+
 
 .copyBlock h1 {
   max-width: 69rem;
