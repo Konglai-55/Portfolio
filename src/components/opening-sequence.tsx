@@ -317,9 +317,11 @@ export function OpeningSequence() {
         null;
       const getMarkDestination = () => {
         if (markDestination) return markDestination;
-        const slot = document.querySelector<HTMLElement>(
-          "[data-nav-brand-mark]",
-        );
+        // Dock into whichever brand mark is on screen: the top bar on
+        // desktop, the floating island on phones.
+        const slot = Array.from(
+          document.querySelectorAll<HTMLElement>("[data-nav-brand-mark]"),
+        ).find((candidate) => candidate.getBoundingClientRect().width > 0);
         if (!slot || !mark) {
           markDestination = { x: 0, y: -window.innerHeight, scale: 0.3 };
           return markDestination;
