@@ -109,10 +109,7 @@ export function EntranceEffects() {
 
     root.classList.add("has-reveal-js");
 
-    function createRevealTrigger(
-      target: HTMLElement,
-      tween: gsap.core.Tween,
-    ) {
+    function createRevealTrigger(target: HTMLElement, tween: gsap.core.Tween) {
       // Reveal once: replaying on every pass makes content flicker in and
       // out while visitors scroll back to re-read something.
       const trigger = ScrollTrigger.create({
@@ -280,8 +277,12 @@ export function EntranceEffects() {
         .forEach((target) => {
           const split = SplitText.create(target, {
             type: "chars",
+            tag: "span",
             aria: "auto",
           });
+          // Inline (not inline-block) chars keep CJK line-breaking rules,
+          // so punctuation never starts a line.
+          gsap.set(split.chars, { display: "inline" });
           splitInstances.push(split);
           const tween = gsap.fromTo(
             split.chars,
@@ -300,6 +301,27 @@ export function EntranceEffects() {
           );
           if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
           revealTweens.push(tween);
+        });
+
+      // Scroll-linked progress exposed as a CSS variable (0 → 1), for rails,
+      // bars and anything else that should fill as the reader passes.
+      document
+        .querySelectorAll<HTMLElement>("[data-scrub-progress]")
+        .forEach((target) => {
+          target.style.setProperty("--progress", "0");
+          triggers.push(
+            ScrollTrigger.create({
+              trigger: target,
+              start: target.dataset.scrubStart || "top 78%",
+              end: target.dataset.scrubEnd || "bottom 55%",
+              scrub: 0.6,
+              onUpdate: (self) =>
+                target.style.setProperty(
+                  "--progress",
+                  self.progress.toFixed(4),
+                ),
+            }),
+          );
         });
 
       // Hand-drawn strokes draw themselves in once.
