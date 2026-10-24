@@ -568,11 +568,20 @@
     display: none;
   }
 
+  /* Phones: a centred black pill hugging the top, like the Dynamic Island.
+     Auto margins keep it centred while GSAP morphs width and height. */
   .island,
   .root[data-floating="true"] .island {
-    top: max(0.45rem, env(safe-area-inset-top));
-    right: 0.6rem;
-    border-radius: 1.45rem;
+    top: max(0.3rem, env(safe-area-inset-top));
+    right: 0;
+    left: 0;
+    width: max-content;
+    margin-inline: auto;
+    border: 0;
+    border-radius: 1.6rem;
+    background: #000;
+    box-shadow: 0 0.8rem 2rem -0.8rem rgb(0 0 0 / 55%);
+    transform-origin: 50% 0;
     visibility: visible;
     opacity: 1;
     pointer-events: auto;
