@@ -764,20 +764,7 @@
   color: #f2eee5;
 }
 
-.statement::before {
-  position: absolute;
-  top: -0.18em;
-  right: 0.05em;
-  color: transparent;
-  -webkit-text-stroke: 1px rgb(242 238 229 / 10%);
-  content: "\201D";
-  font-family: var(--font-cjk-art);
-  font-size: clamp(12rem, 24vw, 24rem);
-  line-height: 1;
-  pointer-events: none;
-}
-
-.statement span {
+.statement > span {
   position: relative;
   color: var(--brand-accent);
   font-family: var(--font-geist-mono), monospace;

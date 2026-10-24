@@ -155,7 +155,8 @@
   grid-template-columns: 4rem minmax(9rem, 0.7fr) minmax(0, 2fr) auto;
   align-items: center;
   gap: 1.5rem;
-  min-height: clamp(6.5rem, 10vw, 9.5rem);
+  grid-template-rows: minmax(clamp(6.5rem, 10vw, 9.5rem), auto) auto;
+  row-gap: 0;
   padding: 0 clamp(0.6rem, 1.5vw, 1.6rem);
   border-bottom: 1px solid rgb(225 232 230 / 14%);
   isolation: isolate;
@@ -302,80 +303,86 @@ button.action:focus-visible,
   text-underline-offset: 0.12em;
 }
 
-.qrCard {
-  position: absolute;
-  z-index: 5;
-  right: clamp(9rem, 16vw, 15rem);
-  bottom: calc(100% - 1.5rem);
-  width: 14.5rem;
-  padding: 0.65rem;
-  border: 1px solid rgb(13 22 28 / 10%);
-  border-radius: 1.15rem;
-  background: #fff;
-  color: #203540;
-  box-shadow: 0 2rem 4.5rem -1rem rgb(5 19 27 / 45%);
+.qrPanel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-rows: 0fr;
   opacity: 0;
-  transform: translateY(0.8rem) rotate(-3deg) scale(0.92);
-  transform-origin: 50% 100%;
-  visibility: hidden;
-  pointer-events: none;
   transition:
-    opacity 0.25s ease,
-    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 0.6s;
+    grid-template-rows 0.7s var(--ease),
+    opacity 0.45s var(--ease);
 }
 
-.qrCard > span {
-  display: block;
-  padding: 0.15rem 0.25rem 0.55rem;
-  color: #708590;
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 0.52rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.row[data-qr-open="true"] .qrPanel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.qrInner {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.4rem, 3vw, 3rem);
+  min-height: 0;
+  padding-left: calc(4rem + 1.5rem);
+  overflow: hidden;
+}
+
+.row[data-qr-open="true"] .qrInner {
+  padding-bottom: clamp(1.6rem, 2.6vw, 2.4rem);
+}
+
+.qrFrame {
+  flex: 0 0 auto;
+  width: clamp(8.5rem, 12vw, 11rem);
+  padding: 0.55rem;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 1.4rem 3rem -1.4rem rgb(5 19 27 / 55%);
+  transform: translateY(0.8rem) scale(0.96);
+  transition: transform 0.7s var(--ease);
+}
+
+.row[data-qr-open="true"] .qrFrame {
+  transform: none;
 }
 
 .qrImage {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 0.8rem;
+  border-radius: 0.6rem;
 }
 
-.qrCard p {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 0.75rem;
+.qrCopy {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.qrCopy span {
+  color: var(--brand-accent);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.qrCopy strong {
+  font-family: var(--font-cjk-art);
+  font-size: clamp(1.3rem, 2vw, 1.9rem);
+  font-weight: 600;
+}
+
+.qrCopy p {
   margin: 0;
-  padding: 0.65rem 0.25rem 0.15rem;
+  font-size: 0.86rem;
+  opacity: 0.7;
 }
 
-.qrCard strong {
-  font-size: 0.82rem;
-}
-
-.qrCard small {
-  color: #718590;
-  font-size: 0.56rem;
-  white-space: nowrap;
-}
-
-.row[data-qr-open="true"] .qrCard {
-  opacity: 1;
-  transform: translateY(0) rotate(-2deg) scale(1);
-  visibility: visible;
-  pointer-events: auto;
-  transition-delay: 0s;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .row:hover .qrCard {
-    opacity: 1;
-    transform: translateY(0) rotate(-2deg) scale(1);
-    visibility: visible;
-    transition-delay: 0s;
-  }
+.qrCopy b {
+  font-family: var(--font-geist-mono), monospace;
+  font-weight: 500;
 }
 
 .srStatus {
@@ -398,13 +405,160 @@ button.action:focus-visible,
 }
 
 .signature {
-  padding: clamp(1.4rem, 2.4vw, 2.4rem);
+  margin: 0;
+}
+
+.svgDefs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.signCard {
+  --seal: #b4432c;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 4 / 5;
+  padding: clamp(1.2rem, 2vw, 1.7rem);
   border: 1px solid rgb(225 232 230 / 12%);
-  border-right: 1px solid rgb(225 232 230 / 12%);
-  border-radius: 1.6rem;
+  border-radius: 1.4rem;
   background:
-    radial-gradient(circle at 50% 40%, rgb(197 111 77 / 10%), transparent 62%),
-    rgb(255 255 255 / 2%);
+    radial-gradient(80% 60% at 60% 42%, rgb(242 238 229 / 6%), transparent 70%),
+    linear-gradient(160deg, #141f26, #0b1217);
+  box-shadow: 0 2.5rem 5rem -2.5rem rgb(0 0 0 / 60%);
+}
+
+/* Inner hairline frame, like a mounted scroll. */
+.signCard::before {
+  position: absolute;
+  inset: 0.6rem;
+  border: 1px solid rgb(225 232 230 / 7%);
+  border-radius: 1rem;
+  content: "";
+  pointer-events: none;
+}
+
+.signCard header,
+.signCard footer {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  color: #7f949e;
+  font-family: var(--font-geist-mono), var(--font-cjk);
+  font-size: 0.56rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.signBody {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(1.2rem, 2.4vw, 2rem);
+}
+
+.signNameColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.signName {
+  margin: 0;
+  color: #f2eee5;
+  font-family: var(--font-cjk-art);
+  font-size: clamp(4.2rem, 6vw, 6.2rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: 0.06em;
+  writing-mode: vertical-rl;
+}
+
+.signName span {
+  display: inline-block;
+}
+
+.signRole {
+  margin: 3.2rem 0 0;
+  color: #8ea0a9;
+  font-size: 0.8rem;
+  letter-spacing: 0.55em;
+  writing-mode: vertical-rl;
+}
+
+.seal {
+  display: grid;
+  width: clamp(3.1rem, 4.2vw, 3.8rem);
+  aspect-ratio: 1;
+  place-content: center;
+  border-radius: 0.28rem;
+  background: var(--seal);
+  box-shadow:
+    inset 0 0 0 0.16rem var(--seal),
+    inset 0 0 0 0.24rem rgb(246 238 228 / 82%);
+  color: #f6eee4;
+  font-family: var(--font-cjk-art);
+  font-size: clamp(1.05rem, 1.4vw, 1.28rem);
+  font-weight: 700;
+  line-height: 1.02;
+  filter: url(#seal-rough);
+  transform: rotate(-4deg);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.seal i {
+  display: block;
+  font-style: normal;
+}
+
+.signature:hover .seal {
+  transform: rotate(2deg) scale(1.04);
+}
+
+/* Ink settles character by character, then the seal is stamped. */
+:global(html.has-reveal-js)
+  .signature:not(:global(.is-revealed))
+  .signName
+  span,
+:global(html.has-reveal-js) .signature:not(:global(.is-revealed)) .seal {
+  opacity: 0;
+}
+
+.signature:global(.is-revealed) .signName span {
+  animation: ink 1.2s cubic-bezier(0.22, 1, 0.36, 1)
+    calc(0.25s + var(--i) * 0.2s) both;
+}
+
+.signature:global(.is-revealed) .seal {
+  animation: stamp 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) 1.05s backwards;
+}
+
+@keyframes ink {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(-0.25em) scale(1.04);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+@keyframes stamp {
+  from {
+    opacity: 0;
+    transform: rotate(-12deg) scale(1.7);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-4deg) scale(1);
+  }
 }
 
 .profileCopy .kicker {
@@ -650,9 +804,28 @@ button.action:focus-visible,
     padding: 0 0.8rem;
   }
 
-  .qrCard {
-    right: 0.2rem;
-    bottom: calc(100% - 3.4rem);
+  .row {
+    grid-template-rows: auto;
+    grid-template-areas:
+      "index label actions"
+      "index value value"
+      "qr qr qr";
+  }
+
+  .qrPanel {
+    grid-area: qr;
+  }
+
+  .qrInner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-left: 2.9rem;
+  }
+
+  .row[data-qr-open="true"] .qrInner {
+    padding-top: 0.6rem;
+    padding-bottom: 0.4rem;
   }
 
   .profile {
@@ -660,7 +833,7 @@ button.action:focus-visible,
   }
 
   .signature {
-    max-width: 22rem;
+    max-width: 24rem;
   }
 
   .footerBar {
@@ -701,149 +874,12 @@ button.action:focus-visible,
 @media (prefers-reduced-motion: reduce) {
   .row::before,
   .rowValue,
-  .qrCard,
-  .sectionHeader i::after {
+  .qrPanel,
+  .qrFrame,
+  .sectionHeader i::after,
+  .signName span,
+  .seal {
     transition: none;
     animation: none;
   }
-}
-
-/* ---------- Signature (pen-drawn on scroll) ---------- */
-
-.signature {
-  position: relative;
-  display: grid;
-  min-width: 0;
-  margin: 0;
-  padding: clamp(1.5rem, 2.5vw, 2.5rem);
-  place-items: center;
-}
-
-.signatureCanvas {
-  position: relative;
-  width: min(100%, 17rem);
-  aspect-ratio: 4 / 5;
-  color: #edf0ec;
-}
-
-.signatureCanvas::before {
-  position: absolute;
-  inset: 8% 4% 5%;
-  background:
-    radial-gradient(circle at 48% 48%, rgb(214 224 220 / 6%), transparent 61%),
-    linear-gradient(
-      90deg,
-      transparent 49.8%,
-      rgb(219 227 224 / 8%) 50%,
-      transparent 50.2%
-    );
-  content: "";
-  pointer-events: none;
-}
-
-.signatureOverline {
-  position: absolute;
-  top: 4%;
-  left: 1%;
-  color: #8197a2;
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 0.48rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
-.signatureChinese {
-  position: absolute;
-  top: 24%;
-  left: 50%;
-  display: flex;
-  align-items: flex-end;
-  transform: translateX(-50%) rotate(-4deg);
-  white-space: nowrap;
-}
-
-.signatureChinese span {
-  display: block;
-  font-family: var(--font-cjk-art);
-  font-size: clamp(3.6rem, 5vw, 5.2rem);
-  font-weight: 360;
-  line-height: 0.82;
-  letter-spacing: -0.15em;
-  text-shadow: 0 0.06em 1.3em rgb(226 235 231 / 8%);
-}
-
-.signatureChinese span:first-child {
-  margin-right: 0.12em;
-  transform: translateY(-0.14em) rotate(-6deg);
-  font-size: clamp(4.4rem, 6vw, 6.4rem);
-}
-
-.signatureLatin {
-  position: absolute;
-  top: 55%;
-  left: 10%;
-  z-index: 2;
-  color: #c98d70;
-  font-family: "Baskerville", "Times New Roman", serif;
-  font-size: clamp(2rem, 3vw, 3rem);
-  font-style: italic;
-  letter-spacing: -0.075em;
-  line-height: 1;
-  transform: rotate(-7deg);
-}
-
-.signatureStroke {
-  position: absolute;
-  top: 49%;
-  left: 1%;
-  width: 98%;
-  height: 29%;
-  overflow: visible;
-  fill: none;
-  pointer-events: none;
-}
-
-.signatureStroke path {
-  stroke: #c98d70;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-  transition: d 900ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.signatureSeal {
-  position: absolute;
-  right: 5%;
-  bottom: 16%;
-  display: grid;
-  width: 2.35rem;
-  height: 2.35rem;
-  place-items: center;
-  border: 1px solid rgb(201 141 112 / 64%);
-  color: #c98d70;
-  font-family: var(--font-cjk-art);
-  font-size: 0.54rem;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  transform: rotate(5deg);
-}
-
-.signatureCanvas > small {
-  position: absolute;
-  bottom: 5%;
-  left: 1%;
-  color: #8197a2;
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 0.45rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.signatureCanvas {
-  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.signature:hover .signatureCanvas {
-  transform: rotate(-1deg) translateY(-0.2rem);
 }

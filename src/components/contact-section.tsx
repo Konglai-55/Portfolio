@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { ArrowUpRight, Check, Copy, MoveUp, QrCode } from "lucide-react";
 import { mediaUrl } from "@/lib/media";
 import { BrandMark, BrandWordmark } from "./brand-mark";
@@ -201,20 +201,30 @@ export function ContactSection() {
                 </span>
 
                 {isWechat ? (
-                  <div id="wechat-qr" className={styles.qrCard}>
-                    <span>Scan to connect</span>
-                    <Image
-                      className={styles.qrImage}
-                      src={mediaUrl("images/wechat-qr-as14246791.png")}
-                      width={377}
-                      height={410}
-                      sizes="15rem"
-                      alt="梁熙坤微信二维码，微信号 as14246791"
-                    />
-                    <p>
-                      <strong>微信扫码联系</strong>
-                      <small>WeChat · as14246791</small>
-                    </p>
+                  <div
+                    id="wechat-qr"
+                    className={styles.qrPanel}
+                    inert={!qrOpen}
+                  >
+                    <div className={styles.qrInner}>
+                      <div className={styles.qrFrame}>
+                        <Image
+                          className={styles.qrImage}
+                          src={mediaUrl("images/wechat-qr-as14246791.png")}
+                          width={377}
+                          height={410}
+                          sizes="12rem"
+                          alt="梁熙坤微信二维码，微信号 as14246791"
+                        />
+                      </div>
+                      <div className={styles.qrCopy}>
+                        <span>Scan to connect</span>
+                        <strong>打开微信，扫一扫添加</strong>
+                        <p>
+                          或点击上方微信号直接复制：<b>as14246791</b>
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 ) : null}
               </li>
@@ -228,29 +238,55 @@ export function ContactSection() {
         <div className={styles.profile}>
           <figure
             className={styles.signature}
-            aria-label="梁熙坤 Liang Xikun 艺术签名"
+            aria-label="梁熙坤 落款"
             data-reveal="card"
           >
-            <div className={styles.signatureCanvas} aria-hidden="true">
-              <span className={styles.signatureOverline}>Liang / Xikun</span>
-              <div className={styles.signatureChinese}>
-                <span>梁</span>
-                <span>熙坤</span>
-              </div>
-              <span className={styles.signatureLatin}>liangxikun</span>
-              <svg
-                className={styles.signatureStroke}
-                data-draw
-                viewBox="0 0 360 96"
-                preserveAspectRatio="none"
-              >
-                <path
-                  pathLength="1"
-                  d="M8 66C71 88 130 76 171 46C210 17 226 13 224 32C222 54 186 75 150 82C211 72 272 66 350 72"
+            <svg className={styles.svgDefs} aria-hidden="true">
+              <filter id="seal-rough">
+                <feTurbulence
+                  type="fractalNoise"
+                  baseFrequency="0.9"
+                  numOctaves="2"
+                  seed="7"
+                  result="noise"
                 />
-              </svg>
-              <span className={styles.signatureSeal}>熙坤</span>
-              <small>Designer · Developer</small>
+                <feDisplacementMap
+                  in="SourceGraphic"
+                  in2="noise"
+                  scale="2.4"
+                  xChannelSelector="R"
+                  yChannelSelector="G"
+                />
+              </filter>
+            </svg>
+            <div className={styles.signCard} aria-hidden="true">
+              <header>
+                <span>Signature · 落款</span>
+                <span>形构</span>
+              </header>
+              <div className={styles.signBody}>
+                <div className={styles.signNameColumn}>
+                  <p className={styles.signName}>
+                    {["梁", "熙", "坤"].map((char, index) => (
+                      <span
+                        key={char}
+                        style={{ "--i": index } as CSSProperties}
+                      >
+                        {char}
+                      </span>
+                    ))}
+                  </p>
+                  <span className={styles.seal}>
+                    <i>熙</i>
+                    <i>坤</i>
+                  </span>
+                </div>
+                <p className={styles.signRole}>设计师 · 全栈开发者</p>
+              </div>
+              <footer>
+                <span>Liang Xikun</span>
+                <span>Tangshan · CN</span>
+              </footer>
             </div>
           </figure>
 
