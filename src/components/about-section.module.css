@@ -205,7 +205,7 @@
 .capabilities {
   display: flex;
   gap: clamp(0.5rem, 0.9vw, 0.9rem);
-  height: clamp(22rem, 27vw, 27rem);
+  height: clamp(28rem, 32vw, 32rem);
 }
 
 .capability {
@@ -352,6 +352,415 @@
   font-family: var(--font-geist-mono), var(--font-cjk);
   font-size: 0.66rem;
   letter-spacing: 0.04em;
+}
+
+/* ---------- Capability illustrations ---------- */
+
+.artWrap {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 1rem 0;
+}
+
+.art {
+  --accent: #c56f4d;
+  width: min(100%, 22rem);
+  max-height: 100%;
+  overflow: visible;
+  opacity: 0.38;
+  transform: scale(0.9);
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.8s var(--ease);
+}
+
+.art * {
+  transform-box: fill-box;
+}
+
+/* Active card: full strength, and every part runs its own loop. Inactive
+   cards show the finished drawing, so switching restarts the animation. */
+.capability:hover .art,
+.capability:focus-visible .art,
+.capabilities:not(:hover):not(:focus-within) .capability:first-child .art {
+  opacity: 1;
+  transform: none;
+}
+
+.capability:hover .art *,
+.capability:focus-visible .art *,
+.capabilities:not(:hover):not(:focus-within) .capability:first-child .art * {
+  animation: var(--anim, none);
+}
+
+.artFrame {
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: 0.28;
+}
+
+.artRule,
+.artGuide,
+.handle,
+.track {
+  stroke: currentColor;
+  stroke-opacity: 0.18;
+}
+
+.artGuide {
+  stroke-dasharray: 2 5;
+}
+
+.artDot {
+  fill: currentColor;
+  opacity: 0.3;
+}
+
+.codeLine,
+.codeLineAccent {
+  --anim: type 4.8s cubic-bezier(0.65, 0, 0.35, 1) calc(var(--d) * 0.32s)
+    infinite both;
+  fill: currentColor;
+  opacity: 0.32;
+  transform-origin: 0 50%;
+}
+
+.codeLineAccent {
+  fill: var(--accent);
+  opacity: 1;
+}
+
+@keyframes type {
+  0%,
+  6% {
+    transform: scaleX(0);
+  }
+  22%,
+  86% {
+    transform: scaleX(1);
+  }
+  96%,
+  100% {
+    transform: scaleX(0);
+  }
+}
+
+.cursor {
+  --anim: blink 0.9s steps(1) infinite;
+  fill: var(--accent);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.ringTrack {
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: 0.14;
+  stroke-width: 5;
+}
+
+.ringFill {
+  --anim: ring 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite both;
+  fill: none;
+  stroke: var(--accent);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  stroke-width: 5;
+  /* Start the sweep at 12 o'clock. */
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+@keyframes ring {
+  0%,
+  20% {
+    stroke-dashoffset: 1;
+  }
+  62%,
+  90% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 1;
+  }
+}
+
+.ringCheck,
+.liveCheck {
+  fill: none;
+  stroke: var(--accent);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+
+.ringCheck {
+  --anim: check 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite both;
+}
+
+@keyframes check {
+  0%,
+  60% {
+    stroke-dashoffset: 1;
+  }
+  72%,
+  90% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 1;
+  }
+}
+
+.meter {
+  --anim: meter 1.6s cubic-bezier(0.45, 0, 0.55, 1) calc(var(--d) * -0.4s)
+    infinite alternate;
+  fill: currentColor;
+  opacity: 0.3;
+  transform-origin: 50% 100%;
+}
+
+.meter:nth-of-type(2n) {
+  fill: var(--accent);
+  opacity: 0.85;
+}
+
+@keyframes meter {
+  from {
+    transform: scaleY(0.25);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.curve {
+  --anim: draw 4.4s cubic-bezier(0.65, 0, 0.35, 1) infinite both;
+  fill: none;
+  stroke: var(--accent);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  stroke-width: 3.5;
+}
+
+@keyframes draw {
+  0%,
+  6% {
+    stroke-dashoffset: 1;
+  }
+  55%,
+  88% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 1;
+  }
+}
+
+.handleKnob {
+  --anim: knob 4.4s ease-in-out infinite;
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: 0.55;
+  stroke-width: 1.5;
+}
+
+@keyframes knob {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(6px, 4px);
+  }
+}
+
+.anchor,
+.anchorActive {
+  fill: var(--brand-paper);
+  stroke: currentColor;
+  stroke-opacity: 0.6;
+  stroke-width: 1.5;
+}
+
+.anchorActive {
+  --anim: pulse-anchor 2.2s ease-in-out infinite;
+  fill: var(--accent);
+  stroke: var(--accent);
+  transform-origin: 50% 50%;
+}
+
+@keyframes pulse-anchor {
+  50% {
+    transform: scale(1.35);
+  }
+}
+
+.swatch {
+  --anim: pop 4.4s cubic-bezier(0.34, 1.56, 0.64, 1)
+    calc(1.9s + var(--d) * 0.16s) infinite both;
+  transform-origin: 50% 50%;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0);
+  }
+  12%,
+  70% {
+    transform: scale(1);
+  }
+  82%,
+  100% {
+    transform: scale(0);
+  }
+}
+
+.flow {
+  --anim: flow 4s cubic-bezier(0.65, 0, 0.35, 1) infinite both;
+  stroke: var(--accent);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  stroke-width: 2.5;
+}
+
+@keyframes flow {
+  0%,
+  8% {
+    stroke-dashoffset: 1;
+  }
+  72%,
+  90% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 1;
+  }
+}
+
+.packet {
+  --anim: packet 4s cubic-bezier(0.65, 0, 0.35, 1) infinite both;
+  fill: var(--accent);
+  opacity: 0;
+}
+
+@keyframes packet {
+  0%,
+  8% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  72% {
+    opacity: 1;
+    transform: translateX(260px);
+  }
+  80%,
+  100% {
+    opacity: 0;
+    transform: translateX(260px);
+  }
+}
+
+/* Each node lights as the packet passes it. */
+.node {
+  --anim: node 4s linear calc(0.32s + var(--d) * 0.85s) infinite both;
+  fill: var(--accent);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  transform-origin: 50% 50%;
+}
+
+@keyframes node {
+  0% {
+    fill: transparent;
+    stroke: currentColor;
+    stroke-opacity: 0.35;
+    transform: scale(1);
+  }
+  4% {
+    fill: var(--accent);
+    stroke: var(--accent);
+    stroke-opacity: 1;
+    transform: scale(1.18);
+  }
+  12% {
+    transform: scale(1);
+  }
+  60% {
+    fill: var(--accent);
+    stroke: var(--accent);
+    stroke-opacity: 1;
+  }
+  70%,
+  100% {
+    fill: transparent;
+    stroke: currentColor;
+    stroke-opacity: 0.35;
+  }
+}
+
+.nodeLabel,
+.deployTag {
+  fill: currentColor;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  opacity: 0.6;
+  text-anchor: middle;
+}
+
+.deployTag {
+  --anim: tag 4s ease infinite both;
+  fill: var(--accent);
+  opacity: 1;
+}
+
+@keyframes tag {
+  0%,
+  72% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  80%,
+  94% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.liveCheck {
+  --anim: live-check 4s ease infinite both;
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+
+@keyframes live-check {
+  0%,
+  70% {
+    stroke-dashoffset: 1;
+  }
+  78%,
+  94% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 1;
+  }
 }
 
 /* ---------- Process ---------- */
@@ -834,6 +1243,20 @@
     min-width: 0;
   }
 
+  .artWrap {
+    padding: 0;
+  }
+
+  .art {
+    width: min(100%, 20rem);
+    opacity: 1;
+    transform: none;
+  }
+
+  .art * {
+    animation: var(--anim, none);
+  }
+
   .cost {
     grid-template-columns: 1fr;
   }
@@ -965,9 +1388,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .capabilities .art * {
+    animation: none !important;
+  }
+
   .capability,
   .capability::before,
   .capabilityMore,
+  .art,
+  .art *,
   .deviceShell {
     transition: none;
     transform: none;

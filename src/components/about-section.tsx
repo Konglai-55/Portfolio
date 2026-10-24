@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { CapabilityArt } from "./capability-art";
 import { CaseStudyDevice } from "./case-study-device";
 import styles from "./about-section.module.css";
 
@@ -171,6 +172,9 @@ export function AboutSection() {
                 <span>{item.index}</span>
                 <small>{item.english}</small>
               </header>
+              <div className={styles.artWrap}>
+                <CapabilityArt index={item.index} />
+              </div>
               <div className={styles.capabilityBody}>
                 <h3>{item.title}</h3>
                 <p className={styles.capabilityCaption}>{item.caption}</p>
