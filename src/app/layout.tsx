@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@fontsource-variable/noto-serif-sc/wght.css";
 import "./globals.css";
@@ -21,6 +21,26 @@ export const metadata: Metadata = {
   },
   description:
     "梁熙坤的个人作品集。专注 Web 开发、前端视觉设计与全栈网站建设，提供从需求分析到部署维护的完整交付服务。",
+  metadataBase: new URL("https://portfolio.mjjmc.xyz"),
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "zh_CN",
+    siteName: "梁熙坤 · 形构 Form × Build",
+    title: "梁熙坤｜设计师与全栈开发者",
+    description:
+      "从视觉方向到完整开发与上线：企业官网、外贸独立站与全栈网站建设。",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "梁熙坤｜设计师与全栈开发者",
+    description: "从视觉方向到完整开发与上线。",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0d161c",
 };
 
 export default function RootLayout({

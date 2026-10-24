@@ -42,9 +42,29 @@ const closingRows = [
   },
 ] as const;
 
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "梁熙坤",
+  alternateName: "Liang Xikun",
+  jobTitle: "设计师与全栈开发者",
+  url: "https://portfolio.mjjmc.xyz",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "唐山",
+    addressCountry: "CN",
+  },
+  knowsAbout: ["Web 开发", "前端视觉设计", "全栈网站建设"],
+  brand: { "@type": "Brand", name: "形构 Form × Build" },
+};
+
 export default function Home() {
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+      />
       <AnalyticsTracker />
       <OpeningSequence />
       <SiteNavigation />
