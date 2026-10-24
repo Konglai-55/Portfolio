@@ -945,103 +945,62 @@
   opacity: clamp(0, (var(--p) - 0.62) * 10, 1);
 }
 
-.teamSvg {
+.teamCanvas {
   display: block;
   width: 100%;
+  aspect-ratio: 1;
   max-height: 62vh;
-  overflow: visible;
+  margin: 0.6rem auto 0;
 }
 
-.teamSvg * {
-  transform-box: fill-box;
-  transform-origin: 50% 50%;
-}
-
-.teamUnify {
-  fill: none;
-  stroke: var(--brand-accent);
-  stroke-dasharray: 1;
-  stroke-dashoffset: calc(1 - var(--c));
-  stroke-width: 1.5;
-  opacity: calc(0.25 + var(--c) * 0.6);
-  transform: rotate(-90deg);
-}
-
-.teamLink {
-  --draw: clamp(0, (var(--p) - 0.3 - var(--k) * 0.06) * 5, 1);
-  stroke: var(--brand-accent);
-  stroke-dasharray: 1;
-  stroke-dashoffset: calc(1 - var(--draw));
-  stroke-width: calc(1.2px + var(--c) * 1.3px);
-  opacity: calc(0.45 + var(--c) * 0.55);
-}
-
-.teamModule {
-  --show: clamp(0, (var(--p) - 0.32 - var(--k) * 0.07) * 6, 1);
-  opacity: var(--show);
-  transform: scale(calc(0.4 + var(--show) * 0.6));
-}
-
-.teamModule circle {
-  fill: #16232b;
-  stroke: rgb(242 238 229 / calc(30% + var(--c) * 40%));
-  stroke-width: 1.5;
-}
-
-.teamModule text,
-.teamDelivery text {
-  fill: #f2eee5;
-  font-family: var(--font-cjk);
-  font-size: 14px;
+.teamDeliveryTag {
+  position: absolute;
+  bottom: 3.6rem;
+  left: 50%;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  background: var(--brand-accent);
+  color: #fff;
+  font-size: 0.86rem;
   font-weight: 600;
-  text-anchor: middle;
-}
-
-.teamLead {
-  fill: var(--brand-accent);
-}
-
-.teamPulse {
-  fill: none;
-  stroke: var(--brand-accent);
-  stroke-width: 1.5;
-  animation: team-pulse 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-}
-
-@keyframes team-pulse {
-  from {
-    opacity: 0.7;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(1.7);
-  }
-}
-
-.teamLeadRole {
-  fill: rgb(255 240 230 / 75%);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 9px;
-  letter-spacing: 0.24em;
-  text-anchor: middle;
-}
-
-.teamLeadName {
-  fill: #fff;
-  font-family: var(--font-cjk-art);
-  font-size: 19px;
-  font-weight: 600;
-  text-anchor: middle;
-}
-
-.teamDelivery {
   opacity: var(--c);
-  transform: translateY(calc((1 - var(--c)) * 14px));
+  transform: translate(-50%, calc((1 - var(--c)) * 0.8rem));
 }
 
-.teamDelivery rect {
-  fill: var(--brand-accent);
+.teamLegend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.6rem 1.2rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgb(242 238 229 / 10%);
+  color: rgb(242 238 229 / 65%);
+  font-size: 0.74rem;
+}
+
+.teamLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.teamLegend i {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+}
+
+.teamLegend i[data-kind="sun"] {
+  background: radial-gradient(circle, #ffe2b5, #c56f4d 70%);
+  box-shadow: 0 0 0.6rem rgb(197 111 77 / 70%);
+}
+
+.teamLegend i[data-kind="star"] {
+  width: 0.35rem;
+  height: 0.35rem;
+  background: #f2eee5;
+  box-shadow: 0 0 0.4rem rgb(242 238 229 / 80%);
 }
 
 /* ---------- Cost ---------- */
@@ -1494,8 +1453,12 @@
     border-radius: 1.3rem;
   }
 
-  .teamSvg {
+  .teamCanvas {
     max-height: 30vh;
+  }
+
+  .teamDeliveryTag {
+    bottom: 3rem;
   }
 
   .step {
@@ -1565,7 +1528,6 @@
   .capabilityMore,
   .art,
   .art *,
-  .teamPulse,
   .deviceShell {
     transition: none;
     transform: none;
