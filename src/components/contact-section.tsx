@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Check, Copy, MoveUp, QrCode } from "lucide-react";
 import { mediaUrl } from "@/lib/media";
 import { BrandMark, BrandWordmark } from "./brand-mark";
+import { HangingBadge } from "./hanging-badge";
 import styles from "./contact-section.module.css";
 
 type ContactItem = {
@@ -236,60 +237,6 @@ export function ContactSection() {
         </p>
 
         <div className={styles.profile}>
-          <figure
-            className={styles.signature}
-            aria-label="梁熙坤 落款"
-            data-reveal="card"
-          >
-            <svg className={styles.svgDefs} aria-hidden="true">
-              <filter id="seal-rough">
-                <feTurbulence
-                  type="fractalNoise"
-                  baseFrequency="0.9"
-                  numOctaves="2"
-                  seed="7"
-                  result="noise"
-                />
-                <feDisplacementMap
-                  in="SourceGraphic"
-                  in2="noise"
-                  scale="2.4"
-                  xChannelSelector="R"
-                  yChannelSelector="G"
-                />
-              </filter>
-            </svg>
-            <div className={styles.signCard} aria-hidden="true">
-              <header>
-                <span>Signature · 落款</span>
-                <span>形构</span>
-              </header>
-              <div className={styles.signBody}>
-                <div className={styles.signNameColumn}>
-                  <p className={styles.signName}>
-                    {["梁", "熙", "坤"].map((char, index) => (
-                      <span
-                        key={char}
-                        style={{ "--i": index } as CSSProperties}
-                      >
-                        {char}
-                      </span>
-                    ))}
-                  </p>
-                  <span className={styles.seal}>
-                    <i>熙</i>
-                    <i>坤</i>
-                  </span>
-                </div>
-                <p className={styles.signRole}>设计师 · 全栈开发者</p>
-              </div>
-              <footer>
-                <span>Liang Xikun</span>
-                <span>Tangshan · CN</span>
-              </footer>
-            </div>
-          </figure>
-
           <article className={styles.profileCopy}>
             <p className={styles.kicker} data-reveal="soft">
               个人简介 / Profile
@@ -302,21 +249,35 @@ export function ContactSection() {
               美术出身，拥有 5 年以上独立开发经验，长期专注于 Web
               开发、前端视觉设计与全栈网站建设。能够从需求分析、视觉设计、技术架构到开发部署与后期维护，独立完成兼顾用户体验、视觉表现、性能与业务目标的网站项目。
             </p>
-            <dl className={styles.identity} data-reveal="soft">
-              <div>
-                <dt>Name</dt>
-                <dd>梁熙坤</dd>
+          </article>
+
+          <HangingBadge />
+
+          <aside className={styles.profileSide}>
+            <p className={styles.dragHint} aria-hidden="true">
+              <span>←</span> 按住工牌，拖一下试试
+            </p>
+            <dl className={styles.facts}>
+              <div data-reveal="soft" data-reveal-delay="1">
+                <dt>擅长 / Focus</dt>
+                <dd>
+                  <ul>
+                    <li>Web 开发</li>
+                    <li>视觉设计</li>
+                    <li>全栈交付</li>
+                  </ul>
+                </dd>
               </div>
-              <div>
-                <dt>Based in</dt>
-                <dd>唐山 · 中国</dd>
+              <div data-reveal="soft" data-reveal-delay="2">
+                <dt>合作方式 / Process</dt>
+                <dd>个人主导 → 按需协作 → 统一交付</dd>
               </div>
-              <div>
-                <dt>Brand</dt>
+              <div data-reveal="soft" data-reveal-delay="3">
+                <dt>品牌 / Brand</dt>
                 <dd>形构 · Form × Build</dd>
               </div>
             </dl>
-          </article>
+          </aside>
         </div>
       </div>
 
