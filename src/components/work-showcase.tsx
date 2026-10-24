@@ -289,6 +289,8 @@ export function WorkShowcase({
         scrub: 0.9,
         anticipatePin: 1,
         invalidateOnRefresh: true,
+        // Refresh before triggers further down so they include pin spacing.
+        refreshPriority: 1,
         onUpdate: (self) => {
           // Use scroll progress, not the scrubbed (lagging) timeline time.
           const time = self.progress * timeline.duration();
@@ -369,6 +371,11 @@ export function WorkShowcase({
         });
       });
     });
+
+    // Triggers elsewhere were created before this pin existed; re-sort so the
+    // pin refreshes first and everything below accounts for its spacing.
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
 
     return () => media.revert();
   }, [projects]);

@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { CapabilityArt } from "./capability-art";
 import { CaseStudyDevice } from "./case-study-device";
+import { TeamDiagram } from "./team-diagram";
 import styles from "./about-section.module.css";
 
 const stats = [
@@ -210,30 +211,35 @@ export function AboutSection() {
         <div
           className={styles.process}
           data-scrub-progress
-          data-scrub-start="top 80%"
-          data-scrub-end="bottom 62%"
+          data-scrub-start="top 55%"
+          data-scrub-end="bottom 70%"
         >
-          <span className={styles.processRail} aria-hidden="true">
-            <i />
-          </span>
-          <ol className={styles.steps}>
-            {process.map((step, index) => (
-              <li
-                key={step.index}
-                className={styles.step}
-                style={
-                  { "--at": index / (process.length - 1) } as CSSProperties
-                }
-              >
-                <span className={styles.stepDot} aria-hidden="true" />
-                <span className={styles.stepIndex}>
-                  {step.index} · {step.role}
-                </span>
-                <h3>{step.title}</h3>
-                <p>{step.description}</p>
-              </li>
-            ))}
-          </ol>
+          <div className={styles.processSteps}>
+            <span className={styles.processRail} aria-hidden="true">
+              <i />
+            </span>
+            <ol className={styles.steps}>
+              {process.map((step, index) => (
+                <li
+                  key={step.index}
+                  className={styles.step}
+                  style={
+                    { "--at": index / (process.length - 1) } as CSSProperties
+                  }
+                >
+                  <span className={styles.stepDot} aria-hidden="true" />
+                  <span className={styles.stepIndex}>
+                    {step.index} · {step.role}
+                  </span>
+                  <h3>{step.title}</h3>
+                  <p>{step.description}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div className={styles.teamStage}>
+            <TeamDiagram />
+          </div>
         </div>
 
         {/* Cost */}
