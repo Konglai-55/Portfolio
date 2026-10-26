@@ -10,7 +10,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { mediaUrl } from "@/lib/media";
 import { openingRevealEvent } from "./opening-sequence";
 import styles from "./hero-stage.module.css";
 
@@ -20,7 +19,7 @@ const slides = [
     role: "设计师",
     copy: "洞察需求，构建美感，让每一个想法拥有清晰表达。",
     phrases: ["洞察需求，", "构建美感，", "让每一个想法", "拥有清晰表达。"],
-    image: mediaUrl("images/hero-designer.png"),
+    image: "/images/hero-designer-studio.png",
     alt: "阳光洒进画室，一位设计师正在窗边创作",
   },
   {
@@ -28,7 +27,7 @@ const slides = [
     role: "开发者",
     copy: "拆解问题，实现创意，让每一个设计真正稳定运行。",
     phrases: ["拆解问题，", "实现创意，", "让每一个设计", "真正稳定运行。"],
-    image: mediaUrl("images/hero-developer.png"),
+    image: "/images/hero-developer-night.png",
     alt: "夜晚的城市窗景前，一位开发者正在桌前工作",
   },
 ] as const;
@@ -71,9 +70,7 @@ function HeroCopy({
       <p className={styles.eyebrow} data-hero-eyebrow>
         <span />
         身份 · {role}
-        <small className={styles.identityCount}>
-          0{activeIndex + 1} / 02
-        </small>
+        <small className={styles.identityCount}>0{activeIndex + 1} / 02</small>
       </p>
 
       {/* Phrases never break internally, so Chinese lines wrap at meaning. */}
@@ -95,7 +92,9 @@ function HeroCopy({
           interactive ? (
             <a
               key={action.href}
-              className={index === 0 ? styles.primaryAction : styles.secondaryAction}
+              className={
+                index === 0 ? styles.primaryAction : styles.secondaryAction
+              }
               href={action.href}
               data-hero-action
               data-analytics={action.analytics}
@@ -107,7 +106,9 @@ function HeroCopy({
           ) : (
             <span
               key={action.href}
-              className={index === 0 ? styles.primaryAction : styles.secondaryAction}
+              className={
+                index === 0 ? styles.primaryAction : styles.secondaryAction
+              }
             >
               <span>{action.label}</span>
               <i aria-hidden="true">↗</i>
@@ -115,7 +116,6 @@ function HeroCopy({
           ),
         )}
       </div>
-
     </>
   );
 }
@@ -301,7 +301,6 @@ export function HeroStage() {
       x: Math.min(Math.max(origin?.x ?? width / 2, 0), width),
       y: Math.min(Math.max(origin?.y ?? height / 2, 0), height),
     };
-    const dotSize = 18;
     const coverRadius =
       Math.max(
         Math.hypot(start.x, start.y),
@@ -322,20 +321,23 @@ export function HeroStage() {
       return;
     }
 
-    coverCircle.setAttribute("cx", String(start.x));
-    coverCircle.setAttribute("cy", String(start.y));
-    coverCircle.setAttribute("r", String(dotSize / 2));
-    revealCircle.setAttribute("cx", String(start.x));
-    revealCircle.setAttribute("cy", String(start.y));
-    revealCircle.setAttribute("r", "0");
-    transitionCopy.style.clipPath = `circle(${dotSize / 2}px at ${textOrigin.x}px ${textOrigin.y}px)`;
-    transitionCopy.style.maskImage = "none";
-    transitionCopy.style.webkitMaskImage = "none";
-    transitionCopy.style.opacity = "1";
-    incomingCopy.style.clipPath = `circle(0px at ${textOrigin.x}px ${textOrigin.y}px)`;
+    // One continuous, soft-edged reveal from the click point (no cover
+    // stage): the feathered edge reads like light spreading over the scene.
+    const feather = Math.max(110, coverRadius * 0.14);
+    const softMask = (x: number, y: number, r: number, invert = false) =>
+      invert
+        ? `radial-gradient(circle at ${x}px ${y}px, transparent ${r}px, black ${r + feather}px)`
+        : `radial-gradient(circle at ${x}px ${y}px, black ${r}px, transparent ${r + feather}px)`;
+    const setMask = (element: HTMLElement, mask: string) => {
+      element.style.maskImage = mask;
+      element.style.webkitMaskImage = mask;
+    };
+    const outgoingImage = imageRefs.current[activeIndex];
+
+    transitionCopy.style.opacity = "0";
+    setMask(incomingCopy, softMask(textOrigin.x, textOrigin.y, -feather));
     incomingCopy.style.opacity = "1";
-    baseCopy.style.maskImage = "none";
-    baseCopy.style.webkitMaskImage = "none";
+    setMask(baseCopy, "none");
 
     setTransitionCopyIndex(incomingIndex);
     setHasInteracted(true);
@@ -349,59 +351,53 @@ export function HeroStage() {
       scale: 1,
       autoAlpha: 1,
     });
-    gsap.set(revealOverlay, { autoAlpha: 1 });
-    gsap.set(incomingImage, {
-      autoAlpha: 1,
-      scale: 1,
-      zIndex: 2,
-      clipPath: `circle(0px at ${start.x}px ${start.y}px)`,
-    });
+    gsap.set(incomingImage, { autoAlpha: 1, scale: 1.08, zIndex: 2 });
+    setMask(incomingImage, softMask(start.x, start.y, -feather));
 
     await nextPaint();
 
     try {
-      gsap.set(dot, { autoAlpha: 0 });
-      const radii = {
-        cover: dotSize / 2,
-        reveal: 0,
-      };
+      gsap.to(dot, {
+        autoAlpha: 0,
+        scale: 3,
+        duration: 0.6,
+        ease: "power2.out",
+      });
+      const reveal = { r: -feather };
       const timeline = gsap.timeline();
 
       timeline.to(
-        radii,
+        reveal,
         {
-          cover: coverRadius,
-          duration: 0.78,
-          ease: "power3.out",
+          r: coverRadius + feather,
+          duration: 1.35,
+          ease: "power3.inOut",
           onUpdate: () => {
-            coverCircle.setAttribute("r", String(radii.cover));
-            transitionCopy.style.clipPath = `circle(${radii.cover}px at ${textOrigin.x}px ${textOrigin.y}px)`;
+            setMask(incomingImage, softMask(start.x, start.y, reveal.r));
+            setMask(
+              incomingCopy,
+              softMask(textOrigin.x, textOrigin.y, reveal.r),
+            );
+            setMask(
+              baseCopy,
+              softMask(textOrigin.x, textOrigin.y, reveal.r, true),
+            );
           },
         },
         0,
       );
-
       timeline.to(
-        radii,
-        {
-          reveal: coverRadius,
-          duration: 0.96,
-          ease: "power2.out",
-          onUpdate: () => {
-            const radius = radii.reveal;
-            const oldTextMask = `radial-gradient(circle at ${textOrigin.x}px ${textOrigin.y}px, transparent 0, transparent ${radius}px, black ${radius + 1}px)`;
-
-            revealCircle.setAttribute("r", String(radius));
-            baseCopy.style.maskImage = oldTextMask;
-            baseCopy.style.webkitMaskImage = oldTextMask;
-            transitionCopy.style.maskImage = oldTextMask;
-            transitionCopy.style.webkitMaskImage = oldTextMask;
-            incomingCopy.style.clipPath = `circle(${radius}px at ${textOrigin.x}px ${textOrigin.y}px)`;
-            incomingImage.style.clipPath = `circle(${radius}px at ${start.x}px ${start.y}px)`;
-          },
-        },
-        0.055,
+        incomingImage,
+        { scale: 1, duration: 1.7, ease: "expo.out" },
+        0,
       );
+      if (outgoingImage) {
+        timeline.to(
+          outgoingImage,
+          { scale: 1.05, duration: 1.35, ease: "power2.inOut" },
+          0,
+        );
+      }
 
       await tweenFinished(timeline);
 
@@ -428,6 +424,12 @@ export function HeroStage() {
       gsap.set(incomingImage, {
         clearProps: "opacity,visibility,transform,zIndex,clipPath",
       });
+      incomingImage.style.maskImage = "";
+      incomingImage.style.webkitMaskImage = "";
+      const previousImage = imageRefs.current[activeIndex];
+      if (previousImage && previousImage !== incomingImage) {
+        gsap.set(previousImage, { clearProps: "transform" });
+      }
       if (baseCopyRef.current) {
         gsap.set(baseCopyRef.current, {
           clearProps: "opacity,transform,maskImage,webkitMaskImage",
@@ -482,7 +484,11 @@ export function HeroStage() {
       }}
       onPointerLeave={() => setIsCursorVisible(false)}
     >
-      <div className={styles.images} data-scroll-shift="1.15" aria-hidden="true">
+      <div
+        className={styles.images}
+        data-scroll-shift="1.15"
+        aria-hidden="true"
+      >
         {slides.map((slide, index) => (
           <Image
             key={slide.id}
@@ -503,7 +509,11 @@ export function HeroStage() {
       </div>
 
       <div className={styles.scrim} aria-hidden="true" />
-      <div className={styles.grain} data-scroll-shift="0.28" aria-hidden="true" />
+      <div
+        className={styles.grain}
+        data-scroll-shift="0.28"
+        aria-hidden="true"
+      />
 
       <div
         key={activeSlide.id}
@@ -595,7 +605,11 @@ export function HeroStage() {
           mask="url(#hero-reveal-mask)"
         />
       </svg>
-      <div ref={transitionDotRef} className={styles.transitionDot} aria-hidden="true" />
+      <div
+        ref={transitionDotRef}
+        className={styles.transitionDot}
+        aria-hidden="true"
+      />
     </section>
   );
 }
