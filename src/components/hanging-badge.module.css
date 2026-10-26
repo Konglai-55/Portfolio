@@ -146,6 +146,8 @@
 
 .cardHead {
   display: flex;
+  gap: 0.6rem;
+  white-space: nowrap;
   justify-content: space-between;
   padding-bottom: 0.85rem;
   border-bottom: 1px solid rgb(23 40 51 / 12%);
@@ -261,6 +263,7 @@
 
 .cardFoot p {
   margin: 0;
+  white-space: nowrap;
   color: #4f6372;
   font-size: 0.7rem;
   line-height: 1.6;
@@ -296,8 +299,17 @@
 }
 
 @media (max-width: 900px) {
+  .badge,
+  .stage[data-live="true"] .badge {
+    width: 15rem;
+  }
+
+  .stage:not([data-live="true"]) .badge {
+    margin-left: -7.5rem;
+  }
+
   .stage {
     --rope: 120px;
-    height: calc(var(--rope) + 27rem);
+    height: calc(var(--rope) + 31rem);
   }
 }

@@ -23,7 +23,13 @@
   background-size: calc(100% / 12) 100%;
   content: "";
   opacity: 0.45;
-  mask-image: linear-gradient(180deg, transparent 3%, #000 24%, #000 76%, transparent);
+  mask-image: linear-gradient(
+    180deg,
+    transparent 3%,
+    #000 24%,
+    #000 76%,
+    transparent
+  );
   pointer-events: none;
 }
 
@@ -81,7 +87,13 @@
 .scrim {
   z-index: 1;
   background:
-    linear-gradient(180deg, rgb(7 8 8 / 52%) 0%, transparent 33%, rgb(7 8 8 / 12%) 56%, rgb(7 8 8 / 74%) 100%),
+    linear-gradient(
+      180deg,
+      rgb(7 8 8 / 52%) 0%,
+      transparent 33%,
+      rgb(7 8 8 / 12%) 56%,
+      rgb(7 8 8 / 74%) 100%
+    ),
     linear-gradient(90deg, rgb(7 8 8 / 34%) 0%, transparent 62%);
   transition: background 700ms ease;
   animation: heroScrimIn 1300ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both;
@@ -89,7 +101,13 @@
 
 .hero[data-identity="developer"] .scrim {
   background:
-    linear-gradient(180deg, rgb(4 7 12 / 50%) 0%, transparent 34%, rgb(4 7 12 / 10%) 56%, rgb(4 7 12 / 76%) 100%),
+    linear-gradient(
+      180deg,
+      rgb(4 7 12 / 50%) 0%,
+      transparent 34%,
+      rgb(4 7 12 / 10%) 56%,
+      rgb(4 7 12 / 76%) 100%
+    ),
     linear-gradient(90deg, rgb(4 7 12 / 42%) 0%, transparent 66%);
 }
 
@@ -200,8 +218,6 @@ html.hero-intro-pending .hint {
   height: 1px;
   background: currentColor;
 }
-
-
 
 .copyBlock h1 {
   max-width: 69rem;
@@ -578,7 +594,6 @@ html.hero-intro-pending .hint {
     bottom: 2rem;
     left: 1.25rem;
   }
-
 }
 
 @media (max-width: 520px) {

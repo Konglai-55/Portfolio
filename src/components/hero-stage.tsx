@@ -335,6 +335,9 @@ export function HeroStage() {
     const outgoingImage = imageRefs.current[activeIndex];
 
     transitionCopy.style.opacity = "0";
+    // The stylesheet parks this layer at clip-path: circle(0); the soft mask
+    // does the revealing now, so lift the clip or the new copy stays hidden.
+    incomingCopy.style.clipPath = "none";
     setMask(incomingCopy, softMask(textOrigin.x, textOrigin.y, -feather));
     incomingCopy.style.opacity = "1";
     setMask(baseCopy, "none");

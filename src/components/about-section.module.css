@@ -1327,6 +1327,7 @@
   }
 
   .capability {
+    flex: none;
     min-height: 0;
     gap: 2.4rem;
   }

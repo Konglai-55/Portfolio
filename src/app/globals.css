@@ -14,22 +14,23 @@
   --background: var(--brand-paper);
   --foreground: var(--brand-ink-deep);
   --muted: #68747b;
-  --font-cjk: "MiSans", "HarmonyOS Sans SC", "Noto Sans SC",
-    "Source Han Sans SC", "PingFang SC", "Microsoft YaHei UI",
-    "Microsoft YaHei", sans-serif;
-  --font-cjk-display: "MiSans", "HarmonyOS Sans SC", "Noto Sans SC",
-    "Source Han Sans SC", "PingFang SC", "Microsoft YaHei UI",
-    "Microsoft YaHei", sans-serif;
-  --font-cjk-art: "Noto Serif SC Variable", "Source Han Serif SC",
-    "Songti SC", "STSong", serif;
+  --font-cjk:
+    "MiSans", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC",
+    "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+  --font-cjk-display:
+    "MiSans", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC",
+    "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+  --font-cjk-art:
+    "Noto Serif SC Variable", "Source Han Serif SC", "Songti SC", "STSong",
+    serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
-  --font-sans: var(--font-geist-sans), "PingFang SC", "Microsoft YaHei",
-    sans-serif;
+  --font-sans:
+    var(--font-geist-sans), "PingFang SC", "Microsoft YaHei", sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }
 
@@ -59,8 +60,8 @@ body {
   overflow-x: clip;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), "PingFang SC", "Microsoft YaHei",
-  sans-serif;
+  font-family:
+    var(--font-geist-sans), "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
 body::before {
@@ -222,4 +223,11 @@ html.has-reveal-js [data-reveal-delay="5"] {
 ::selection {
   background: var(--foreground);
   color: var(--background);
+}
+
+/* Even out heading line lengths so no line ends with an orphaned char. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
 }

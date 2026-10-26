@@ -178,11 +178,7 @@
   width: min(70rem, 90vw);
   height: 60%;
   border-radius: 50%;
-  background: radial-gradient(
-    closest-side,
-    rgb(197 111 77 / 14%),
-    transparent
-  );
+  background: radial-gradient(closest-side, rgb(197 111 77 / 14%), transparent);
   content: "";
   filter: blur(30px);
   transform: translateX(-50%);
@@ -670,8 +666,12 @@
 }
 
 @keyframes backdropIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes panelIn {

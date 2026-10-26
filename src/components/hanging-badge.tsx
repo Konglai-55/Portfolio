@@ -128,7 +128,8 @@ export function HangingBadge() {
 
       // A faint breeze keeps the badge alive at rest.
       const breeze =
-        Math.sin(time * 0.0007) * 26 + Math.sin(time * 0.0019 + 1.3) * 10;
+        (Math.sin(time * 0.0007) * 26 + Math.sin(time * 0.0019 + 1.3) * 10) *
+        (width < 600 ? 0.35 : 1);
 
       const points = [...rope, tail];
       for (const p of points) {
@@ -258,7 +259,7 @@ export function HangingBadge() {
       render();
     } else {
       // Park everything above the stage until it scrolls into view.
-      dropFrom.x = width / 2 + width * 0.22;
+      dropFrom.x = width / 2 + width * (width < 600 ? 0.08 : 0.22);
       dropFrom.y = -(ropeLength + cardHeight + 120);
       anchor.x = dropFrom.x;
       anchor.y = dropFrom.y;
