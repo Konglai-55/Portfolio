@@ -1,0 +1,11 @@
+.section { position: relative; padding: clamp(48px, 7vw, 100px) 6%; background: var(--brand-paper-cool); color: var(--brand-ink-deep); display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; }
+.intro h2 { margin: 0 0 22px; font: 550 clamp(26px, 3vw, 42px)/1.55 var(--font-cjk-art); }
+.intro p { max-width: 34em; font: 15px/1.95 var(--font-cjk); }
+.section a { font-size: 14px; text-underline-offset: 5px; }
+.section a:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 5px; }
+.links { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+.links h3 { margin: 0 0 20px; font-size: 16px; font-weight: 600; }
+.links a { display: block; padding: 12px 0; border-bottom: 1px solid var(--brand-line); text-decoration: none; line-height: 1.8; }
+.links a:hover { text-decoration: underline; }
+@media(max-width: 800px) { .section { grid-template-columns: 1fr; gap: 36px; } }
+@media(max-width: 480px) { .links { grid-template-columns: 1fr; } }

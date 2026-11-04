@@ -16,25 +16,25 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "梁熙坤｜设计师与全栈开发者",
+    default: "梁熙坤｜企业官网、外贸独立站与全栈开发",
     template: "%s｜梁熙坤个人作品集",
   },
   description:
-    "梁熙坤的个人作品集。专注 Web 开发、前端视觉设计与全栈网站建设，提供从需求分析到部署维护的完整交付服务。",
+    "梁熙坤（Liang Xikun），设计师与全栈开发者，提供企业官网、外贸独立站与 Next.js 定制开发。查看公开案例、服务范围与建站指南，从需求、视觉设计到开发部署统一交付。",
   metadataBase: new URL("https://portfolio.mjjmc.xyz"),
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "zh_CN",
     siteName: "梁熙坤 · 形构 Form × Build",
-    title: "梁熙坤｜设计师与全栈开发者",
+    title: "梁熙坤｜企业官网、外贸独立站与全栈开发",
     description:
       "从视觉方向到完整开发与上线：企业官网、外贸独立站与全栈网站建设。",
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title: "梁熙坤｜设计师与全栈开发者",
+    title: "梁熙坤｜企业官网、外贸独立站与全栈开发",
     description: "从视觉方向到完整开发与上线。",
   },
 };
@@ -55,6 +55,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <noscript><style>{"[data-opening]{display:none!important}"}</style></noscript>
         <script
           dangerouslySetInnerHTML={{
             __html:

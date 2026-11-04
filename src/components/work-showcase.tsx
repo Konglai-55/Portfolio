@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import {
   Fragment,
   useLayoutEffect,
@@ -22,6 +23,7 @@ import workStyles from "./work-section.module.css";
 gsap.registerPlugin(ScrollTrigger);
 
 export type ShowcaseProject = {
+  slug: string;
   index: string;
   title: string;
   category: string;
@@ -509,6 +511,7 @@ export function WorkShowcase({
                     <span>{String(project.pages.length).padStart(2, "0")}</span>
                     <ArrowUpRight size={15} strokeWidth={1.5} aria-hidden="true" />
                   </button>
+                  <Link href={`/work/${project.slug}`} className={styles.caseLink} data-info>阅读案例说明</Link>
                 </div>
 
                 <div className={styles.deviceArea} data-device-tilt>

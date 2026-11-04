@@ -65,25 +65,27 @@ function HeroCopy({
     { label: "聊聊你的项目", href: "#contact", analytics: "hero:contact" },
   ] as const;
 
+  const Heading = interactive ? "h1" : "div";
+
   return (
     <>
       <p className={styles.eyebrow} data-hero-eyebrow>
         <span />
-        身份 · {role}
+        梁熙坤 · {role}
         <small className={styles.identityCount}>0{activeIndex + 1} / 02</small>
       </p>
 
       {/* Phrases never break internally, so Chinese lines wrap at meaning. */}
-      <h1 ref={titleRef} aria-label={copy}>
+      <Heading ref={titleRef} className={styles.heroTitle} aria-label={copy}>
         {phrases.map((phrase) => (
           <span key={phrase} className={styles.phrase} aria-hidden="true">
             {phrase}
           </span>
         ))}
-      </h1>
+      </Heading>
 
       <p className={styles.serviceCopy} data-hero-supporting>
-        从视觉方向，到完整开发与上线。
+        企业官网、外贸独立站与全栈开发。
         <small>From visual direction to full-stack delivery.</small>
       </p>
 

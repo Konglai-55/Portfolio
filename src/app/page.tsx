@@ -9,6 +9,9 @@ import { WorkSection } from "@/components/work-section";
 import { AnalyticsTracker } from "@/components/analytics-tracker";
 import { TrustSection } from "@/components/trust-section";
 import { VelocityMarquee } from "@/components/velocity-marquee";
+import { SiteDirectory } from "@/components/site-directory";
+import { StructuredData } from "@/components/structured-data";
+import { identityGraph, personId, siteUrl, websiteId } from "@/lib/seo";
 
 const openingRows = [
   {
@@ -42,29 +45,10 @@ const closingRows = [
   },
 ] as const;
 
-const personJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "梁熙坤",
-  alternateName: "Liang Xikun",
-  jobTitle: "设计师与全栈开发者",
-  url: "https://portfolio.mjjmc.xyz",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "唐山",
-    addressCountry: "CN",
-  },
-  knowsAbout: ["Web 开发", "前端视觉设计", "全栈网站建设"],
-  brand: { "@type": "Brand", name: "形构 Form × Build" },
-};
-
 export default function Home() {
   return (
     <main>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
-      />
+      <StructuredData data={{ "@context": "https://schema.org", "@graph": [...identityGraph, { "@type": "WebPage", "@id": `${siteUrl}/#webpage`, url: siteUrl, name: "梁熙坤｜企业官网、外贸独立站与全栈开发", isPartOf: { "@id": websiteId }, about: { "@id": personId }, inLanguage: "zh-CN" }] }} />
       <AnalyticsTracker />
       <OpeningSequence />
       <SiteNavigation />
@@ -78,6 +62,7 @@ export default function Home() {
       <WorkSection />
       <TrustSection />
       <AboutSection />
+      <SiteDirectory />
       <VelocityMarquee
         rows={closingRows}
         label="Let’s build something real：从一个想法开始，到一个稳定运行的作品"

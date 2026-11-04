@@ -219,7 +219,7 @@ html.hero-intro-pending .hint {
   background: currentColor;
 }
 
-.copyBlock h1 {
+.copyBlock .heroTitle {
   max-width: 69rem;
   margin: 0;
   font-family: var(--font-cjk-art);
@@ -342,7 +342,7 @@ html.hero-intro-pending .hint {
 }
 
 .transitionCopy .eyebrow,
-.transitionCopy h1,
+.transitionCopy .heroTitle,
 .transitionCopy .serviceCopy {
   text-shadow: none;
 }
@@ -363,7 +363,7 @@ html.hero-intro-pending .hint {
 }
 
 .incomingCopy .eyebrow,
-.incomingCopy h1 {
+.incomingCopy .heroTitle {
   text-shadow: 0 3px 34px rgb(0 0 0 / 35%);
 }
 
@@ -619,7 +619,7 @@ html.hero-intro-pending .hint {
     height: 1.8rem;
   }
 
-  .copyBlock h1 {
+  .copyBlock .heroTitle {
     max-width: 100%;
     font-size: clamp(2rem, 9.35vw, 2.7rem);
     line-height: 1.19;
@@ -674,7 +674,7 @@ html.hero-intro-pending .hint {
   .grain,
   .copyBlock,
   .copyBlock:not(.transitionCopy) .eyebrow,
-  .copyBlock:not(.transitionCopy) h1,
+  .copyBlock:not(.transitionCopy) .heroTitle,
   .hint {
     animation: none;
   }
