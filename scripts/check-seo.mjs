@@ -2,12 +2,13 @@ import assert from "node:assert/strict";
 
 const base = process.env.CHECK_BASE_URL || "http://127.0.0.1:4514";
 const origin = "https://portfolio.mjjmc.xyz";
-const expected = ["/", "/about", "/services", "/work", "/guides",
+const chinese = ["/", "/about", "/services", "/work", "/guides",
   "/services/company-website", "/services/international-website", "/services/nextjs-development",
   "/work/hill-nairobi", "/work/pixel-cafe-montreal", "/work/ruihe-engineering", "/work/suxin-furniture",
   "/guides/website-project-checklist", "/guides/website-cost-and-scope"];
+const expected = [...chinese, ...chinese.map(p => `/en${p === "/" ? "" : p}`)];
 async function get(path, userAgent) {
-  return fetch(new URL(path, base), { headers: userAgent ? { "user-agent": userAgent } : {}, signal: AbortSignal.timeout(90000) });
+  return fetch(new URL(path, base), { headers: { "accept-language": "zh-CN", ...(userAgent ? { "user-agent": userAgent } : {}) }, signal: AbortSignal.timeout(90000) });
 }
 const xml = await get("/sitemap.xml");
 assert.equal(xml.status, 200);
@@ -21,11 +22,13 @@ const graph = new Map();
 const titles = new Set();
 const descriptions = new Set();
 for (const path of expected) {
+  const en = path === "/en" || path.startsWith("/en/");
+  const original = en ? path.slice(3) || "/" : path;
   const response = await get(path);
   assert.equal(response.status, 200, path);
   assert.ok(!response.headers.get("x-robots-tag")?.includes("noindex"), path);
   const html = await response.text();
-  if (path.startsWith("/work/")) {
+  if (original.startsWith("/work/")) {
     const image = html.match(/<img\b[^>]*src="([^"]+)"/)?.[1]?.replaceAll("&amp;", "&");
     assert.ok(image?.startsWith("/_next/image?url=%2Fimages%2F"), path + " cover must use bundled image");
     const cover = await fetch(new URL(image, base), { headers: { accept: "image/webp" }, signal: AbortSignal.timeout(30000) });
@@ -46,13 +49,21 @@ for (const path of expected) {
   assert.ok(html.includes(`property="og:url" content="${canonical[0]}"`), path + " wrong OG URL");
   const schema = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)].map(m => JSON.parse(m[1]));
   const entities = schema.flatMap(s => s["@graph"] || [s]);
-  assert.ok(entities.some(e => e["@type"] === "Person" && e.name === "梁熙坤"), path);
+  assert.ok(entities.some(e => e["@type"] === "Person" && e.name === (en ? "Liang Xikun" : "梁熙坤")), path);
   assert.ok(entities.some(e => e["@type"] === "WebSite"), path);
-  if (path !== "/") assert.ok(entities.some(e => e["@type"] === "BreadcrumbList"), path);
-  if (path.startsWith("/services/")) assert.ok(entities.some(e => e["@type"] === "Service"), path);
-  if (path.startsWith("/work/")) assert.ok(entities.some(e => e["@type"] === "CreativeWork"), path);
-  if (path.startsWith("/guides/")) assert.ok(entities.some(e => e["@type"] === "Article" && e.author["@id"].endsWith("#person")), path);
+  if (original !== "/") assert.ok(entities.some(e => e["@type"] === "BreadcrumbList"), path);
+  if (original.startsWith("/services/")) assert.ok(entities.some(e => e["@type"] === "Service"), path);
+  if (original.startsWith("/work/")) assert.ok(entities.some(e => e["@type"] === "CreativeWork"), path);
+  if (original.startsWith("/guides/")) assert.ok(entities.some(e => e["@type"] === "Article" && e.author["@id"].endsWith("#person")), path);
   const links = [...html.matchAll(/<a\b[^>]*href="([^"]+)"/g)].map(m => m[1].split("#")[0]).filter(p => p.startsWith("/") && !p.startsWith("//"));
+  assert.ok(html.includes(`lang="${en ? "en" : "zh-CN"}"`), path + " HTML language");
+  assert.ok(html.includes(`hrefLang="zh-CN" href="${origin + (original === "/" ? "" : original)}"`) || html.includes(`hreflang="zh-CN" href="${origin + (original === "/" ? "" : original)}"`), path + " Chinese alternate");
+  assert.ok(html.toLowerCase().includes(`hreflang="en" href="${origin}/en${original === "/" ? "" : original}"`.toLowerCase()), path + " English alternate");
+  if (en) {
+    const visible = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, "").replace(/<[^>]+>/g, "").replaceAll("中文", "");
+    assert.ok(!/\p{Script=Han}/u.test(visible), path + " untranslated text: " + visible.match(/.{0,25}\p{Script=Han}.{0,60}/u)?.[0]);
+    for (const href of links) assert.ok(!/^\/(?:services|work|guides|about)(?:[/?#]|$)/.test(href), path + " untranslated link " + href);
+  }
   graph.set(path, new Set(links));
   console.log("PASS", path, title);
 }
@@ -60,7 +71,7 @@ const found = new Set(["/"]);
 const queue = ["/"];
 while (queue.length) for (const path of graph.get(queue.shift()) || []) if (graph.has(path) && !found.has(path)) { found.add(path); queue.push(path); }
 assert.deepEqual([...found].toSorted(), expected.toSorted(), "Some public pages are not discoverable from homepage HTML links");
-for (const path of ["/missing-page", "/services/missing-service", "/work/missing-case", "/guides/missing-guide"]) assert.equal((await get(path)).status, 404, path);
+for (const path of ["/en/missing-page", "/en/services/missing-service", "/missing-page", "/services/missing-service", "/work/missing-case", "/guides/missing-guide"]) assert.equal((await get(path)).status, 404, path);
 const admin = await get("/admin/analytics/login");
 assert.equal(admin.status, 200);
 assert.ok(/<meta name="robots" content="[^"]*noindex/.test(await admin.text()), "Admin must remain noindex");
@@ -72,3 +83,16 @@ for (const path of ["/", "/services/company-website", "/work/ruihe-engineering"]
   assert.ok(html.includes(`rel="canonical" href="${origin + (path === "/" ? "" : path)}"`), path);
 }
 console.log(`PASS ${expected.length} pages: metadata, schema, HTML link discovery, sitemap, index rules, Googlebot access and unknown-route 404s`);
+
+for (const [language, cookie, location] of [["en-US,en;q=.9", "", "/en"], ["zh-TW,en;q=.8", "", null], ["en-US", "portfolio-language=zh", null], ["zh-CN", "portfolio-language=en", "/en"], ["en;q=0,zh;q=.5", "", null]]) {
+  const r = await fetch(new URL("/", base), { redirect: "manual", headers: { "accept-language": language, cookie } });
+  assert.equal(r.status, location ? 307 : 200, `language ${language} / ${cookie}`);
+  if (location) assert.equal(new URL(r.headers.get("location"), base).pathname, location);
+  assert.ok(/no-store|no-cache/.test(r.headers.get("cache-control") || ""));
+}
+const manual = await fetch(new URL("/zh/services/company-website", base), { redirect: "manual", headers: { "accept-language": "en-US" } });
+assert.equal(manual.status, 307);
+assert.equal(new URL(manual.headers.get("location"), base).pathname, "/services/company-website");
+assert.ok(manual.headers.get("set-cookie")?.includes("portfolio-language=zh"));
+assert.equal((await fetch(new URL("/en", base), { headers: { "accept-language": "zh-CN", cookie: "portfolio-language=zh" } })).status, 200);
+console.log("PASS locale priority, persistence, direct URLs, no redirect loops and cache isolation");

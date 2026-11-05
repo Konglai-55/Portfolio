@@ -1,3 +1,8 @@
+"use client";
+
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import { MoveHorizontal } from "lucide-react";
 import { projects } from "@/lib/projects";
 import { WorkShowcase } from "./work-showcase";
@@ -27,7 +32,8 @@ const moreWorkStats = [
 ] as const;
 
 export function WorkSection() {
-  return (
+  const locale = useLocale();
+  return localize((
     <section id="work" className={styles.section}>
       <div className={styles.watermark} aria-hidden="true">
         WORK
@@ -130,5 +136,5 @@ export function WorkSection() {
         </footer>
       </div>
     </section>
-  );
+  ), locale);
 }

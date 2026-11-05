@@ -1,11 +1,15 @@
 "use client";
 
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { mediaUrl } from "@/lib/media";
 import styles from "./about-section.module.css";
 
 export function CaseStudyDevice() {
+  const locale = useLocale();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -44,7 +48,7 @@ export function CaseStudyDevice() {
     };
   }, []);
 
-  return (
+  return localize((
     <div className={styles.deviceShell}>
       <div className={styles.deviceScreen}>
         <video
@@ -79,5 +83,5 @@ export function CaseStudyDevice() {
         priority={false}
       />
     </div>
-  );
+  ), locale);
 }

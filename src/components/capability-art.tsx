@@ -1,3 +1,8 @@
+"use client";
+
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import type { CSSProperties } from "react";
 import styles from "./about-section.module.css";
 
@@ -5,6 +10,7 @@ const delay = (d: number) => ({ "--d": d }) as CSSProperties;
 
 /** Code editor typing itself out, with a performance ring that fills. */
 function EngineeringArt() {
+  const locale = useLocale();
   const lines = [
     { x: 24, w: 118, accent: true },
     { x: 40, w: 86 },
@@ -12,7 +18,7 @@ function EngineeringArt() {
     { x: 56, w: 64, accent: true },
     { x: 24, w: 96 },
   ];
-  return (
+  return localize((
     <svg className={styles.art} viewBox="0 0 320 160" aria-hidden="true">
       <rect
         className={styles.artFrame}
@@ -62,13 +68,14 @@ function EngineeringArt() {
         />
       ))}
     </svg>
-  );
+  ), locale);
 }
 
 /** Pen tool drawing a Bézier curve, then colour swatches popping in. */
 function DesignArt() {
+  const locale = useLocale();
   const curve = "M18 132 C 78 18, 150 18, 196 88 S 286 150, 302 46";
-  return (
+  return localize((
     <svg className={styles.art} viewBox="0 0 320 160" aria-hidden="true">
       {[40, 80, 120].map((y) => (
         <line
@@ -115,14 +122,15 @@ function DesignArt() {
         />
       ))}
     </svg>
-  );
+  ), locale);
 }
 
 /** A packet travelling a UI → API → DATA → LIVE pipeline. */
 function DeliveryArt() {
+  const locale = useLocale();
   const nodes = ["UI", "API", "DATA", "LIVE"];
   const xs = [30, 117, 203, 290];
-  return (
+  return localize((
     <svg className={styles.art} viewBox="0 0 320 160" aria-hidden="true">
       <line className={styles.track} x1="30" x2="290" y1="72" y2="72" />
       <line
@@ -153,11 +161,12 @@ function DeliveryArt() {
         DEPLOYED
       </text>
     </svg>
-  );
+  ), locale);
 }
 
 export function CapabilityArt({ index }: { index: string }) {
-  if (index === "01") return <EngineeringArt />;
-  if (index === "02") return <DesignArt />;
-  return <DeliveryArt />;
+  const locale = useLocale();
+  if (index === "01") return localize(<EngineeringArt />, locale);
+  if (index === "02") return localize(<DesignArt />, locale);
+  return localize(<DeliveryArt />, locale);
 }

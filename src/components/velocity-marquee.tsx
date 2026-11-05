@@ -1,5 +1,8 @@
 "use client";
 
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -13,7 +16,8 @@ type MarqueeRow = {
 };
 
 function Row({ row }: { row: MarqueeRow }) {
-  return (
+  const locale = useLocale();
+  return localize((
     <div className={styles.row} data-variant={row.variant}>
       <div className={styles.track} data-marquee-track>
         {[0, 1].map((copy) => (
@@ -32,7 +36,7 @@ function Row({ row }: { row: MarqueeRow }) {
         ))}
       </div>
     </div>
-  );
+  ), locale);
 }
 
 /**
@@ -47,6 +51,7 @@ export function VelocityMarquee({
   rows: readonly MarqueeRow[];
   label: string;
 }) {
+  const locale = useLocale();
   const rootRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -107,11 +112,11 @@ export function VelocityMarquee({
     };
   }, []);
 
-  return (
+  return localize((
     <div ref={rootRef} className={styles.marquee} role="img" aria-label={label}>
       {rows.map((row, index) => (
         <Row key={index} row={row} />
       ))}
     </div>
-  );
+  ), locale);
 }

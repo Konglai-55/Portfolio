@@ -1,5 +1,8 @@
 "use client";
 
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -45,7 +48,8 @@ const holdDuration = 1;
 const swapDuration = 0.55;
 
 function ShowcaseTitle({ title }: { title: string }) {
-  return (
+  const locale = useLocale();
+  return localize((
     <h3 className={styles.title} aria-label={title}>
       {title.split(" ").map((word, wordIndex) => (
         <Fragment key={`${word}-${wordIndex}`}>
@@ -64,7 +68,7 @@ function ShowcaseTitle({ title }: { title: string }) {
         </Fragment>
       ))}
     </h3>
-  );
+  ), locale);
 }
 
 export function WorkShowcase({
@@ -72,6 +76,7 @@ export function WorkShowcase({
 }: {
   projects: readonly ShowcaseProject[];
 }) {
+  const locale = useLocale();
   const rootRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
@@ -444,7 +449,7 @@ export function WorkShowcase({
     };
   }, []);
 
-  return (
+  return localize((
     <div ref={rootRef} className={styles.showcase}>
       <div ref={stageRef} className={styles.stage}>
         <div className={styles.backdrop} aria-hidden="true" />
@@ -601,5 +606,5 @@ export function WorkShowcase({
         />
       ) : null}
     </div>
-  );
+  ), locale);
 }

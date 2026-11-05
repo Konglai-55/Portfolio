@@ -9,7 +9,7 @@ export function pageMetadata(title: string, description: string, path: string): 
   return {
     title,
     description,
-    alternates: { canonical: path },
+    alternates: { canonical: path, languages: { "zh-CN": path, en: `/en${path === "/" ? "" : path}`, "x-default": path } },
     openGraph: {
       type: "website", locale: "zh_CN", siteName: "梁熙坤 · 形构 Form × Build",
       title: `${title}｜梁熙坤`, description, url: path,

@@ -1,3 +1,8 @@
+"use client";
+
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import styles from "./brand-mark.module.css";
 
 type BrandAssetProps = {
@@ -6,9 +11,10 @@ type BrandAssetProps = {
 };
 
 export function BrandMark({ className = "", title }: BrandAssetProps) {
+  const locale = useLocale();
   const labelled = Boolean(title);
 
-  return (
+  return localize((
     <svg
       className={`${styles.mark} ${className}`}
       viewBox="0 0 148.71 123.47"
@@ -32,13 +38,14 @@ export function BrandMark({ className = "", title }: BrandAssetProps) {
         />
       </g>
     </svg>
-  );
+  ), locale);
 }
 
 export function BrandWordmark({ className = "", title }: BrandAssetProps) {
+  const locale = useLocale();
   const labelled = Boolean(title);
 
-  return (
+  return localize((
     <svg
       className={`${styles.wordmark} ${className}`}
       viewBox="0 0 502 144.64"
@@ -75,5 +82,5 @@ export function BrandWordmark({ className = "", title }: BrandAssetProps) {
         </g>
       </g>
     </svg>
-  );
+  ), locale);
 }

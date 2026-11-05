@@ -1,5 +1,8 @@
 "use client";
 
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, ArrowUpRight, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -95,17 +98,19 @@ function PhoneScreen({
   item: (typeof evidence)[number];
   sizes: string;
 }) {
-  return (
+  const locale = useLocale();
+  return localize((
     <span className={styles.phoneBody}>
       <span className={styles.phoneIsland} aria-hidden="true" />
       <span className={styles.phoneScreen}>
         <Image src={item.image} alt="" fill sizes={sizes} />
       </span>
     </span>
-  );
+  ), locale);
 }
 
 export function TrustSection() {
+  const locale = useLocale();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const fanRef = useRef<HTMLDivElement>(null);
@@ -366,7 +371,7 @@ export function TrustSection() {
         )
       : null;
 
-  return (
+  return localize((
     <section id="trust" className={styles.section}>
       <div className={styles.watermark} aria-hidden="true">
         PROOF
@@ -512,5 +517,5 @@ export function TrustSection() {
 
       {preview}
     </section>
-  );
+  ), locale);
 }

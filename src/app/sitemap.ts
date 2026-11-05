@@ -9,5 +9,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...services.map(s => `/services/${s.slug}`),
     ...projects.map(p => `/work/${p.slug}`),
     ...guides.map(g => `/guides/${g.slug}`)];
-  return paths.map(path => ({ url: siteUrl + (path === "/" ? "" : path), lastModified: contentUpdated }));
+  return paths.flatMap(path => {
+    const zh = siteUrl + (path === "/" ? "" : path);
+    const en = siteUrl + `/en${path === "/" ? "" : path}`;
+    return [zh, en].map(url => ({ url, lastModified: contentUpdated, alternates: { languages: { "zh-CN": zh, en } } }));
+  });
 }

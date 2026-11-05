@@ -1,5 +1,8 @@
 "use client";
 
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Check, Copy, MoveUp, QrCode } from "lucide-react";
@@ -62,6 +65,7 @@ async function copyText(value: string) {
 }
 
 export function ContactSection() {
+  const locale = useLocale();
   const [copied, setCopied] = useState<string | null>(null);
   const [qrOpen, setQrOpen] = useState(false);
   const timerRef = useRef<number | undefined>(undefined);
@@ -96,7 +100,7 @@ export function ContactSection() {
     timerRef.current = window.setTimeout(() => setCopied(null), 1800);
   };
 
-  return (
+  return localize((
     <section id="contact" className={styles.section}>
       <div className={styles.container}>
         <header className={styles.sectionHeader} data-reveal="soft">
@@ -314,5 +318,5 @@ export function ContactSection() {
         </div>
       </footer>
     </section>
-  );
+  ), locale);
 }

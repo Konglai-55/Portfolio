@@ -1,5 +1,8 @@
 "use client";
 
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { BrandMark } from "./brand-mark";
@@ -26,6 +29,7 @@ function splitIntoChars(target: HTMLElement, text: string) {
 }
 
 export function OpeningSequence() {
+  const locale = useLocale();
   const [visible, setVisible] = useState(true);
   const overlayRef = useRef<HTMLDivElement>(null);
   const columnsRef = useRef<HTMLDivElement>(null);
@@ -416,7 +420,7 @@ export function OpeningSequence() {
     return null;
   }
 
-  return (
+  return localize((
     <div
       ref={overlayRef}
       className={styles.overlay}
@@ -478,5 +482,5 @@ export function OpeningSequence() {
         </span>
       </div>
     </div>
-  );
+  ), locale);
 }

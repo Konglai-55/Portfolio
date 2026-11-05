@@ -12,6 +12,8 @@ import { VelocityMarquee } from "@/components/velocity-marquee";
 import { SiteDirectory } from "@/components/site-directory";
 import { StructuredData } from "@/components/structured-data";
 import { identityGraph, personId, siteUrl, websiteId } from "@/lib/seo";
+import { localize, type Locale } from "@/lib/i18n";
+
 
 const openingRows = [
   {
@@ -45,8 +47,8 @@ const closingRows = [
   },
 ] as const;
 
-export default function Home() {
-  return (
+export default function Home({ locale = "zh" }: { locale?: Locale } = {}) {
+  return localize((
     <main>
       <StructuredData data={{ "@context": "https://schema.org", "@graph": [...identityGraph, { "@type": "WebPage", "@id": `${siteUrl}/#webpage`, url: siteUrl, name: "梁熙坤｜企业官网、外贸独立站与全栈开发", isPartOf: { "@id": websiteId }, about: { "@id": personId }, inLanguage: "zh-CN" }] }} />
       <AnalyticsTracker />
@@ -69,5 +71,5 @@ export default function Home() {
       />
       <ContactSection />
     </main>
-  );
+  ), locale);
 }

@@ -1,5 +1,8 @@
 "use client";
 
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import Image from "next/image";
 import gsap from "gsap";
 import {
@@ -54,6 +57,7 @@ function HeroCopy({
   titleRef,
   interactive = false,
 }: HeroCopyProps) {
+  const locale = useLocale();
   function keepIdentity(event: MouseEvent<HTMLAnchorElement>) {
     if (interactive) {
       event.stopPropagation();
@@ -67,7 +71,7 @@ function HeroCopy({
 
   const Heading = interactive ? "h1" : "div";
 
-  return (
+  return localize((
     <>
       <p className={styles.eyebrow} data-hero-eyebrow>
         <span />
@@ -79,7 +83,7 @@ function HeroCopy({
       <Heading ref={titleRef} className={styles.heroTitle} aria-label={copy}>
         {phrases.map((phrase) => (
           <span key={phrase} className={styles.phrase} aria-hidden="true">
-            {phrase}
+            {phrase}{locale === "en" ? " " : null}
           </span>
         ))}
       </Heading>
@@ -119,7 +123,7 @@ function HeroCopy({
         )}
       </div>
     </>
-  );
+  ), locale);
 }
 
 function nextPaint() {
@@ -135,6 +139,7 @@ function tweenFinished(tween: gsap.core.Animation) {
 }
 
 export function HeroStage() {
+  const locale = useLocale();
   const heroRef = useRef<HTMLElement>(null);
   const baseCopyRef = useRef<HTMLDivElement>(null);
   const baseTitleRef = useRef<HTMLHeadingElement>(null);
@@ -471,7 +476,7 @@ export function HeroStage() {
     });
   }
 
-  return (
+  return localize((
     <section
       ref={heroRef}
       id="home"
@@ -616,5 +621,5 @@ export function HeroStage() {
         aria-hidden="true"
       />
     </section>
-  );
+  ), locale);
 }

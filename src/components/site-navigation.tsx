@@ -1,5 +1,8 @@
 "use client";
 
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import {
   type PointerEvent as ReactPointerEvent,
   useCallback,
@@ -12,6 +15,7 @@ import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { BrandMark } from "./brand-mark";
 import styles from "./site-navigation.module.css";
+import { LanguageSwitch } from "./language-switch";
 
 const navigationItems = [
   { index: "01", label: "我的作品", englishLabel: "Selected work", href: "#work" },
@@ -24,6 +28,7 @@ const homeItem = { index: "00", label: "首页", href: "#home" } as const;
 const wechatId = "as14246791";
 
 export function SiteNavigation() {
+  const locale = useLocale();
   const [isFloating, setIsFloating] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeHref, setActiveHref] = useState("");
@@ -262,7 +267,7 @@ export function SiteNavigation() {
     }
   };
 
-  return (
+  return localize((
     <div
       data-site-navigation
       className={styles.root}
@@ -305,6 +310,7 @@ export function SiteNavigation() {
           ))}
         </nav>
 
+        <LanguageSwitch />
         <a
           href="#contact"
           className={styles.barCta}
@@ -354,6 +360,7 @@ export function SiteNavigation() {
             </span>
           </button>
 
+          <LanguageSwitch />
           <button
             ref={menuButtonRef}
             type="button"
@@ -434,5 +441,5 @@ export function SiteNavigation() {
         </div>
       </div>
     </div>
-  );
+  ), locale);
 }

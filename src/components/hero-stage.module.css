@@ -234,6 +234,11 @@ html.hero-intro-pending .hint {
   display: inline-block;
 }
 
+:global(html[lang="en"]) .phrase { display: inline; }
+:global(html[lang="en"]) .heroTitle { text-wrap: balance; }
+:global(html[lang="en"]) .serviceCopy { flex-wrap: wrap; max-width: 46rem; }
+:global(html[lang="en"]) .serviceCopy small { display: none; }
+
 .serviceCopy {
   display: flex;
   gap: 0.85rem;

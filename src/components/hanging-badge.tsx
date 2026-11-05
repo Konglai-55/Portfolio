@@ -1,5 +1,8 @@
 "use client";
 
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import { useEffect, useRef } from "react";
 import styles from "./hanging-badge.module.css";
 
@@ -33,6 +36,7 @@ function solve(a: Point, b: Point, length: number, stiffness: number) {
  * grabbed, dragged and flung.
  */
 export function HangingBadge() {
+  const locale = useLocale();
   const stageRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
   const strapRef = useRef<SVGPathElement>(null);
@@ -316,7 +320,7 @@ export function HangingBadge() {
     };
   }, []);
 
-  return (
+  return localize((
     <div ref={stageRef} className={styles.stage}>
       <svg className={styles.defs} aria-hidden="true">
         <filter id="badge-seal-rough">
@@ -406,5 +410,5 @@ export function HangingBadge() {
         </div>
       </div>
     </div>
-  );
+  ), locale);
 }

@@ -32,7 +32,7 @@ npm run start  # 运行生产版本
 npm run lint   # 代码检查
 ```
 
-页面入口位于 `src/app/page.tsx`，全局样式位于 `src/app/globals.css`。
+页面入口位于 `src/app/(zh)/page.tsx`，全局样式位于 `src/app/globals.css`。
 # Portfolio analytics
 
 访问统计后台位于 `/admin/analytics`。前台会以第一方方式采集页面访问、活跃停留、滚动深度、关键交互以及 Web Vitals；原始 IP 不会写入对象存储。
@@ -43,3 +43,12 @@ npm run lint   # 代码检查
 4. 重启 Next.js 服务后访问 `/admin/analytics`。
 
 数据按 `portfolio-analytics/events/YYYY/MM/DD/` 写成不可变 JSON 对象，避免并发覆盖。后台可查看 7、30、90 天数据。
+
+
+## Languages
+
+Chinese public URLs remain unchanged. English pages live under `/en` and share the same components, content structure and interactions, using the authored dictionary in `src/lib/i18n/en.json`. Both languages are rendered in HTML with reciprocal language alternates and included in the sitemap.
+
+The homepage uses a saved language choice first, then supported browser languages in Accept-Language order. If neither Chinese nor English is offered, the existing local GeoIP database supplies a regional fallback (Chinese for China/Hong Kong/Macao/Taiwan, English elsewhere; Chinese when unavailable). Explicit content URLs do not auto-redirect. The language links preserve the corresponding page and remember the selection for one year; `/zh/...` is a no-JavaScript Chinese selection redirect. APIs, admin and assets are excluded from language negotiation.
+
+Run `CHECK_BASE_URL=http://127.0.0.1:4516 node scripts/check-seo.mjs` for the 28-page language/SEO check, including language priority, saved preferences, direct URLs, missing routes and image loading.

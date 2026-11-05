@@ -1,3 +1,8 @@
+"use client";
+
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import type { CSSProperties } from "react";
 import { CapabilityArt } from "./capability-art";
 import { CaseStudyDevice } from "./case-study-device";
@@ -109,7 +114,8 @@ const comparisons = [
 ] as const;
 
 export function AboutSection() {
-  return (
+  const locale = useLocale();
+  return localize((
     <section id="about" className={styles.section}>
       <div className={styles.container}>
         <header className={styles.sectionHeader} data-reveal="soft">
@@ -339,5 +345,5 @@ export function AboutSection() {
         </blockquote>
       </div>
     </section>
-  );
+  ), locale);
 }

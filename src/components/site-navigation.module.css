@@ -25,7 +25,8 @@
   left: var(--edge);
   display: grid;
   height: 3.4rem;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr auto auto auto;
+  column-gap: 1.1rem;
   align-items: center;
   color: #f7f4ec;
   transition:

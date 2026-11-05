@@ -1,5 +1,8 @@
 "use client";
 
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import { useEffect, useRef } from "react";
 import styles from "./about-section.module.css";
 
@@ -60,6 +63,7 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
  * from the surrounding [data-scrub-progress] block.
  */
 export function TeamDiagram() {
+  const locale = useLocale();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -320,7 +324,7 @@ export function TeamDiagram() {
     };
   }, []);
 
-  return (
+  return localize((
     <div className={styles.teamCard} aria-hidden="true">
       <div className={styles.teamPhases}>
         <span data-phase="1">01 · 个人主导</span>
@@ -340,5 +344,5 @@ export function TeamDiagram() {
         </span>
       </div>
     </div>
-  );
+  ), locale);
 }

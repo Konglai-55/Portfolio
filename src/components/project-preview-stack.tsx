@@ -1,5 +1,8 @@
 "use client";
 
+import { useLocale } from "./locale-provider";
+import { localize } from "@/lib/i18n";
+
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import {
@@ -41,6 +44,7 @@ export function ProjectLightbox({
   pages: readonly ProjectPreviewPage[];
   onClosed: () => void;
 }) {
+  const locale = useLocale();
   const backdropRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -245,7 +249,7 @@ export function ProjectLightbox({
     scroller.scrollTop += event.deltaY;
   };
 
-  return createPortal(
+  return localize(createPortal(
     <div
       className={styles.previewOverlay}
       role="dialog"
@@ -361,7 +365,7 @@ export function ProjectLightbox({
       </div>
     </div>,
     document.body,
-  );
+  ), locale);
 }
 
 export function ProjectPreviewStack({
@@ -373,6 +377,7 @@ export function ProjectPreviewStack({
   pages: readonly ProjectPreviewPage[];
   triggerLabel?: string;
 }) {
+  const locale = useLocale();
   const stackRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const [active, setActive] = useState<ActivePreview | null>(null);
@@ -482,7 +487,7 @@ export function ProjectPreviewStack({
     }
   };
 
-  return (
+  return localize((
     <>
       <button
         className={styles.previewTrigger}
@@ -558,5 +563,5 @@ export function ProjectPreviewStack({
         />
       ) : null}
     </>
-  );
+  ), locale);
 }
