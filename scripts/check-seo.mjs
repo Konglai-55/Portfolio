@@ -25,6 +25,14 @@ for (const path of expected) {
   assert.equal(response.status, 200, path);
   assert.ok(!response.headers.get("x-robots-tag")?.includes("noindex"), path);
   const html = await response.text();
+  if (path.startsWith("/work/")) {
+    const image = html.match(/<img\b[^>]*src="([^"]+)"/)?.[1]?.replaceAll("&amp;", "&");
+    assert.ok(image?.startsWith("/_next/image?url=%2Fimages%2F"), path + " cover must use bundled image");
+    const cover = await fetch(new URL(image, base), { headers: { accept: "image/webp" }, signal: AbortSignal.timeout(30000) });
+    assert.equal(cover.status, 200, path + " cover unavailable");
+    assert.ok(cover.headers.get("content-type")?.startsWith("image/"), path + " invalid image response");
+    assert.ok((await cover.arrayBuffer()).byteLength > 0, path + " empty image");
+  }
   const title = html.match(/<title>([^<]+)<\/title>/)?.[1];
   const description = html.match(/<meta name="description" content="([^"]+)"/)?.[1];
   assert.ok(title && description, path + " missing metadata");

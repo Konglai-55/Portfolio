@@ -12,5 +12,7 @@ export function mediaUrl(pathname: string) {
     return pathname;
   }
 
-  return `${mediaBaseUrl}/${pathname.replace(/^\/+/, "")}`;
+  const path = pathname.replace(/^\/+/, "");
+  // Bundled images avoid an external fetch on each image optimizer cache miss.
+  return path.startsWith("images/") ? `/${path}` : `${mediaBaseUrl}/${path}`;
 }
