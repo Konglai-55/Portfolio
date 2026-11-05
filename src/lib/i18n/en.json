@@ -481,5 +481,14 @@
   "下一步": "Next steps",
   "需要把清单变成具体方案，可以查看": "To turn the checklist into a specific plan, explore",
   "，或": "or",
-  "直接沟通项目": "discuss your project directly"
+  "直接沟通项目": "discuss your project directly",
+  "界面反馈": "Interface feedback",
+  "网站打开后， 客户直接表达认可。": "After opening the site, the client shared their appreciation.",
+  "客户确认可以打开网站，并评价界面好看；语音消息未作转写。": "The client confirmed access and praised the interface. Voice messages are not transcribed.",
+  "客户打开网站后认可界面的聊天记录": "Client chat praising the interface after opening the website",
+  "沟通中讨论了后续合作与优惠安排，客户作出积极回应。": "The conversation discusses future collaboration and a discount, with positive responses from the client.",
+  "客户认可 UI；截图中的“商业级设计”等为开发者自己的描述。": "The client praises the UI. Phrases such as “commercial-grade design” are the developer’s own comments.",
+  "支付与账单": "Payments and statements",
+  "客户回应后续合作安排的聊天记录": "Client responses to plans for future collaboration",
+  "客户认可 UI 与开发者讨论设计定位的聊天记录": "Client praise for the UI and the developer’s comments on its design positioning"
 }

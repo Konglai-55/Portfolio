@@ -557,6 +557,8 @@
 
 .lightboxHeader > div {
   display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
   align-items: baseline;
   gap: 1rem;
 }
@@ -659,6 +661,9 @@
   font-size: 0.62rem;
   line-height: 1.7;
 }
+
+.originalLink { display: inline-flex; align-items: center; gap: .3rem; color: #243642; font: 500 .7rem/1.5 var(--font-geist-sans), sans-serif; text-underline-offset: 4px; white-space: nowrap; }
+.originalLink:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 5px; }
 
 .lightboxFooter {
   border-top: 1px solid rgb(40 58 69 / 14%);

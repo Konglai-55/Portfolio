@@ -20,9 +20,9 @@ const evidence = [
     type: "长期合作",
     englishType: "Long-term partnership",
     statement: "一次交付之后，\n仍愿意把下一次项目交给我。",
-    detail: "客户在项目推进后主动确认长期合作意向。",
+    detail: "沟通中讨论了后续合作与优惠安排，客户作出积极回应。",
     image: mediaUrl("images/trust-evidence-01.jpg"),
-    alt: "客户确认长期合作的项目沟通记录",
+    alt: "客户回应后续合作安排的聊天记录",
   },
   {
     index: "02",
@@ -38,9 +38,9 @@ const evidence = [
     type: "商业质感",
     englishType: "Commercial quality",
     statement: "不止是能用，\n也要达到商业级的完成度。",
-    detail: "从视觉方向到细节完成度，得到客户正向反馈。",
+    detail: "客户认可 UI；截图中的“商业级设计”等为开发者自己的描述。",
     image: mediaUrl("images/trust-evidence-03.jpg"),
-    alt: "客户评价项目具有商业级设计质感的沟通记录",
+    alt: "客户认可 UI 与开发者讨论设计定位的聊天记录",
   },
   {
     index: "04",
@@ -62,12 +62,12 @@ const evidence = [
   },
   {
     index: "06",
-    type: "稳定回款",
-    englishType: "Ongoing settlements",
-    statement: "稳定交付，\n最终会表现为稳定的合作记录。",
-    detail: "同一合作方在短周期内产生多次项目结算。",
+    type: "界面反馈",
+    englishType: "Interface feedback",
+    statement: "网站打开后，\n客户直接表达认可。",
+    detail: "客户确认可以打开网站，并评价界面好看；语音消息未作转写。",
     image: mediaUrl("images/trust-evidence-06.jpg"),
-    alt: "合作方连续多次结算的交易记录",
+    alt: "客户打开网站后认可界面的聊天记录",
   },
   {
     index: "07",
@@ -103,7 +103,7 @@ function PhoneScreen({
     <span className={styles.phoneBody}>
       <span className={styles.phoneIsland} aria-hidden="true" />
       <span className={styles.phoneScreen}>
-        <Image src={item.image} alt="" fill sizes={sizes} />
+        <Image src={locale === "en" ? item.image.replace(/\.jpg$/, "-en.png") : item.image} alt="" fill sizes={sizes} />
       </span>
     </span>
   ), locale);
@@ -298,7 +298,7 @@ export function TrustSection() {
             className={styles.lightbox}
             role="dialog"
             aria-modal="true"
-            aria-label={`${activeItem.type}原始凭证`}
+            aria-label={locale === "en" ? `${localize(activeItem.type, locale)} — English translation` : `${activeItem.type}原始凭证`}
             onMouseDown={(event) => {
               if (event.target === event.currentTarget) setActiveIndex(null);
             }}
@@ -308,6 +308,7 @@ export function TrustSection() {
                 <div>
                   <span>{activeItem.index} / Evidence archive</span>
                   <strong>{activeItem.type}</strong>
+                  {locale === "en" && <a className={styles.originalLink} href={activeItem.image} target="_blank" rel="noopener noreferrer">View Chinese original <ArrowUpRight size={15} aria-hidden="true" /></a>}
                 </div>
                 <button
                   ref={closeButtonRef}
@@ -322,7 +323,7 @@ export function TrustSection() {
               <div className={styles.lightboxBody}>
                 <div className={styles.lightboxImage}>
                   <Image
-                    src={activeItem.image}
+                    src={locale === "en" ? activeItem.image.replace(/\.jpg$/, "-en.png") : activeItem.image}
                     alt={activeItem.alt}
                     fill
                     sizes="(max-width: 720px) 96vw, 72vw"
@@ -333,7 +334,7 @@ export function TrustSection() {
                   <h3>{activeItem.statement.replace("\n", "")}</h3>
                   <p>{activeItem.detail}</p>
                   <small>
-                    原始材料仅截取与合作、交付及结算相关的部分。
+                    {locale === "en" ? "English translation recreated for readability. Use “View Chinese original” to see the source; voice messages are not transcribed." : "原始材料仅截取与合作、交付及结算相关的部分。"}
                   </small>
                 </aside>
               </div>
@@ -404,20 +405,20 @@ export function TrustSection() {
                 <dt>客户反馈</dt>
                 <dd
                   data-count-from="0"
-                  data-count-to="4"
+                  data-count-to="5"
                   data-count-duration="0.9"
                 >
-                  4
+                  5
                 </dd>
               </div>
               <div>
-                <dt>结算记录</dt>
+                <dt>支付与账单</dt>
                 <dd
                   data-count-from="0"
-                  data-count-to="4"
+                  data-count-to="3"
                   data-count-duration="0.9"
                 >
-                  4
+                  3
                 </dd>
               </div>
               <div>
@@ -448,7 +449,7 @@ export function TrustSection() {
               }}
               onClick={() => setActiveIndex(index)}
               data-analytics={`trust:phone:${item.index}`}
-              aria-label={`放大查看 ${item.type} 原始凭证`}
+              aria-label={locale === "en" ? `View ${localize(item.type, locale)} English translation` : `放大查看 ${item.type} 原始凭证`}
             >
               <span className={styles.phoneTag} aria-hidden="true">
                 {item.index} · {item.type}
@@ -458,7 +459,7 @@ export function TrustSection() {
           ))}
         </div>
         <p className={styles.fanCaption}>
-          <span>08 份原始记录</span>
+          <span>{locale === "en" ? "08 translated records" : "08 份原始记录"}</span>
           点击任意一台手机，查看完整截图
         </p>
       </div>
@@ -487,7 +488,7 @@ export function TrustSection() {
                   <PhoneScreen item={item} sizes="4rem" />
                 </span>
                 <span className={styles.rowCta}>
-                  查看原图
+                  {locale === "en" ? "View translation" : "查看原图"}
                   <ArrowUpRight size={15} strokeWidth={1.5} aria-hidden="true" />
                 </span>
               </button>

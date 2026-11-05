@@ -28,6 +28,17 @@ for (const path of expected) {
   assert.equal(response.status, 200, path);
   assert.ok(!response.headers.get("x-robots-tag")?.includes("noindex"), path);
   const html = await response.text();
+  if (original === "/") {
+    const records = [...html.matchAll(/url=%2Fimages%2Ftrust-evidence-(\d\d)(-en)?\.(png|jpg)/g)];
+    assert.deepEqual([...new Set(records.map(m => m[1]))].sort(), ["01", "02", "03", "04", "05", "06", "07", "08"], path + " evidence count");
+    for (const record of records) assert.equal(Boolean(record[2]), en, path + " evidence language");
+    for (let n = 1; n <= 8; n++) {
+      const file = `/images/trust-evidence-${String(n).padStart(2, "0")}${en ? "-en.png" : ".jpg"}`;
+      const asset = await fetch(new URL(file, base), { method: "HEAD", signal: AbortSignal.timeout(15000) });
+      assert.equal(asset.status, 200, file);
+      assert.ok(asset.headers.get("content-type")?.startsWith("image/"), file);
+    }
+  }
   if (original.startsWith("/work/")) {
     const image = html.match(/<img\b[^>]*src="([^"]+)"/)?.[1]?.replaceAll("&amp;", "&");
     assert.ok(image?.startsWith("/_next/image?url=%2Fimages%2F"), path + " cover must use bundled image");
