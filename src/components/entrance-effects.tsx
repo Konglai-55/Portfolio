@@ -86,6 +86,9 @@ function getRevealState(kind: RevealKind) {
 
 export function EntranceEffects() {
   useLayoutEffect(() => {
+    // Compact screens read the server-rendered content immediately; avoid
+    // splitting and measuring off-screen text before the first interaction.
+    if (window.matchMedia("(max-width: 700px)").matches) return;
     const root = document.documentElement;
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",

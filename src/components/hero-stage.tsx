@@ -170,7 +170,7 @@ export function HeroStage() {
       return;
     }
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce), (max-width: 700px)").matches) {
       root.classList.remove("hero-intro-pending");
       return;
     }

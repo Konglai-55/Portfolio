@@ -59,7 +59,7 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              'document.documentElement.classList.add("hero-intro-pending");try{if(sessionStorage.getItem("lx-opening-seen"))document.documentElement.classList.add("opening-seen")}catch(e){}',
+              'document.documentElement.classList.add(window.matchMedia("(max-width: 700px)").matches?"opening-seen":"hero-intro-pending");try{if(sessionStorage.getItem("lx-opening-seen"))document.documentElement.classList.add("opening-seen")}catch(e){}',
           }}
         />
         <link rel="dns-prefetch" href={mediaOrigin} />
