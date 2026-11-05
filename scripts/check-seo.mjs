@@ -28,6 +28,12 @@ const searchIntents = {
   "/services/nextjs-development": { title: "全栈开发者", heading: "全栈开发者" },
   "/about": { title: "独立开发者", heading: "独立全栈开发者" },
   "/guides/website-developer-selection": { title: "独立开发者", heading: "独立开发者" },
+  "/en": { title: "custom website development", heading: "website design" },
+  "/en/services": { title: "custom website development", heading: "custom website development" },
+  "/en/services/company-website": { title: "business website design", heading: "business website design" },
+  "/en/services/nextjs-development": { title: "next.js developer", heading: "next.js developer" },
+  "/en/about": { title: "freelance web developer", heading: "freelance web developer" },
+  "/en/guides/website-developer-selection": { title: "freelance web developer", heading: "freelance web developer" },
 };
 for (const path of expected) {
   const en = path === "/en" || path.startsWith("/en/");
@@ -64,11 +70,11 @@ for (const path of expected) {
   const canonical = [...html.matchAll(/<link rel="canonical" href="([^"]+)"/g)].map(m => m[1]);
   assert.deepEqual(canonical, [origin + (path === "/" ? "" : path)], path);
   assert.equal([...html.matchAll(/<h1[\s>]/g)].length, 1, path + " needs one H1");
-  if (!en && searchIntents[path]) {
+  if (searchIntents[path]) {
     const intent = searchIntents[path];
     const heading = html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1].replace(/<[^>]+>/g, "");
-    assert.ok(title.includes(intent.title), path + " title does not describe its service");
-    assert.ok(heading?.includes(intent.heading), path + " visible H1 does not describe its service");
+    assert.ok(title.toLowerCase().includes(intent.title), path + " title does not describe its service");
+    assert.ok(heading?.toLowerCase().includes(intent.heading), path + " visible H1 does not describe its service");
   }
   assert.ok(!/<meta name="robots" content="[^"]*noindex/.test(html), path);
   assert.ok(html.includes(`property="og:url" content="${canonical[0]}"`), path + " wrong OG URL");
