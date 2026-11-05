@@ -1,6 +1,19 @@
-# 个人网站
+# 梁熙坤 · 形构 Form × Build
 
-基于 Next.js、TypeScript、App Router 与 Tailwind CSS 的个人网站基础项目。
+梁熙坤的设计与全栈开发作品集，基于 Next.js、TypeScript、App Router 与 Tailwind CSS。
+
+**在线访问：[portfolio.mjjmc.xyz](https://portfolio.mjjmc.xyz/)**
+
+- [网站设计与开发服务](https://portfolio.mjjmc.xyz/services)：企业官网、外贸独立站与 Next.js 定制开发。
+- [公开项目案例](https://portfolio.mjjmc.xyz/work)：医院官网、创意店、制造业官网与家具外贸站设计。
+- [网站建设指南](https://portfolio.mjjmc.xyz/guides)：需求资料准备、报价与交付范围核对。
+- [关于梁熙坤](https://portfolio.mjjmc.xyz/about)与[项目联系](https://portfolio.mjjmc.xyz/#contact)。
+
+## 内容与搜索基础
+
+公开服务、案例和指南页面预生成为 HTML，并提供独立标题、规范地址、结构化数据和站内链接。站点地图位于 [sitemap.xml](https://portfolio.mjjmc.xyz/sitemap.xml)。技术检查可以运行 `npm run check:seo`，默认检查本机 `http://127.0.0.1:4514`；设置 `CHECK_BASE_URL` 可检查对应预览或正式站点。
+
+发布使用经过验证的 Linux 成品，保留源版本与成品校验；生产主机负责运行网站。实际 Google 收录、查询表现和排名需另外核对，不能由构建结果或测试分数推断。
 
 ## 本地开发
 

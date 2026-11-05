@@ -42,6 +42,12 @@
   }
 }
 
+@media (max-width: 700px) {
+  :root {
+    --font-cjk-art: "Songti SC", "Noto Serif CJK SC", "STSong", "SimSun", serif;
+  }
+}
+
 html.opening-seen [data-opening] {
   display: none;
 }
