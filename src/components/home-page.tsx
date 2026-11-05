@@ -50,7 +50,7 @@ const closingRows = [
 export default function Home({ locale = "zh" }: { locale?: Locale } = {}) {
   return localize((
     <main>
-      <StructuredData data={{ "@context": "https://schema.org", "@graph": [...identityGraph, { "@type": "WebPage", "@id": `${siteUrl}/#webpage`, url: siteUrl, name: "梁熙坤｜企业官网、外贸独立站与全栈开发", isPartOf: { "@id": websiteId }, about: { "@id": personId }, inLanguage: "zh-CN" }] }} />
+      <StructuredData data={{ "@context": "https://schema.org", "@graph": [...identityGraph, { "@type": "WebPage", "@id": `${siteUrl}/#webpage`, url: siteUrl, name: "网站制作与企业官网建设｜独立开发者梁熙坤", isPartOf: { "@id": websiteId }, about: { "@id": personId }, inLanguage: "zh-CN" }] }} />
       <AnalyticsTracker />
       <OpeningSequence />
       <SiteNavigation />

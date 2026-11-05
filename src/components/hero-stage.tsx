@@ -20,16 +20,16 @@ const slides = [
   {
     id: "designer",
     role: "设计师",
-    copy: "洞察需求，构建美感，让每一个想法拥有清晰表达。",
-    phrases: ["洞察需求，", "构建美感，", "让每一个想法", "拥有清晰表达。"],
+    copy: "网站制作，先理解业务，再让品牌拥有清晰表达。",
+    phrases: ["网站制作，", "先理解业务，", "再让品牌", "拥有清晰表达。"],
     image: "/images/hero-designer-studio.png",
     alt: "阳光洒进画室，一位设计师正在窗边创作",
   },
   {
     id: "developer",
     role: "开发者",
-    copy: "拆解问题，实现创意，让每一个设计真正稳定运行。",
-    phrases: ["拆解问题，", "实现创意，", "让每一个设计", "真正稳定运行。"],
+    copy: "定制开发，从需求出发，让企业官网真正稳定运行。",
+    phrases: ["定制开发，", "从需求出发，", "让企业官网", "真正稳定运行。"],
     image: "/images/hero-developer-night.png",
     alt: "夜晚的城市窗景前，一位开发者正在桌前工作",
   },
@@ -89,7 +89,7 @@ function HeroCopy({
       </Heading>
 
       <p className={styles.serviceCopy} data-hero-supporting>
-        企业官网、外贸独立站与全栈开发。
+        独立开发者负责企业官网、外贸独立站与全栈开发。
         <small>From visual direction to full-stack delivery.</small>
       </p>
 

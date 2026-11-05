@@ -5,7 +5,7 @@ const origin = "https://portfolio.mjjmc.xyz";
 const chinese = ["/", "/about", "/services", "/work", "/guides",
   "/services/company-website", "/services/international-website", "/services/nextjs-development",
   "/work/hill-nairobi", "/work/pixel-cafe-montreal", "/work/ruihe-engineering", "/work/suxin-furniture",
-  "/guides/website-project-checklist", "/guides/website-cost-and-scope"];
+  "/guides/website-project-checklist", "/guides/website-cost-and-scope", "/guides/website-developer-selection"];
 const expected = [...chinese, ...chinese.map(p => `/en${p === "/" ? "" : p}`)];
 async function get(path, userAgent) {
   return fetch(new URL(path, base), { headers: { "accept-language": "zh-CN", ...(userAgent ? { "user-agent": userAgent } : {}) }, signal: AbortSignal.timeout(90000) });
@@ -21,6 +21,14 @@ for (const rule of ["Disallow: /admin/", "Disallow: /api/", "Sitemap: " + origin
 const graph = new Map();
 const titles = new Set();
 const descriptions = new Set();
+const searchIntents = {
+  "/": { title: "网站制作", heading: "网站制作" },
+  "/services": { title: "网站制作", heading: "网站制作" },
+  "/services/company-website": { title: "企业官网建设", heading: "企业官网建设" },
+  "/services/nextjs-development": { title: "全栈开发者", heading: "全栈开发者" },
+  "/about": { title: "独立开发者", heading: "独立全栈开发者" },
+  "/guides/website-developer-selection": { title: "独立开发者", heading: "独立开发者" },
+};
 for (const path of expected) {
   const en = path === "/en" || path.startsWith("/en/");
   const original = en ? path.slice(3) || "/" : path;
@@ -56,6 +64,12 @@ for (const path of expected) {
   const canonical = [...html.matchAll(/<link rel="canonical" href="([^"]+)"/g)].map(m => m[1]);
   assert.deepEqual(canonical, [origin + (path === "/" ? "" : path)], path);
   assert.equal([...html.matchAll(/<h1[\s>]/g)].length, 1, path + " needs one H1");
+  if (!en && searchIntents[path]) {
+    const intent = searchIntents[path];
+    const heading = html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1].replace(/<[^>]+>/g, "");
+    assert.ok(title.includes(intent.title), path + " title does not describe its service");
+    assert.ok(heading?.includes(intent.heading), path + " visible H1 does not describe its service");
+  }
   assert.ok(!/<meta name="robots" content="[^"]*noindex/.test(html), path);
   assert.ok(html.includes(`property="og:url" content="${canonical[0]}"`), path + " wrong OG URL");
   const schema = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)].map(m => JSON.parse(m[1]));
@@ -65,7 +79,12 @@ for (const path of expected) {
   if (original !== "/") assert.ok(entities.some(e => e["@type"] === "BreadcrumbList"), path);
   if (original.startsWith("/services/")) assert.ok(entities.some(e => e["@type"] === "Service"), path);
   if (original.startsWith("/work/")) assert.ok(entities.some(e => e["@type"] === "CreativeWork"), path);
-  if (original.startsWith("/guides/")) assert.ok(entities.some(e => e["@type"] === "Article" && e.author["@id"].endsWith("#person")), path);
+  if (original.startsWith("/guides/")) {
+    const article = entities.find(e => e["@type"] === "Article");
+    assert.ok(article?.author["@id"].endsWith("#person"), path);
+    assert.equal(article.datePublished, original.endsWith("website-developer-selection") ? "2026-11-05" : "2026-11-04", path + " original publication date changed");
+    assert.ok(article.dateModified >= article.datePublished, path + " invalid article dates");
+  }
   const links = [...html.matchAll(/<a\b[^>]*href="([^"]+)"/g)].map(m => m[1].split("#")[0]).filter(p => p.startsWith("/") && !p.startsWith("//"));
   assert.ok(html.includes(`lang="${en ? "en" : "zh-CN"}"`), path + " HTML language");
   assert.ok(html.includes(`hrefLang="zh-CN" href="${origin + (original === "/" ? "" : original)}"`) || html.includes(`hreflang="zh-CN" href="${origin + (original === "/" ? "" : original)}"`), path + " Chinese alternate");
