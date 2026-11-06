@@ -23,6 +23,9 @@ export const identityGraph = [
   {
     "@type": "Person", "@id": personId, name: "梁熙坤", alternateName: "Liang Xikun",
     jobTitle: "独立全栈开发者与网站设计师", url: siteUrl,
+    description: "独立网站设计师与全栈开发者，提供企业官网、外贸独立站和 Next.js 定制开发。",
+    mainEntityOfPage: `${siteUrl}/about#webpage`,
+    contactPoint: { "@type": "ContactPoint", contactType: "项目咨询", url: `${siteUrl}/#contact` },
     knowsAbout: ["网站制作", "企业官网建设", "企业官网设计", "外贸独立站", "Next.js 开发", "Web 视觉设计", "网站部署与维护"],
     brand: { "@type": "Brand", name: "形构 Form × Build" },
   },

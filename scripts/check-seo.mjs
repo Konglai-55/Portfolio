@@ -86,6 +86,18 @@ for (const path of expected) {
   const entities = schema.flatMap(s => s["@graph"] || [s]);
   assert.ok(entities.some(e => e["@type"] === "Person" && e.name === (en ? "Liang Xikun" : "梁熙坤")), path);
   assert.ok(entities.some(e => e["@type"] === "WebSite"), path);
+  const person = entities.find(e => e["@type"] === "Person");
+  assert.equal(person.contactPoint?.url, origin + (en ? "/en#contact" : "/#contact"), path + " provider contact");
+  if (original === "/services") {
+    const catalog = entities.find(e => e["@type"] === "OfferCatalog");
+    assert.equal(catalog?.itemListElement.length, 3, path + " service catalog");
+    for (const offer of catalog.itemListElement) {
+      const service = offer.itemOffered;
+      assert.equal(service.provider["@id"], origin + "/#person", path + " service provider");
+      assert.ok(html.includes(`href="${new URL(service.url).pathname}"`), path + " catalog must match visible service links");
+    }
+    assert.ok(html.includes('id="project-fit"'), path + " visible project-fit answers");
+  }
   if (original !== "/") assert.ok(entities.some(e => e["@type"] === "BreadcrumbList"), path);
   if (original.startsWith("/services/")) assert.ok(entities.some(e => e["@type"] === "Service"), path);
   if (original.startsWith("/work/")) assert.ok(entities.some(e => e["@type"] === "CreativeWork"), path);
