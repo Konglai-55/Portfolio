@@ -64,6 +64,10 @@ for (const path of expected) {
   const title = html.match(/<title>([^<]+)<\/title>/)?.[1];
   const description = html.match(/<meta name="description" content="([^"]+)"/)?.[1];
   assert.ok(title && description, path + " missing metadata");
+  if (en) {
+    assert.ok(title.length < 70, path + " English search title is too long");
+    assert.ok(description.length >= 25 && description.length <= 160, path + " English search description length");
+  }
   assert.ok(!titles.has(title), path + " duplicate title");
   assert.ok(!descriptions.has(description), path + " duplicate description");
   titles.add(title); descriptions.add(description);

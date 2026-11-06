@@ -13,6 +13,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return paths.flatMap(path => {
     const zh = siteUrl + (path === "/" ? "" : path);
     const en = siteUrl + `/en${path === "/" ? "" : path}`;
-    return [zh, en].map(url => ({ url, lastModified: guides.find(g => path === `/guides/${g.slug}`)?.updated ?? (updated.has(path) ? "2026-11-05" : contentUpdated), alternates: { languages: { "zh-CN": zh, en } } }));
+    return [zh, en].map(url => ({ url, lastModified: url === en ? "2026-11-06" : guides.find(g => path === `/guides/${g.slug}`)?.updated ?? (updated.has(path) ? "2026-11-05" : contentUpdated), alternates: { languages: { "zh-CN": zh, en } } }));
   });
 }

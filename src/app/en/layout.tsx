@@ -3,7 +3,7 @@ import DocumentLayout from "@/components/document-layout";
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio.mjjmc.xyz"),
   title: { default: "Custom Website Development & Web Design | Liang Xikun", template: "%s | Liang Xikun" },
-  description: "Freelance web designer and full-stack developer building custom business websites, multilingual company sites and Next.js applications. Explore case studies, project scope, source-code handover and ongoing support.",
+  description: "Freelance web developer Liang Xikun builds custom business websites and Next.js applications. Explore case studies, project scope and source-code handover.",
   alternates: { canonical: "/en", languages: { "zh-CN": "/", en: "/en", "x-default": "/" } },
   openGraph: { type: "website", locale: "en_US", siteName: "Liang Xikun · Form × Build", title: "Custom Website Development & Web Design | Liang Xikun", description: "Custom business websites and Next.js development, from the brief and web design to launch and handover.", url: "/en" },
   twitter: { card: "summary_large_image", title: "Custom Website Development & Web Design | Liang Xikun", description: "Custom business websites and Next.js development, from the brief and web design to launch and handover." },
