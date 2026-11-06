@@ -12,7 +12,7 @@ import { HangingBadge } from "./hanging-badge";
 import styles from "./contact-section.module.css";
 
 type ContactItem = {
-  id: "wechat" | "qq" | "phone";
+  id: "wechat" | "qq" | "phone" | "email";
   index: string;
   label: string;
   english: string;
@@ -42,6 +42,14 @@ const contactItems: readonly ContactItem[] = [
     english: "Phone",
     value: "177 3655 1531",
     href: "tel:+8617736551531",
+  },
+  {
+    id: "email",
+    index: "04",
+    label: "业务邮箱",
+    english: "Email",
+    value: "351738705@qq.com",
+    href: "mailto:351738705@qq.com",
   },
 ];
 
@@ -149,10 +157,10 @@ export function ContactSection() {
 
                 {item.href ? (
                   <a
-                    className={styles.rowValue}
+                    className={`${styles.rowValue} ${item.id === "email" ? styles.emailValue : ""}`}
                     href={item.href}
-                    data-analytics="contact:phone"
-                    aria-label={`拨打电话 ${item.value}`}
+                    data-analytics={`contact:${item.id}`}
+                    aria-label={item.id === "email" ? `${locale === "en" ? "Email" : "发送邮件至"} ${item.value}` : `拨打电话 ${item.value}`}
                   >
                     {item.value}
                   </a>
@@ -189,7 +197,7 @@ export function ContactSection() {
                     {item.href ? (
                       <>
                         <ArrowUpRight size={15} strokeWidth={1.5} />
-                        <span>拨打</span>
+                        <span>{item.id === "email" ? (locale === "en" ? "Email" : "发邮件") : "拨打"}</span>
                       </>
                     ) : isCopied ? (
                       <>

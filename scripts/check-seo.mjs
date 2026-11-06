@@ -43,6 +43,8 @@ for (const path of expected) {
   assert.ok(!response.headers.get("x-robots-tag")?.includes("noindex"), path);
   const html = await response.text();
   if (original === "/") {
+    assert.ok(html.includes('href="mailto:351738705@qq.com"'), path + " email consultation link");
+    assert.ok(html.includes('data-analytics="contact:email"'), path + " email contact must retain its own interaction label");
     const records = [...html.matchAll(/url=%2Fimages%2Ftrust-evidence-(\d\d)(-en)?\.(png|jpg)/g)];
     assert.deepEqual([...new Set(records.map(m => m[1]))].sort(), ["01", "02", "03", "04", "05", "06", "07", "08"], path + " evidence count");
     for (const record of records) assert.equal(Boolean(record[2]), en, path + " evidence language");
@@ -88,6 +90,8 @@ for (const path of expected) {
   assert.ok(entities.some(e => e["@type"] === "WebSite"), path);
   const person = entities.find(e => e["@type"] === "Person");
   assert.equal(person.contactPoint?.url, origin + (en ? "/en#contact" : "/#contact"), path + " provider contact");
+  assert.equal(person.contactPoint?.email, "351738705@qq.com", path + " provider business email");
+  if (original === "/about") assert.ok(html.includes('href="mailto:351738705@qq.com"'), path + " visible business email");
   if (original === "/services") {
     const catalog = entities.find(e => e["@type"] === "OfferCatalog");
     assert.equal(catalog?.itemListElement.length, 3, path + " service catalog");

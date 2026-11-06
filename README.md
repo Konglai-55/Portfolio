@@ -4,6 +4,8 @@
 
 **在线访问：[portfolio.mjjmc.xyz](https://portfolio.mjjmc.xyz/)**
 
+Liang Xikun is an independent website designer and full-stack developer building business websites, international websites and custom Next.js applications. Explore [English services](https://portfolio.mjjmc.xyz/en/services), [project case studies](https://portfolio.mjjmc.xyz/en/work) and [how to work together](https://portfolio.mjjmc.xyz/en/about). Project enquiries: [351738705@qq.com](mailto:351738705@qq.com).
+
 - [网站设计与开发服务](https://portfolio.mjjmc.xyz/services)：企业官网、外贸独立站与 Next.js 定制开发。
 - [公开项目案例](https://portfolio.mjjmc.xyz/work)：医院官网、创意店、制造业官网与家具外贸站设计。
 - [网站建设指南](https://portfolio.mjjmc.xyz/guides)：需求资料准备、报价与交付范围核对。
@@ -51,4 +53,4 @@ Chinese public URLs remain unchanged. English pages live under `/en` and share t
 
 The homepage uses a saved language choice first, then supported browser languages in Accept-Language order. If neither Chinese nor English is offered, the existing local GeoIP database supplies a regional fallback (Chinese for China/Hong Kong/Macao/Taiwan, English elsewhere; Chinese when unavailable). Explicit content URLs do not auto-redirect. The language links preserve the corresponding page and remember the selection for one year; `/zh/...` is a no-JavaScript Chinese selection redirect. APIs, admin and assets are excluded from language negotiation.
 
-Run `CHECK_BASE_URL=http://127.0.0.1:4516 node scripts/check-seo.mjs` for the 28-page language/SEO check, including language priority, saved preferences, direct URLs, missing routes and image loading.
+Run `CHECK_BASE_URL=http://127.0.0.1:4516 node scripts/check-seo.mjs` for the 30-page language/SEO check, including language priority, saved preferences, direct URLs, missing routes, image loading, service identity and contact links.

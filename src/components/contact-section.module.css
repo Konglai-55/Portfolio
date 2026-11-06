@@ -232,6 +232,11 @@
   transition: transform 0.7s var(--ease);
 }
 
+.rowValue.emailValue {
+  font-size: clamp(1.25rem, 3.8vw, 3.8rem);
+  overflow-wrap: anywhere;
+}
+
 /* Stretch the primary action over the full row. */
 .rowValue::after {
   position: absolute;
